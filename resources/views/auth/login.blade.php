@@ -1,47 +1,46 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('auth.layouts.main')
+@section('title', 'Login | Dangau Studio')
+@section('content')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<form id="formAuthentication" class="mb-3" action="/login" method="POST">
+    @csrf
+  <div class="mb-3 text-dark fw-bold">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" id="email" class="form-control border-success @error('email') is-invalid @enderror"
+        name="email" placeholder="Masukan alamat email anda" autofocus />
+    @error('email')
+        <div class="invalid-feedback">
+            {{ $message }}
         </div>
+    @enderror
+  </div>
+  <div class="mb-4 text-dark fw-bold">
+    <label for="password" class="form-label">Password</label>
+    <div class="input-group input-group-merge">
+        <input type="password" id="password"
+            class="form-control border-success @error('password') is-invalid @enderror"
+            name="password"
+            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+            aria-describedby="password" />
+        @error('password')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="form-check">
+        <input class="form-check-input primary" type="checkbox" id="remember" />
+        <label class="form-check-label" for="remember">Ingat saya</label>
+    </div>
+    <a class="text-primary fw-bold" href="{{ route('password.request') }}" id="forgotPasswordLink">Lupa Password ?</a>
+  </div>
+  <button type="submit" class="btn btn-custom w-100 fs-4 mb-4" style="background-color: #1a5319; color: #fff;">Masuk</button>
+  <div class="d-flex align-items-center justify-content-center">
+    <p class="fs-4 mb-0 fw-bold">Belum punya akun?</p>
+    <a class="text-primary fw-bold ms-2" href="/register">Daftar di sini</a>
+  </div>
+</form>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+@endsection
