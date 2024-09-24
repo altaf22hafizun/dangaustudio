@@ -52,14 +52,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($validateData['password']),
         ]);
 
-
         event(new Registered($user));
-
-        // Optionally send email verification
-        $user->sendEmailVerificationNotification();
 
         Auth::login($user);
 
-        return redirect(route('login'))->with('status', 'Silakan verifikasi email Anda.');
+        return redirect(route('login', absolute: false));
     }
 }
