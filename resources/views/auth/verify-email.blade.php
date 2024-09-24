@@ -1,4 +1,4 @@
-<x-guest-layout>
+{{-- <x-guest-layout>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
     </div>
@@ -28,4 +28,34 @@
             </button>
         </form>
     </div>
-</x-guest-layout>
+</x-guest-layout> --}}
+
+
+@extends('auth.layouts.main')
+@section('title', 'Verifikasi Email | Dangau Studio')
+@section('content')
+
+<div class="mb-4">
+    {{-- <h1 class="fw-bold">Lupa Kata Sandi?</h1> --}}
+    <p class="text-muted"><span class="fw-bold">Terima kasih telah mendaftar! </span><br> Sebelum mulai, bisakah Anda memverifikasi alamat email Anda dengan mengklik tautan yang baru saja kami kirimkan? Jika Anda tidak menerima email tersebut, kami dengan senang hati akan mengirimkannya lagi.</p>
+</div>
+
+<div class="d-flex justify-content-between mb-2">
+    <form id="formAuthentication" action="{{ route('verification.send') }}" method="POST" class="me-2">
+        @csrf
+        <button type="submit" class="btn btn-custom fs-3" style="background-color: #1a5319; color: #fff;">
+            Kirim ulang email verifikasi
+        </button>
+    </form>
+
+    <form method="POST" action="{{ route('logout') }}" class="align-self-center">
+        @csrf
+        <button type="submit" class="btn btn-link text-decoration-none fs-3">
+            Logout
+        </button>
+    </form>
+</div>
+
+
+
+@endsection

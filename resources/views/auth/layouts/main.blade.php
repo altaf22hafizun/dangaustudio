@@ -16,7 +16,7 @@
     data-sidebar-position="fixed" data-header-position="fixed">
     <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center"
       style="background: #f0f0f0;">
-      <div class="d-flex align-items-center justify-content-center w-100">
+      <div class="d-flex align-items-center justify-content-center w-100 py-5">
         <div class="card auth-card mb-0 mx-3" style="max-width: 35rem; width: 100%;">
           <div class="card-body">
             <a href="/" class="text-nowrap d-flex align-items-center justify-content-start w-100 mb-4"">
@@ -36,5 +36,6 @@
   {{-- @include('sweetalert::alert') --}}
   <script src="{{ asset('assets/auth/js/main.js') }}"></script>
   <script src="{{ asset('assets/auth/libs/jquery/dist/jquery.min.js') }}"></script>
+  @stack('custom-script')
 </body>
 </html>
