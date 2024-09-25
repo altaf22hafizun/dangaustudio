@@ -18,6 +18,11 @@
       style="background: #f0f0f0;">
       <div class="d-flex align-items-center justify-content-center w-100 py-5">
         <div class="card auth-card mb-0 mx-3" style="max-width: 35rem; width: 100%;">
+          @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+          @endif
           <div class="card-body">
             <a href="/" class="text-nowrap d-flex align-items-center justify-content-start w-100 mb-4"">
               <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="70" height="70" class="d-inline-block me-3 rounded-circle">

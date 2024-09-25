@@ -2,12 +2,11 @@
 @section('title', 'Verifikasi Email | Dangau Studio')
 @section('content')
 
-@if (session('status'))
+{{-- @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
-@endif
-
+@endif --}}
 
 <div class="mb-4">
     <p class="text-muted"><span class="fw-bold">Terima kasih telah mendaftar! </span><br> Sebelum mulai, bisakah Anda memverifikasi alamat email Anda dengan mengklik tautan yang baru saja kami kirimkan? Jika Anda tidak menerima email tersebut, kami dengan senang hati akan mengirimkannya lagi.</p>
