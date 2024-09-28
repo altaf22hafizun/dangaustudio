@@ -12,11 +12,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::middleware('auth')->group(function () {});
 
 // Middleware
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -29,10 +25,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // User Routes
     Route::group(['middleware' => ['RoleMiddleware:user']], function () {
-        // Settings
         Route::get('/user', function () {
             return view('user');
         })->name('user');
+        // Settings
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 });
 
