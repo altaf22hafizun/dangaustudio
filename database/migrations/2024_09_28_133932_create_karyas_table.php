@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('karyas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seniman_id')->constrained('seniman')->cascadeOnDelete();
-            $table->foreignId('pameran_id')->nullable()->constrained('pameran')->cascadeOnDelete();
+            $table->foreignId('seniman_id')->constrained('senimen')->cascadeOnDelete();
+            $table->foreignId('pameran_id')->nullable()->constrained('pamerans')->cascadeOnDelete();
             $table->string('name');
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->unsignedInteger('price');
             $table->string('kategori');
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->unsignedInteger('stock');
             $table->timestamps();
         });

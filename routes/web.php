@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->name('dashboard');
+        //Event
+        // Route::resource('/events', EventController::class);
     });
 
     // User Routes
