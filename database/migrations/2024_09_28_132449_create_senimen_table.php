@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('senimen', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('bio')->nullable();
-            $table->string('telp')->nullable();
+            $table->text('bio');
+            $table->string('telp');
             $table->string('medsos')->nullable();
             $table->string('foto_profile')->nullable();
             $table->timestamps();

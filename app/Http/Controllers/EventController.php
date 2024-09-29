@@ -14,10 +14,7 @@ class EventController extends Controller
     {
         $events = Event::all();
 
-        return response()->json([
-            'success' => true,
-            'data' => $events,
-        ]);
+        return view('admin.events.index', compact('events'));
     }
 
     /**
@@ -25,7 +22,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.events.create');
     }
 
     /**
@@ -74,17 +71,17 @@ class EventController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('uploads', 'public');
+            $imagePath = $request->file('image')->store('events', 'public');
             $validateData['image'] = $imagePath;
         }
 
-        $event = Event::create($validateData);
+        $event = new Event($validateData);
+        $event->setNameEventAttribute($validateData['name_event']);
+        $event->setLocationEventAttribute($validateData['location']);
+        $event->setCategoryEventAttribute($validateData['category']);
+        $event->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Event berhasil dibuat.',
-            'data' => $event // Mengembalikan data event yang baru saja dibuat
-        ], 201);
+        return redirect()->route('admin.events.index')->with('success', 'Data event berhasil disimpan');
     }
 
     /**

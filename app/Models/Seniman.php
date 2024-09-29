@@ -17,6 +17,10 @@ class Seniman extends Model
         'foto_profile'
     ];
 
+    public function setNameSenimanAtributes($value)
+    {
+        $this->attributes['name'] = ucwords(strtolower($value));
+    }
 
     // Relasi: Seniman memiliki banyak Karya
     public function karyas()

@@ -16,4 +16,12 @@ class Event extends Model
     {
         $this->attributes['name_event'] = ucwords(strtolower($value));
     }
+    public function setLocationEventAttribute($value)
+    {
+        $this->attributes['location'] = ucwords(strtolower($value));
+    }
+    public function setCategoryEventAttribute($value)
+    {
+        $this->attributes['category'] = ucwords(strtolower($value));
+    }
 }
