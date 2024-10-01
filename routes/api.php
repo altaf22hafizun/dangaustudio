@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SenimanController;
 use Illuminate\Http\Request;
@@ -11,3 +12,5 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('/events', EventController::class, array('as' => 'api'));
 Route::apiResource('/seniman', SenimanController::class, array('as' => 'api'));
+Route::apiResource('/berita', BeritaController::class, array('as' => 'api'));
+Route::apiResource('/karya', BeritaController::class, array('as' => 'api'));

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
@@ -12,7 +14,9 @@ class BeritaController extends Controller
      */
     public function index()
     {
-        //
+        $beritas = Berita::where('status_publikasi', 'Published')->get();
+        // return view('admin.berita.index');
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil ditemukan', 'data' => $beritas]);
     }
 
     /**
@@ -20,7 +24,7 @@ class BeritaController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.berita.create');
     }
 
     /**
@@ -28,38 +32,142 @@ class BeritaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'tgl' => 'required|date',
+                'penulis' => 'required|string|max:255',
+                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'status_publikasi' => 'required|string|in:Published,Hidden',
+            ],
+            [
+                'name.required' => 'Nama berita tidak boleh kosong',
+                'name.string' => 'Nama berita harus berupa teks.',
+                'name.max' => 'Nama berita tidak boleh lebih dari 255 karakter.',
+
+                'description.required' => 'Deskripsi berita tidak boleh kosong',
+                'description.string' => 'Deskripsi berita harus',
+
+                'tgl.required' => 'Tanggal publikasi berita harus diisi',
+                'tgl.date' => 'Tanggal publikasi berita harus berupa tanggal yang valid.',
+
+                'image.required' => 'Gambar berita wajib diunggah.',
+                'image.image' => 'File harus berupa gambar.',
+                'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
+                'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
+
+                'status_publikasi.required' => 'Status publikasi wajib diisi.',
+                'status_publikasi.string' => 'Status publikasi harus berupa teks.',
+                'status_publikasi.in' => 'Status publikasi harus salah satu dari: Published atau Hidden.',
+            ]
+        );
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('berita', 'public');
+            $validateData['image'] = $imagePath;
+        }
+
+        // Membuat slug dari judul event
+        $slug = Str::slug($request->name);
+        $validateData['slug'] = $slug;
+
+        $beritas = new Berita($validateData);
+        $beritas->setNameBeritaAttribute($validateData['name']);
+        $beritas->setPenulisAttribute($validateData['penulis']);
+        $beritas->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data berita berhasil ditambahkan',
+            'data' => $beritas,
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Berita $berita)
+    public function show(Berita $berita, $slug)
     {
-        //
+        $beritas = Berita::where('slug', $slug)->firstOrFail();
+        return view('user.berita.show', compact('beritas'));
+        // if (!$beritas) {
+        //     return response()->json(['status' => 'false', 'message' => 'Data gagal ditemukan']);
+        // } else {
+        //     return response()->json(['status' => 'true', 'message' => 'Data berhasil ditemukan', 'data' => $beritas]);
+        // }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Berita $berita)
+    public function edit(string $id)
     {
-        //
+        $beritas = Berita::findOrFail($id);
+
+        return view('admin.berita.edit');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Berita $berita)
+    public function update(Request $request, string $id)
     {
-        //
+        $beritas = Berita::findOrFail($id);
+        $validateData = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'tgl' => 'required|date',
+                'penulis' => 'required|string|max:255',
+                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'status_publikasi' => 'required|string|in:Published,Hidden',
+            ],
+            [
+                'name.required' => 'Nama berita tidak boleh kosong',
+                'name.string' => 'Nama berita harus berupa teks.',
+                'name.max' => 'Nama berita tidak boleh lebih dari 255 karakter.',
+
+                'description.required' => 'Deskripsi berita tidak boleh kosong',
+                'description.string' => 'Deskripsi berita harus',
+
+                'tgl.required' => 'Tanggal publikasi berita harus diisi',
+                'tgl.date' => 'Tanggal publikasi berita harus berupa tanggal yang valid.',
+
+                'image.required' => 'Gambar berita wajib diunggah.',
+                'image.image' => 'File harus berupa gambar.',
+                'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.', 
+                'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
+
+                'status_publikasi.required' => 'Status publikasi wajib diisi.',
+                'status_publikasi.string' => 'Status publikasi harus berupa teks.',
+                'status_publikasi.in' => 'Status publikasi harus salah satu dari: Published atau Hidden.',
+            ]
+        );
+
+        if ($request->hasFile('image')) {
+            if ($beritas->image) {
+                Storage::delete(['public' . $beritas->image]);
+            }
+
+            $imagePath = $request->file('image')->store('berita', 'public');
+            $validateData['image'] = $imagePath;
+        }
+
+        Berita::where('id', $id)->update($validateData);
+        // return redirect()->route('admin.berita.index')->with('Data berita berhasil diperbarui');
+        return response()->json(['status' => 'success', 'message' => 'Data berita berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Berita $berita)
+    public function destroy(string $id)
     {
-        //
+        $beritas = Berita::findOrFail($id);
+        $beritas->delete();
+
+        // return redirect()->route('admin.berita.index')->with('Data berita berhasil dihapus');
+        return response()->json(['status' => 'success', 'message' => 'Data berita berhasil dihapus']);
     }
 }

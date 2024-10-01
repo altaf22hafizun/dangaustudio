@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->date('tgl');
             $table->string('penulis');
-            $table->string('image')->nullable();
+            // $table->string('image')->nullable();
+            $table->string('image');
             $table->enum('status_publikasi', ['Published', 'Hidden'])->default('Published');
             $table->string('slug');
             $table->timestamps();

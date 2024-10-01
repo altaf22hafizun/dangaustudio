@@ -15,6 +15,9 @@ class SenimanController extends Controller
     {
         $senimans = Seniman::all();
         foreach ($senimans as $seniman) {
+            // Memproses URL media sosial yang disimpan di properti 'medsos'
+            // Fungsi rtrim() menghapus karakter '/' yang mungkin ada di akhir URL
+            // Fungsi basename() mengambil bagian terakhir dari URL (misalnya, nama pengguna dari URL media sosial)
             $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
         }
         return view('admin.seniman.index', compact('senimans'));
