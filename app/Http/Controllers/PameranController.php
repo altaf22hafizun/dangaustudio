@@ -70,10 +70,10 @@ class PameranController extends Controller
         }
 
         // Membuat slug dari judul event
-        $slug = Str::slug($request->name);
+        $slug = Str::slug($request->name_pameran);
         $validateData['slug'] = $slug;
 
-        $pamerans = new Pameran();
+        $pamerans = new Pameran($validateData);
         $pamerans->setNameAttribute($validateData['name_pameran']);
         $pamerans->save();
 
@@ -151,7 +151,7 @@ class PameranController extends Controller
         }
 
         // Membuat slug dari judul event
-        $slug = Str::slug($request->name);
+        $slug = Str::slug($request->name_pameran);
         $validateData['slug'] = $slug;
 
         Pameran::where('id', $id)->update($validateData);

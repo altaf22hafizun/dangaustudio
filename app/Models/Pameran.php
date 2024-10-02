@@ -16,7 +16,8 @@ class Pameran extends Model
         'start_date',
         'end_date',
         'image',
-        'status_publikasi'
+        'status_publikasi',
+        'slug',
     ];
 
     public function setNameAttribute($value)

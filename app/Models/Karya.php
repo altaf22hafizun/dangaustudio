@@ -20,6 +20,11 @@ class Karya extends Model
         'stock'
     ];
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords(strtolower($value));
+    }
+
     // Relasi: Karya dimiliki oleh Seniman
     public function seniman()
     {
