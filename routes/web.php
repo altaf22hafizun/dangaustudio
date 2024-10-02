@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\KaryaController;
+use App\Http\Controllers\PameranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SenimanController;
 use App\Http\Middleware\RoleMiddleware;
@@ -26,6 +29,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         //Event
         Route::resource('/admin/events', EventController::class);
         Route::resource('/admin/seniman', SenimanController::class);
+        Route::resource('/admin/berita', BeritaController::class);
+        Route::resource('/admin/pameran', PameranController::class);
+        Route::resource('/admin/karya', KaryaController::class);
     });
 
     // User Routes

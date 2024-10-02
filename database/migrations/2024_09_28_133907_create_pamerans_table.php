@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name_pameran');
             $table->text('description')->nullable();
-            $table->string('category');
+            // $table->string('category');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('image')->nullable();
+            $table->string('slug');
             $table->enum('status_publikasi', ['Published', 'Hidden'])->default('Hidden');
             $table->timestamps();
         });

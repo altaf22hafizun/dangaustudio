@@ -12,12 +12,17 @@ class Pameran extends Model
     protected $fillable = [
         'name_pameran',
         'description',
-        'category',
+        // 'category',
         'start_date',
         'end_date',
         'image',
         'status_publikasi'
     ];
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name_pameran'] = ucwords(strtolower($value));
+    }
 
     // Relasi: Pameran memiliki banyak Karya
     public function karyas()

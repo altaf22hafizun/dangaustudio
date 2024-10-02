@@ -82,6 +82,7 @@ class BeritaController extends Controller
             'message' => 'Data berita berhasil ditambahkan',
             'data' => $beritas,
         ]);
+        // return redirect()->route('admin.berita.index')->with('Data berita berhasil ditambahkan');
     }
 
     /**
@@ -136,7 +137,7 @@ class BeritaController extends Controller
 
                 'image.required' => 'Gambar berita wajib diunggah.',
                 'image.image' => 'File harus berupa gambar.',
-                'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.', 
+                'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
                 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
 
                 'status_publikasi.required' => 'Status publikasi wajib diisi.',
@@ -153,6 +154,10 @@ class BeritaController extends Controller
             $imagePath = $request->file('image')->store('berita', 'public');
             $validateData['image'] = $imagePath;
         }
+
+        // Membuat slug dari judul event
+        $slug = Str::slug($request->name);
+        $validateData['slug'] = $slug;
 
         Berita::where('id', $id)->update($validateData);
         // return redirect()->route('admin.berita.index')->with('Data berita berhasil diperbarui');

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('price');
             $table->string('kategori');
             $table->string('image');
-            $table->unsignedInteger('stock');
+            $table->enum('stock', ['Tersedia', 'Terjual'])->default('Tersedia');
             $table->timestamps();
         });
     }
