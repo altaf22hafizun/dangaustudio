@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('karya_id')->constrained('karyas')->cascadeOnDelete();
-            $table->string('trx');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('trx_id');
             $table->date('tgl_transaksi');
-            $table->unsignedInteger('jumlah');
-            $table->unsignedInteger('price');
             $table->string('proof');
             $table->enum('status_pembayaran', ['Pending', 'Lunas', 'Dibatalkan'])->default('Pending');
             $table->enum('opsi_pengambilan', ['Dijemput', 'Diantarkan'])->default('Dijemput');

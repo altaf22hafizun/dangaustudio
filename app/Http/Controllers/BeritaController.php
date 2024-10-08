@@ -38,6 +38,9 @@ class BeritaController extends Controller
                 'description' => 'required|string',
                 'tgl' => 'required|date',
                 'penulis' => 'required|string|max:255',
+                'sumber_berita' => 'nullable|string',
+                'label_berita' => 'nullable|string',
+                'link_berita' => 'nullable|url',
                 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
                 'status_publikasi' => 'required|string|in:Published,Hidden',
             ],
@@ -56,6 +59,8 @@ class BeritaController extends Controller
                 'image.image' => 'File harus berupa gambar.',
                 'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
                 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
+
+                'link_berita.url' => 'Link berita harus berupa URL yang valid.',
 
                 'status_publikasi.required' => 'Status publikasi wajib diisi.',
                 'status_publikasi.string' => 'Status publikasi harus berupa teks.',
@@ -122,6 +127,9 @@ class BeritaController extends Controller
                 'tgl' => 'required|date',
                 'penulis' => 'required|string|max:255',
                 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'sumber_berita' => 'nullable|string',
+                'label_berita' => 'nullable|string',
+                'link_berita' => 'nullable|url',
                 'status_publikasi' => 'required|string|in:Published,Hidden',
             ],
             [
@@ -140,6 +148,8 @@ class BeritaController extends Controller
                 'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
                 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
 
+                'link_berita.url' => 'Link berita harus berupa URL yang valid.',
+
                 'status_publikasi.required' => 'Status publikasi wajib diisi.',
                 'status_publikasi.string' => 'Status publikasi harus berupa teks.',
                 'status_publikasi.in' => 'Status publikasi harus salah satu dari: Published atau Hidden.',
@@ -153,6 +163,9 @@ class BeritaController extends Controller
 
             $imagePath = $request->file('image')->store('berita', 'public');
             $validateData['image'] = $imagePath;
+        } else {
+            // Jika tidak ada gambar baru, jangan hapus gambar lama
+            unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
         }
 
         // Membuat slug dari judul event

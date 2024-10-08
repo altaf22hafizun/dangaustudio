@@ -13,24 +13,22 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {});
-
 // Middleware
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // Admin Routes
     Route::group(['middleware' => ['RoleMiddleware:admin']], function () {
         Route::get('/dashboard', function () {
-            return view('dashboard');
+            return view('admin.layouts.index');
         })->name('dashboard');
         //Event
         Route::resource('/admin/events', EventController::class);
+        //Seniman
         Route::resource('/admin/seniman', SenimanController::class);
+        //Berita
         Route::resource('/admin/berita', BeritaController::class);
+        //Pameran
         Route::resource('/admin/pameran', PameranController::class);
+        //Karya
         Route::resource('/admin/karya', KaryaController::class);
     });
 

@@ -16,9 +16,12 @@ return new class extends Migration
             $table->foreignId('seniman_id')->constrained('senimen')->cascadeOnDelete();
             $table->foreignId('pameran_id')->nullable()->constrained('pamerans')->cascadeOnDelete();
             $table->string('name');
-            $table->text('description');
+            $table->text('deskripsi');
             $table->unsignedInteger('price');
-            $table->string('kategori');
+            $table->string('category');
+            $table->string('medium');
+            $table->string('size');
+            $table->string('tahun');
             $table->string('image');
             $table->enum('stock', ['Tersedia', 'Terjual'])->default('Tersedia');
             $table->timestamps();

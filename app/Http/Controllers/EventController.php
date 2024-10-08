@@ -156,6 +156,9 @@ class EventController extends Controller
 
             $imagePath = $request->file('image')->store('event', 'public');
             $validateData['image'] = $imagePath;
+        } else {
+            // Jika tidak ada gambar baru, jangan hapus gambar lama
+            unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
         }
 
         Event::where('id', $id)->update($validateData);

@@ -150,6 +150,9 @@ class SenimanController extends Controller
             // Upload foto baru
             $imagePath = $request->file('foto_profile')->store('seniman', 'public');
             $validatedData['foto_profile'] = $imagePath;
+        } else {
+            // Jika tidak ada gambar baru, jangan hapus gambar lama
+            unset($validateData['foto_profile']); // Menjaga nilai gambar lama tetap di database
         }
 
         Seniman::where('id', $id)->update($validatedData);

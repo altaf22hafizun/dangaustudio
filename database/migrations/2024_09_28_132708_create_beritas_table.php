@@ -19,8 +19,11 @@ return new class extends Migration
             $table->string('penulis');
             // $table->string('image')->nullable();
             $table->string('image');
+            $table->text('sumber_berita')->nullable();
+            $table->text('label_berita')->nullable();
+            $table->text('link_berita')->nullable();
             $table->enum('status_publikasi', ['Published', 'Hidden'])->default('Published');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

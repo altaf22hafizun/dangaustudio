@@ -16,6 +16,9 @@ class Karya extends Model
         'description',
         'price',
         'category',
+        'medium',
+        'size',
+        'tahun',
         'image',
         'stock'
     ];
@@ -38,8 +41,8 @@ class Karya extends Model
     }
 
     // Relasi: Karya memiliki banyak Transaksi
-    public function transaksi()
+    public function pesanan()
     {
-        return $this->hasMany(Transaksi::class);
+        return $this->hasMany(Pesanan::class);
     }
 }

@@ -148,6 +148,9 @@ class PameranController extends Controller
             }
             $imagePath = $request->file('image')->store('pameran', 'public');
             $validateData['image'] = $imagePath;
+        } else {
+            // Jika tidak ada gambar baru, jangan hapus gambar lama
+            unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
         }
 
         // Membuat slug dari judul event
