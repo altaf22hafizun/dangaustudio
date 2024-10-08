@@ -1,5 +1,5 @@
 @extends('admin.layouts.index')
-@section('title', 'Dashboard | Dangau Studio')
+@section('title', 'Dashboard | Admin Dangau Studio')
 @section('menuDashboard','active')
 @section('content')
 

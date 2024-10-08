@@ -14,7 +14,10 @@ class BeritaController extends Controller
      */
     public function index()
     {
-        $beritas = Berita::where('status_publikasi', 'Published')->paginate(3);
+        $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+        // $title = 'Hapus Berita!';
+        // $text = "Apakah kamu ingin menghapus berita tersebut?";
+        // confirmDelete($title, $text);
         return view('admin.berita.index', compact('beritas'));
     }
 
@@ -36,8 +39,8 @@ class BeritaController extends Controller
             [
                 'name' => 'required|string|max:255',
                 'description' => 'required|string',
-                'tgl' => 'required|date',
-                'penulis' => 'required|string|max:255',
+                'tgl' => 'required|date|',
+                // 'penulis' => 'nullable|string|max:255',
                 'sumber_berita' => 'nullable|string',
                 'label_berita' => 'nullable|string',
                 'link_berita' => 'nullable|url',
@@ -79,15 +82,14 @@ class BeritaController extends Controller
 
         $beritas = new Berita($validateData);
         $beritas->setNameBeritaAttribute($validateData['name']);
-        $beritas->setPenulisAttribute($validateData['penulis']);
         $beritas->save();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data berita berhasil ditambahkan',
-            'data' => $beritas,
-        ]);
-        // return redirect()->route('admin.berita.index')->with('Data berita berhasil ditambahkan');
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data berita berhasil ditambahkan',
+        //     'data' => $beritas,
+        // ]);
+        return redirect()->route('berita.index')->with('success', 'Data berita berhasil ditambahkan');
     }
 
     /**
@@ -125,7 +127,7 @@ class BeritaController extends Controller
                 'name' => 'required|string|max:255',
                 'description' => 'required|string',
                 'tgl' => 'required|date',
-                'penulis' => 'required|string|max:255',
+                // 'penulis' => 'required|string|max:255',
                 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
                 'sumber_berita' => 'nullable|string',
                 'label_berita' => 'nullable|string',
@@ -137,8 +139,8 @@ class BeritaController extends Controller
                 'name.string' => 'Nama berita harus berupa teks.',
                 'name.max' => 'Nama berita tidak boleh lebih dari 255 karakter.',
 
-                'description.required' => 'Deskripsi berita tidak boleh kosong',
-                'description.string' => 'Deskripsi berita harus',
+                'description.required' => 'Isi berita tidak boleh kosong',
+                'description.string' => 'Isi berita harus berupa teks.',
 
                 'tgl.required' => 'Tanggal publikasi berita harus diisi',
                 'tgl.date' => 'Tanggal publikasi berita harus berupa tanggal yang valid.',
@@ -158,22 +160,22 @@ class BeritaController extends Controller
 
         if ($request->hasFile('image')) {
             if ($beritas->image) {
-                Storage::delete(['public' . $beritas->image]);
+                Storage::delete('public/' . $beritas->image); // Memperbaiki path
             }
 
             $imagePath = $request->file('image')->store('berita', 'public');
             $validateData['image'] = $imagePath;
         } else {
-            // Jika tidak ada gambar baru, jangan hapus gambar lama
             unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
         }
+
 
         // Membuat slug dari judul event
         $slug = Str::slug($request->name);
         $validateData['slug'] = $slug;
 
         Berita::where('id', $id)->update($validateData);
-        return redirect()->route('admin.berita.index')->with('Data berita berhasil diperbarui');
+        return redirect()->route('berita.index')->with('success', 'Data berita berhasil diperbarui');
         // return response()->json(['status' => 'success', 'message' => 'Data berita berhasil diperbarui', 'data' => $validateData]);
     }
 
@@ -183,9 +185,14 @@ class BeritaController extends Controller
     public function destroy(string $id)
     {
         $beritas = Berita::findOrFail($id);
+
+        if ($beritas->image) {
+            // Hapus gambar dari storage
+            Storage::delete('public/' . $beritas->image);
+        }
         $beritas->delete();
 
-        return redirect()->route('admin.berita.index')->with('Data berita berhasil dihapus');
+        return redirect()->route('berita.index')->with('success', 'Data berita berhasil dihapus');
         // return response()->json(['status' => 'success', 'message' => 'Data berita berhasil dihapus']);
     }
 }

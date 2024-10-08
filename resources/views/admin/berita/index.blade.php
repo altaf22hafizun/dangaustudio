@@ -1,5 +1,5 @@
 @extends('admin.layouts.index')
-@section('title', 'Berita | Dangau Studio')
+@section('title', 'Berita | Admin Dangau Studio')
 @section('menuBerita','active')
 @section('content')
 
@@ -19,8 +19,8 @@
             </div>
 
             <div class="table-responsive" data-simplebar>
-                <table class="table table-borderless align-middle text-nowrap">
-                    <thead>
+                <table class="table table-borderless align-middle text-nowrap text-center">
+                    <thead class="table-dark text-center">
                     <tr>
                         <th scope="col">Gambar Berita</th>
                         <th scope="col">Judul Berita</th>
@@ -52,7 +52,13 @@
                             </td>
                             <td>
                                 <a href="{{ route('berita.update', $berita->id) }}" class="btn btn-warning"><i class="ti ti-edit"></i></a>
-                                <a href="{{ route('berita.destroy', $berita->id) }}" class="btn btn-danger" data-confirm-delete="true"><i class="ti ti-trash"></i></a>
+                                <form action="{{ route('berita.destroy', $berita->id) }}" method="POST" data-confirm-delete="true">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="ti ti-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @empty

@@ -159,7 +159,7 @@
       </div>
     </div>
   </div>
-  {{-- @include('sweetalert::alert') --}}
+  @include('sweetalert::alert')
   <script src="{{ asset('assets/auth/libs/jquery/dist/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/auth/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('assets/auth/js/sidebarmenu.js') }}"></script>

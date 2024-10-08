@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->date('tgl');
-            $table->string('penulis');
+            // $table->string('penulis');
             // $table->string('image')->nullable();
             $table->string('image');
             $table->text('sumber_berita')->nullable();
