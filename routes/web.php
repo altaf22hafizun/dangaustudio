@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // Admin Routes
     Route::group(['middleware' => ['RoleMiddleware:admin']], function () {
         Route::get('/dashboard', function () {
-            return view('admin.layouts.index');
+            return view('admin.index');
         })->name('dashboard');
         //Event
         Route::resource('/admin/events', EventController::class);

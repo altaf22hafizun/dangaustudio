@@ -14,10 +14,10 @@ class BeritaController extends Controller
      */
     public function index()
     {
-        $beritas = Berita::where('status_publikasi', 'Published')->get();
-        // return view('admin.berita.index');
-        return response()->json(['status' => 'success', 'message' => 'Data berhasil ditemukan', 'data' => $beritas]);
+        $beritas = Berita::where('status_publikasi', 'Published')->paginate(3);
+        return view('admin.berita.index', compact('beritas'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -173,8 +173,8 @@ class BeritaController extends Controller
         $validateData['slug'] = $slug;
 
         Berita::where('id', $id)->update($validateData);
-        // return redirect()->route('admin.berita.index')->with('Data berita berhasil diperbarui');
-        return response()->json(['status' => 'success', 'message' => 'Data berita berhasil diperbarui', 'data' => $validateData]);
+        return redirect()->route('admin.berita.index')->with('Data berita berhasil diperbarui');
+        // return response()->json(['status' => 'success', 'message' => 'Data berita berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -185,7 +185,7 @@ class BeritaController extends Controller
         $beritas = Berita::findOrFail($id);
         $beritas->delete();
 
-        // return redirect()->route('admin.berita.index')->with('Data berita berhasil dihapus');
-        return response()->json(['status' => 'success', 'message' => 'Data berita berhasil dihapus']);
+        return redirect()->route('admin.berita.index')->with('Data berita berhasil dihapus');
+        // return response()->json(['status' => 'success', 'message' => 'Data berita berhasil dihapus']);
     }
 }
