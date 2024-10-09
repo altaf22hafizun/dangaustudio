@@ -14,7 +14,7 @@ class Event extends Model
     // Mutator untuk mengubah setiap awal kata menjadi huruf kapital
     public function setNameEventAttribute($value)
     {
-        $this->attributes['name_event'] = ucwords(strtolower($value));
+        $this->attributes['nama_event'] = ucwords(strtolower($value));
     }
     public function setLocationEventAttribute($value)
     {

@@ -13,8 +13,10 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-
+        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+        $title = 'Hapus Event!';
+        $text = "Apakah kamu ingin menghapus event tersebut?";
+        confirmDelete($title, $text);
         return view('admin.events.index', compact('events'));
     }
 
@@ -77,12 +79,12 @@ class EventController extends Controller
         }
 
         $event = new Event($validateData);
-        $event->setNameEventAttribute($validateData['name_event']);
+        $event->setNameEventAttribute($validateData['nama_event']);
         $event->setLocationEventAttribute($validateData['location']);
         $event->setCategoryEventAttribute($validateData['category']);
         $event->save();
 
-        return redirect()->route('admin.events.index')->with('success', 'Data event berhasil disimpan');
+        return redirect()->route('events.index')->with('success', 'Data event berhasil disimpan');
     }
 
     /**
@@ -99,8 +101,12 @@ class EventController extends Controller
     public function edit(string $id)
     {
         $events = Event::findOrFail($id);
+        $status_publikasi = [
+            'Published' => 'Published',
+            'Hidden' => 'Hidden',
+        ];
 
-        return view('admin.events.edit');
+        return view('admin.events.edit', compact('events', 'status_publikasi'));
     }
 
     /**
@@ -116,7 +122,7 @@ class EventController extends Controller
             'category' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'status_publikasi' => 'required|string|in:Published,Hidden',
         ], [
             'nama_event.required' => 'Nama event wajib diisi.',
@@ -139,7 +145,7 @@ class EventController extends Controller
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
             'end_date.after_or_equal' => 'Tanggal akhir harus setelah atau sama dengan tanggal mulai.',
 
-            'image.required' => 'Gambar event wajib diunggah.',
+            // 'image.required' => 'Gambar event wajib diunggah.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
             'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
@@ -162,8 +168,8 @@ class EventController extends Controller
         }
 
         Event::where('id', $id)->update($validateData);
-        // return redirect()->route('admin.event.index')->with('Data event berhasil diperbarui');
-        return response()->json(['status' => 'success', 'message' => 'Data event berhasil diperbarui', 'data' => $validateData]);
+        return redirect()->route('events.index')->with('success','Data event berhasil diperbarui');
+        // return response()->json(['status' => 'success', 'message' => 'Data event berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -174,7 +180,7 @@ class EventController extends Controller
         $events = Event::findOrFail($id);
         $events->delete();
 
-        // return redirect()->route('admin.event.index')->with('Data event berhasil dihapus');
-        return response()->json(['status' => 'success', 'message' => 'Data event berhasil dihapus']);
+        return redirect()->route('events.index')->with('success','Data event berhasil dihapus');
+        // return response()->json(['status' => 'success', 'message' => 'Data event berhasil dihapus']);
     }
 }

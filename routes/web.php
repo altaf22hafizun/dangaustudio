@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // Admin Routes
     Route::group(['middleware' => ['RoleMiddleware:admin']], function () {
-        Route::get('/dashboard', function () {
+        Route::get('/admin', function () {
             return view('admin.index');
         })->name('dashboard');
         //Event

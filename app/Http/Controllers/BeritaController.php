@@ -15,9 +15,9 @@ class BeritaController extends Controller
     public function index()
     {
         $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
-        // $title = 'Hapus Berita!';
-        // $text = "Apakah kamu ingin menghapus berita tersebut?";
-        // confirmDelete($title, $text);
+        $title = 'Hapus Berita!';
+        $text = "Apakah kamu ingin menghapus berita tersebut?";
+        confirmDelete($title, $text);
         return view('admin.berita.index', compact('beritas'));
     }
 
@@ -112,8 +112,12 @@ class BeritaController extends Controller
     public function edit(string $id)
     {
         $beritas = Berita::findOrFail($id);
+        $status_publikasi = [
+            'Published' => 'Published',
+            'Hidden' => 'Hidden',
+        ];
 
-        return view('admin.berita.edit');
+        return view('admin.berita.edit', compact('beritas', 'status_publikasi'));
     }
 
     /**
@@ -128,7 +132,7 @@ class BeritaController extends Controller
                 'description' => 'required|string',
                 'tgl' => 'required|date',
                 // 'penulis' => 'required|string|max:255',
-                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
                 'sumber_berita' => 'nullable|string',
                 'label_berita' => 'nullable|string',
                 'link_berita' => 'nullable|url',
@@ -145,7 +149,7 @@ class BeritaController extends Controller
                 'tgl.required' => 'Tanggal publikasi berita harus diisi',
                 'tgl.date' => 'Tanggal publikasi berita harus berupa tanggal yang valid.',
 
-                'image.required' => 'Gambar berita wajib diunggah.',
+                // 'image.required' => 'Gambar berita wajib diunggah.',
                 'image.image' => 'File harus berupa gambar.',
                 'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
                 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',

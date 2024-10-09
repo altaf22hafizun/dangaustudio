@@ -35,7 +35,7 @@
             <li class="sidebar-item">
                 <a
                     class="sidebar-link sidebar-link @yield('menuDashboard')"
-                    href="/admin"
+                    href="{{ route('dashboard') }}"
                     aria-expanded="false"
                 >
                     <span class="aside-icon p-2 bg-light-primary rounded-3">
@@ -59,7 +59,7 @@
             <li class="sidebar-item">
                 <a
                     class="sidebar-link sidebar-link @yield('menuEvent')"
-                    href="/admin/event"
+                    href="/admin/events"
                     aria-expanded="false"
                 >
                     <span class="aside-icon p-2 bg-light-primary rounded-3">
@@ -114,6 +114,18 @@
                   <i class="ti ti-package fs-7 text-primary"></i>
                 </span>
                 <span class="hide-menu ms-2 ps-1">Pameran</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                class="sidebar-link sidebar-link @yield('menuUser')"
+                href="/admin/user"
+                aria-expanded="false"
+              >
+                <span class="aside-icon p-2 bg-light-primary rounded-3">
+                  <i class="ti ti-package fs-7 text-primary"></i>
+                </span>
+                <span class="hide-menu ms-2 ps-1">User</span>
               </a>
             </li>
             <li class="sidebar-item">

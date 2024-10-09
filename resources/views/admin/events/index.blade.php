@@ -1,50 +1,75 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
-  <body>
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        @forelse ($events as $event)
-        <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>{{ $event->nama_event }}</td>
-              <td>{{ $event->description }}</td>
-              <td>{{ $event->location }}</td>
-              <td>{{ $event->category }}</td>
-              <td>{{ $event->start_date }}</td>
-              <td>{{ $event->end_date }}</td>
-            </tr>
-          </tbody>
-        @empty
-          <p>No events</p>
-        @endforelse
-    </table>
-    @forelse ($events as $event)
-    <div class="card" style="width: 18rem;">
-        <img src="{{ Storage::url($event->image)}}" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{ $event->nama_event }}</h5>
-          <p class="card-text">{{ Str::limit($event->description, 50) }}</p>
-          <a href="#" class="btn btn-primary">Lihat Lebih Detail</a>
+@extends('admin.layouts.index')
+@section('title', 'Event | Admin Dangau Studio')
+@section('menuEvent','active')
+@section('content')
+
+<div class="container-fluid">
+    <div class="card w-100">
+        <div class="card-body p-4">
+            <div class="d-flex mb-4 justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">Event</h5>
+                <a
+                href="{{ route('events.create') }}"
+                class="btn btn-success rounded-3 btn-sm d-flex align-items-center py-2 px-3 me-2"
+                role="button"
+                >
+                <i class="ti ti-plus fs-7 me-2"></i>
+                Tambah Event
+                </a>
+            </div>
+
+            <div class="table-responsive" data-simplebar>
+                <table class="table table-borderless align-middle text-nowrap text-center">
+                    <thead class="table-dark text-center">
+                    <tr>
+                        <th scope="col">Gambar Event</th>
+                        <th scope="col">Nama Event</th>
+                        <th scope="col">Deskripsi Event</th>
+                        <th scope="col">Tanggal Mulai Event</th>
+                        <th scope="col">Tanggal Berakhir Event</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ( $events as $event )
+                        <tr>
+                            <td>
+                                @if ($event->image)
+                                    <img src="{{ asset('storage/' . $event->image) }}" alt="Gambar" class="img-fluid mb-3 mt-2 rounded-3" width="130">
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>{{ Str::limit($event->nama_event, 15) }}</td>
+                            <td>{!! Str::limit(strip_tags($event->description), 15) !!}</td>
+                            <td>{{ $event->start_date }}</td>
+                            <td>{{ $event->end_date }}</td>
+                            <td>
+                                @if ($event->status_publikasi == 'Published')
+                                    <span class="badge bg-light-success rounded-pill text-success px-3 py-2 fs-3">Aktif</span>
+                                @else
+                                    <span class="badge bg-light-danger rounded-pill text-danger px-3 py-2 fs-3">Tidak Aktif</span>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('events.edit', $event->id, ) }}" class="btn btn-warning"><i class="ti ti-edit"></i></a>
+                                <a href="{{ route('events.destroy', $event->id) }}" class="btn btn-danger" data-confirm-delete="true"><i class="ti ti-trash"></i></a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center pt-4">Belum ada data event</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            <div class="d-flex justify-content-center mt-3">
+                {{ $events->links() }}
+            </div>
+            </div>
         </div>
     </div>
-    @empty
-    <p class="text-dark">No events</p>
-    @endforelse
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
-</html>
+@endsection

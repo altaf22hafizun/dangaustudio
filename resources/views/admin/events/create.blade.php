@@ -1,58 +1,58 @@
 @extends('admin.layouts.index')
-@section('title', 'Tambah Berita | Admin Dangau Studio')
-@section('menuBerita','active')
+@section('title', 'Tambah Event | Admin Dangau Studio')
+@section('menuEvent','active')
 @section('content')
 
 <div class="container-fluid">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Tambah Berita</h5>
-            <form action="{{ route('berita.store') }}" method="post" enctype="multipart/form-data">
+            <h5 class="card-title fw-semibold mb-4">Tambah Event</h5>
+            <form action="{{ route('events.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <!-- Kolom pertama -->
                     <div class="col-lg-6">
-                        <!-- Judul Berita -->
+                        <!-- Judul Event -->
                         <div class="mb-3">
                             <label for="name">
-                                Judul Berita
+                                Nama Event
                                 <span class="text-danger">*</span>
                             </label>
-                            <input type="text" name="name" id="name"
-                                class="form-control rounded-0 @error('name') is-invalid @enderror"
-                                placeholder="Masukkan judul Berita" value="{{ old('name') }}">
-                            @error('name')
+                            <input type="text" name="nama_event" id="nama_event"
+                                class="form-control rounded-0 @error('nama_event') is-invalid @enderror"
+                                placeholder="Masukkan judul Event" value="{{ old('nama_event') }}">
+                            @error('nama_event')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
-                        <!-- Tanggal Publikasi -->
+                        <!-- Tanggal Mulai Event -->
                         <div class="mb-3">
-                            <label for="tgl">
-                                Tanggal Publikasi
+                            <label for="start_date">
+                                Tanggal Mulai Event
                                 <span class="text-danger">*</span>
                             </label>
-                            <input type="date" name="tgl" id="tgl"
-                                class="form-control rounded-0 @error('tgl') is-invalid @enderror"
-                                value="{{ old('tgl') }}">
-                            @error('tgl')
+                            <input type="date" name="start_date" id="start_date"
+                                class="form-control rounded-0 @error('start_date') is-invalid @enderror"
+                                value="{{ old('start_date') }}">
+                            @error('start_date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
-                        <!-- Sumber Berita -->
+                        <!-- Lokasi Event -->
                         <div class="mb-3">
-                            <label for="sumber_berita">
-                                Sumber Berita
+                            <label for="location">
+                                Lokasi Event
                             </label>
-                            <input type="text" name="sumber_berita" id="sumber_berita"
-                                class="form-control rounded-0 @error('sumber_berita') is-invalid @enderror"
-                                placeholder="Masukkan sumber Berita" value="{{ old('sumber_berita') }}">
-                            @error('sumber_berita')
+                            <input type="text" name="location" id="location"
+                                class="form-control rounded-0 @error('location') is-invalid @enderror"
+                                placeholder="Masukkan lokasi Event" value="{{ old('location') }}">
+                            @error('location')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -64,28 +64,29 @@
                     <div class="col-lg-6">
                         <!-- Label Berita -->
                         <div class="mb-3">
-                            <label for="label_Berita">
-                                Label Berita
+                            <label for="category">
+                                Kategori Event
                             </label>
-                            <input type="text" name="label_Berita" id="label_Berita"
-                                class="form-control rounded-0 @error('label_Berita') is-invalid @enderror"
-                                placeholder="Masukkan label Berita" value="{{ old('label_Berita') }}">
-                            @error('label_Berita')
+                            <input type="text" name="category" id="category"
+                                class="form-control rounded-0 @error('category') is-invalid @enderror"
+                                placeholder="Masukkan kategori Event" value="{{ old('category') }}">
+                            @error('category')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
-                        <!-- Link Berita -->
+                        <!-- Tanggal Berakhir Event -->
                         <div class="mb-3">
-                            <label for="link_Berita">
-                                Link Berita
+                            <label for="end_date">
+                                Tanggal Berakhir Event
+                                <span class="text-danger">*</span>
                             </label>
-                            <input type="text" name="link_Berita" id="link_Berita"
-                                class="form-control rounded-0 @error('link_Berita') is-invalid @enderror"
-                                placeholder="Masukkan link Berita" value="{{ old('link_Berita') }}">
-                            @error('link_Berita')
+                            <input type="date" name="end_date" id="end_date"
+                                class="form-control rounded-0 @error('end_date') is-invalid @enderror"
+                                value="{{ old('end_date') }}">
+                            @error('end_date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -111,18 +112,18 @@
                     </div>
                 </div>
 
-                <!-- Isi Berita dan Gambar Berita -->
+                <!-- Isi Event dan Gambar Event -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <!-- Isi Berita -->
+                        <!-- Isi Event -->
                         <div class="mb-3">
                             <label for="description">
-                                Isi Berita
+                                Deskripsi Event
                                 <span class="text-danger">*</span>
                             </label>
                             <textarea id="editor" name="description"
                                 class="form-control @error('description') is-invalid @enderror"
-                                placeholder="Masukkan isi berita">{{ old('description') }}</textarea>
+                                placeholder="Masukkan isi event">{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -147,7 +148,7 @@
                 </div>
 
                 <div class="modal-footer mt-3">
-                    <a href="{{ route('berita.index') }}" class="btn btn-secondary rounded-3 me-3 ">Kembali</a>
+                    <a href="{{ route('events.index') }}" class="btn btn-secondary rounded-3 me-3 ">Kembali</a>
                     <button type="submit" class="btn btn-success rounded-3">Submit</button>
                 </div>
             </form>
@@ -168,8 +169,8 @@
         const oFReader = new FileReader();
         oFReader.readAsDataURL(image.files[0]);
 
-        oFReader.onload = function(oFRBerita) {
-            imgPreview.src = oFRBerita.target.result;
+        oFReader.onload = function(oFREvent) {
+            imgPreview.src = oFREvent.target.result;
         }
     }
 </script>

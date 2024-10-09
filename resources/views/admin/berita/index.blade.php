@@ -51,19 +51,13 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('berita.update', $berita->id) }}" class="btn btn-warning"><i class="ti ti-edit"></i></a>
-                                <form action="{{ route('berita.destroy', $berita->id) }}" method="POST" data-confirm-delete="true">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="ti ti-trash"></i>
-                                    </button>
-                                </form>
+                                <a href="{{ route('berita.edit', $berita->id, ) }}" class="btn btn-warning"><i class="ti ti-edit"></i></a>
+                                <a href="{{ route('berita.destroy', $berita->id) }}" class="btn btn-danger" data-confirm-delete="true"><i class="ti ti-trash"></i></a>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center">Belum ada data berita</td>
+                            <td colspan="6" class="text-center pt-4">Belum ada data berita</td>
                         </tr>
                         @endforelse
                     </tbody>

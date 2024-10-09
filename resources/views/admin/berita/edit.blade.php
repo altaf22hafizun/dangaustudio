@@ -1,14 +1,15 @@
 @extends('admin.layouts.index')
-@section('title', 'Tambah Berita | Admin Dangau Studio')
+@section('title', 'Edit Berita | Admin Dangau Studio')
 @section('menuBerita','active')
 @section('content')
 
 <div class="container-fluid">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Tambah Berita</h5>
-            <form action="{{ route('berita.store') }}" method="post" enctype="multipart/form-data">
+            <h5 class="card-title fw-semibold mb-4">Edit Berita</h5>
+            <form action="{{ route('berita.update', $beritas->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="row">
                     <!-- Kolom pertama -->
                     <div class="col-lg-6">
@@ -20,7 +21,7 @@
                             </label>
                             <input type="text" name="name" id="name"
                                 class="form-control rounded-0 @error('name') is-invalid @enderror"
-                                placeholder="Masukkan judul Berita" value="{{ old('name') }}">
+                                placeholder="Masukkan judul Berita" value="{{ old('name', $beritas->name) }}">
                             @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -36,7 +37,7 @@
                             </label>
                             <input type="date" name="tgl" id="tgl"
                                 class="form-control rounded-0 @error('tgl') is-invalid @enderror"
-                                value="{{ old('tgl') }}">
+                                value="{{ old('tgl', $beritas->tgl) }}">
                             @error('tgl')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -51,7 +52,7 @@
                             </label>
                             <input type="text" name="sumber_berita" id="sumber_berita"
                                 class="form-control rounded-0 @error('sumber_berita') is-invalid @enderror"
-                                placeholder="Masukkan sumber Berita" value="{{ old('sumber_berita') }}">
+                                placeholder="Masukkan sumber Berita" value="{{ old('sumber_berita', $beritas->sumber_berita) }}">
                             @error('sumber_berita')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -64,13 +65,13 @@
                     <div class="col-lg-6">
                         <!-- Label Berita -->
                         <div class="mb-3">
-                            <label for="label_Berita">
+                            <label for="label_berita">
                                 Label Berita
                             </label>
-                            <input type="text" name="label_Berita" id="label_Berita"
-                                class="form-control rounded-0 @error('label_Berita') is-invalid @enderror"
-                                placeholder="Masukkan label Berita" value="{{ old('label_Berita') }}">
-                            @error('label_Berita')
+                            <input type="text" name="label_berita" id="label_berita"
+                                class="form-control rounded-0 @error('label_berita') is-invalid @enderror"
+                                placeholder="Masukkan label Berita" value="{{ old('label_berita', $beritas->label_berita) }}">
+                            @error('label_berita')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -79,13 +80,13 @@
 
                         <!-- Link Berita -->
                         <div class="mb-3">
-                            <label for="link_Berita">
+                            <label for="link_berita">
                                 Link Berita
                             </label>
-                            <input type="text" name="link_Berita" id="link_Berita"
-                                class="form-control rounded-0 @error('link_Berita') is-invalid @enderror"
-                                placeholder="Masukkan link Berita" value="{{ old('link_Berita') }}">
-                            @error('link_Berita')
+                            <input type="text" name="link_berita" id="link_berita"
+                                class="form-control rounded-0 @error('link_berita') is-invalid @enderror"
+                                placeholder="Masukkan link Berita" value="{{ old('link_berita', $beritas->link_berita) }}">
+                            @error('link_berita')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -97,10 +98,12 @@
                             <label for="status_publikasi">
                                 Status Publikasi
                             </label>
-                            <select name="status_publikasi" id="status_publikasi"
-                                class="form-control rounded-0 @error('status_publikasi') is-invalid @enderror">
-                                <option value="Hidden" {{ old('status_publikasi') == 'Hidden' ? 'selected' : '' }}>Hidden</option>
-                                <option value="Published" {{ old('status_publikasi') == 'Published' ? 'selected' : '' }}>Published</option>
+                            <select name="status_publikasi" class="form-control rounded-0 @error('status_publikasi') is-invalid @enderror">
+                                @foreach ($status_publikasi as $key => $status)
+                                    <option value="{{ $key }}" {{ old('status_publikasi', $beritas->status_publikasi) == $key ? 'selected' : '' }}>
+                                        {{ $status }}
+                                    </option>
+                                @endforeach
                             </select>
                             @error('status_publikasi')
                                 <div class="invalid-feedback">
@@ -122,7 +125,7 @@
                             </label>
                             <textarea id="editor" name="description"
                                 class="form-control @error('description') is-invalid @enderror"
-                                placeholder="Masukkan isi berita">{{ old('description') }}</textarea>
+                                placeholder="Masukkan isi berita">{{ old('description', $beritas->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">
                                     {{ $message }}
