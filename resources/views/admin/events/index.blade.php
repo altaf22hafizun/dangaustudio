@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="col">Gambar Event</th>
                     <th scope="col">Nama Event</th>
-                    <th scope="col">Deskripsi Event</th>
+                    <th scope="col">Lokasi Event</th>
                     <th scope="col">Tanggal Mulai Event</th>
                     <th scope="col">Tanggal Berakhir Event</th>
                     <th scope="col">Status</th>
@@ -41,7 +41,7 @@
                             @endif
                         </td>
                         <td>{{ Str::limit($event->nama_event, 15) }}</td>
-                        <td>{!! Str::limit(strip_tags($event->description), 15) !!}</td>
+                        <td>{{ $event->location }}</td>
                         <td>{{ $event->start_date }}</td>
                         <td>{{ $event->end_date }}</td>
                         <td>

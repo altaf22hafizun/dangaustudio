@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title')</title>
-  <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}">
+  <link rel="shortcut icon" href="{{ asset('assets/img/logo_dangau.png') }}">
   <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
   <link href="{{ asset('assets/auth/css/bootstrap.css') }}" rel="stylesheet">
 </head>

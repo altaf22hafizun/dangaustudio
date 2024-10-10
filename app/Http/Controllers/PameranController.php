@@ -79,13 +79,13 @@ class PameranController extends Controller
         $pamerans->setNameAttribute($validateData['name_pameran']);
         $pamerans->save();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data pameran berhasil ditambahkan',
-            'data' => $pamerans,
-        ]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data pameran berhasil ditambahkan',
+        //     'data' => $pamerans,
+        // ]);
 
-        // return redirect()->route('admin.pameran.index')->with('success', 'Data pameran berhasil ditambahkan');
+        return redirect()->route('pameran.index')->with('success', 'Data pameran berhasil ditambahkan');
     }
 
     /**
@@ -103,7 +103,11 @@ class PameranController extends Controller
     public function edit(string $id)
     {
         $pamerans = Pameran::findOrFail($id);
-        return view('admin.pameran.edit');
+        $status_publikasi = [
+            'Published' => 'Published',
+            'Hidden' => 'Hidden',
+        ];
+        return view('admin.pameran.edit', compact('pamerans', 'status_publikasi'));
     }
 
     /**
@@ -117,7 +121,7 @@ class PameranController extends Controller
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'status_publikasi' => 'required|string|in:Published,Hidden',
         ], [
             'name_pameran.required' => 'Nama pameran wajib diisi.',
@@ -134,7 +138,6 @@ class PameranController extends Controller
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
             'end_date.after_or_equal' => 'Tanggal akhir harus setelah atau sama dengan tanggal mulai.',
 
-            'image.required' => 'Gambar pameran wajib diunggah.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
             'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
@@ -160,8 +163,8 @@ class PameranController extends Controller
         $validateData['slug'] = $slug;
 
         Pameran::where('id', $id)->update($validateData);
-        // return redirect()->route('admin.pameran.index')->with('Data pameran berhasil diperbarui');
-        return response()->json(['status' => 'success', 'message' => 'Data pameran berhasil diperbarui', 'data' => $validateData]);
+        return redirect()->route('pameran.index')->with('success', 'Data pameran berhasil diperbarui');
+        // return response()->json(['status' => 'success', 'message' => 'Data pameran berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -170,9 +173,13 @@ class PameranController extends Controller
     public function destroy(string $id)
     {
         $pamerans = Pameran::findOrFail($id);
+        if ($pamerans->image) {
+            Storage::delete('public/' . $pamerans->image);
+        }
         $pamerans->delete();
 
-        // return redirect()->route('admin.pameran.index')->with('Data pameran berhasil dihapus');
-        return response()->json(['status' => 'success', 'message' => 'Data pameran berhasil dihapus']);
+
+        return redirect()->route('pameran.index')->with('success', 'Data pameran berhasil dihapus');
+        // return response()->json(['status' => 'success', 'message' => 'Data pameran berhasil dihapus']);
     }
 }

@@ -12,7 +12,6 @@ class Pameran extends Model
     protected $fillable = [
         'name_pameran',
         'description',
-        'category',
         'start_date',
         'end_date',
         'image',

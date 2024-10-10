@@ -13,7 +13,10 @@ class SenimanController extends Controller
      */
     public function index()
     {
-        $senimans = Seniman::all();
+        $senimans = Seniman::orderBy('created_at', 'desc')->paginate(3);
+        $title = 'Hapus Seniman!';
+        $text = "Apakah kamu ingin menghapus seniman tersebut?";
+        confirmDelete($title, $text);
         foreach ($senimans as $seniman) {
             // Memproses URL media sosial yang disimpan di properti 'medsos'
             // Fungsi rtrim() menghapus karakter '/' yang mungkin ada di akhir URL

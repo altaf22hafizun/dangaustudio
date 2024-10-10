@@ -11,6 +11,16 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    // public function user()
+    // {
+    //     $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+    //     $title = 'Hapus Event!';
+    //     $text = "Apakah kamu ingin menghapus event tersebut?";
+    //     confirmDelete($title, $text);
+    //     return view('admin.events.index', compact('events'));
+    // }
+
     public function index()
     {
         $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
@@ -168,7 +178,7 @@ class EventController extends Controller
         }
 
         Event::where('id', $id)->update($validateData);
-        return redirect()->route('events.index')->with('success','Data event berhasil diperbarui');
+        return redirect()->route('events.index')->with('success', 'Data event berhasil diperbarui');
         // return response()->json(['status' => 'success', 'message' => 'Data event berhasil diperbarui', 'data' => $validateData]);
     }
 
@@ -180,7 +190,7 @@ class EventController extends Controller
         $events = Event::findOrFail($id);
         $events->delete();
 
-        return redirect()->route('events.index')->with('success','Data event berhasil dihapus');
+        return redirect()->route('events.index')->with('success', 'Data event berhasil dihapus');
         // return response()->json(['status' => 'success', 'message' => 'Data event berhasil dihapus']);
     }
 }

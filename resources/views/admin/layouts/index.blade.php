@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title', 'Admin | Dangau Studio')</title>
-  <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}">
+  <link rel="shortcut icon" href="{{ asset('assets/img/logo_dangau.png') }}">
   <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -18,135 +18,125 @@
     data-sidebar-position="fixed" data-header-position="fixed">
     <!-- Sidebar Start -->
     <aside class="left-sidebar">
-      <!-- Sidebar scroll-->
-      <div class="scroll-sidebar" data-simplebar>
-        <div class="d-flex mb-4 align-items-center">
+        <!-- Sidebar scroll -->
+        <div class="scroll-sidebar" data-simplebar>
+          <!-- Logo Section -->
+          <div class="d-flex mb-4 align-items-center">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="40" height="auto" class="d-inline-block me-3 rounded-circle">
             <a class="navbar-brand d-flex d-lg-inline-block mx-auto mx-lg-0 text-center text-lg-start" href="/admin">
-                <h5 class="me-3 fw-bold fs-4 fs-md-2 fs-lg-1" style="color: #1a5319;">
-                    Dangau Studio
-                </h5>
+              <h5 class="me-3 fw-bold fs-4 fs-md-2 fs-lg-1" style="color: #1a5319;">
+                Dangau Studio
+              </h5>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                <i class="ti ti-x fs-8"></i>
+              <i class="ti ti-x fs-8"></i>
             </div>
-        </div>
-        <!-- Sidebar navigation-->
-        <nav class="sidebar-nav">
-          <ul id="sidebarnav" class="mb-4 pb-2">
-            <li class="sidebar-item">
-                <a
-                    class="sidebar-link sidebar-link @yield('menuDashboard')"
-                    href="{{ route('dashboard') }}"
-                    aria-expanded="false"
-                >
-                    <span class="aside-icon p-2 bg-light-primary rounded-3">
+          </div>
+
+          <hr class="fs-1">
+
+          <!-- Sidebar navigation -->
+          <nav class="sidebar-nav">
+            <ul id="sidebarnav" class="mb-4 pb-2">
+              <!-- Dashboard -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuDashboard')" href="{{ route('dashboard') }}" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
                     <i class="ti ti-layout-dashboard fs-7 text-primary"></i>
-                    </span>
-                    <span class="hide-menu ms-2 ps-1">Dashboard</span>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Dashboard</span>
                 </a>
-            </li>
-            <li class="sidebar-item">
-                <a
-                    class="sidebar-link sidebar-link @yield('menuBerita')"
-                    href="/admin/berita"
-                    aria-expanded="false"
-                >
-                    <span class="aside-icon p-2 bg-light-primary rounded-3">
+              </li>
+
+              <!-- Berita -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuBerita')" href="/admin/berita" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
                     <i class="fa-solid fa-newspaper fs-5 text-primary"></i>
-                    </span>
-                    <span class="hide-menu ms-2 ps-1">Berita</span>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Berita</span>
                 </a>
-            </li>
-            <li class="sidebar-item">
-                <a
-                    class="sidebar-link sidebar-link @yield('menuEvent')"
-                    href="/admin/events"
-                    aria-expanded="false"
-                >
-                    <span class="aside-icon p-2 bg-light-primary rounded-3">
+              </li>
+
+              <!-- Event -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuEvent')" href="/admin/events" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
                     <i class="ti ti-calendar-event fs-7 text-primary"></i>
-                    </span>
-                    <span class="hide-menu ms-2 ps-1">Event</span>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Event</span>
                 </a>
-            </li>
-            <li class="sidebar-item">
-                <a
-                    class="sidebar-link sidebar-link @yield('menuKarya') "
-                    href="/admin/karya"
-                    aria-expanded="false"
-                >
-                    <span class="aside-icon p-2 bg-light-primary rounded-3">
+              </li>
+
+              <!-- Karya -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuKarya')" href="/admin/karya" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
                     <i class="ti ti-palette fs-7 text-primary"></i>
-                    </span>
-                    <span class="hide-menu ms-2 ps-1">Karya</span>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Karya</span>
                 </a>
-            </li>
-            <li class="sidebar-item">
-                <a
-                    class="sidebar-link sidebar-link @yield('menuIncome')"
-                    href="/admin/income"
-                    aria-expanded="false"
-                >
-                    <span class="aside-icon p-2 bg-light-primary rounded-3">
+              </li>
+
+              <!-- Income -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuIncome')" href="/admin/income" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
                     <i class="fas fa-chart-line fs-5 text-primary"></i>
-                    </span>
-                    <span class="hide-menu ms-2 ps-1">Income</span>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Income</span>
                 </a>
-            </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link @yield('menuSeniman')"
-                href="/admin/seniman"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-brush fs-7 text-primary"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">Seniman</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link @yield('menuPameran')"
-                href="/admin/pameran"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-receipt fs-7 text-primary"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">Pameran</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link @yield('menuUser')"
-                href="/admin/user"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-user fs-7 text-primary"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">User</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
+              </li>
+
+              <!-- Seniman -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuSeniman')" href="/admin/seniman" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
+                    <i class="ti ti-brush fs-7 text-primary"></i>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Seniman</span>
+                </a>
+              </li>
+
+              <!-- Pameran -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuPameran')" href="/admin/pameran" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
+                    <i class="ti ti-receipt fs-7 text-primary"></i>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Pameran</span>
+                </a>
+              </li>
+
+              <!-- User -->
+              <li class="sidebar-item">
+                <a class="sidebar-link @yield('menuUser')" href="/admin/user" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
+                    <i class="ti ti-user fs-7 text-primary"></i>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">User</span>
+                </a>
+              </li>
+
+              <!-- Logout -->
+              <li class="sidebar-item">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
+                  @csrf
                 </form>
-                <a class="sidebar-link sidebar-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" aria-expanded="false">
-                    <span class="aside-icon p-2 bg-light-primary rounded-3">
-                        <i class="ti ti-logout fs-7 text-primary"></i>
-                    </span>
-                    <span class="hide-menu ms-2 ps-1">Logout</span>
+                <a class="sidebar-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-light-primary rounded-3">
+                    <i class="ti ti-logout fs-7 text-primary"></i>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Logout</span>
                 </a>
-            </li>
-          </ul>
-        </nav>
-        <!-- End Sidebar navigation -->
-      </div>
-      <!-- End Sidebar scroll-->
-    </aside>
+              </li>
+            </ul>
+          </nav>
+          <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll -->
+      </aside>
+
     <!--  Sidebar End -->
     <!--  Main wrapper -->
     <div class="body-wrapper">
@@ -160,11 +150,6 @@
               </div>
             </li>
           </ul>
-          {{-- <div class="navbar-collapse justify-content-end px-0 mt-3" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <p class="btn me-4 text-light" style="background-color: #1a5319;">Admin</p>
-            </ul>
-          </div> --}}
         </nav>
       </header>
       <!--  Header End -->

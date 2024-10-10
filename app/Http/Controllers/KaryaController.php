@@ -115,7 +115,11 @@ class KaryaController extends Controller
         $karyas = Karya::findOrFail($id);
         $senimans = Seniman::all();
         $pamerans = Pameran::all();
-        return view('admin.galery.edit', compact('karyas', 'senimans', 'pamerans'));
+        $stock = [
+            'Terjual' => 'Terjual',
+            'Tersedia' => 'Tersedia',
+        ];
+        return view('admin.galery.edit', compact('karyas', 'senimans', 'pamerans', 'stock'));
     }
 
     /**

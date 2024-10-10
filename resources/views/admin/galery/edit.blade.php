@@ -140,10 +140,12 @@
                             Stock Karya
                             <span class="text-danger">*</span>
                         </label>
-                        <select name="stock" id="stock"
-                            class="form-control rounded-0 @error('stock') is-invalid @enderror">
-                            <option value="Tersedia" {{ old('stock') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                            <option value="Terjual" {{ old('stock') == 'Terjual' ? 'selected' : '' }}>Terjual</option>
+                        <select name="stock" class="form-control rounded-0 @error('stock') is-invalid @enderror">
+                            @foreach ($stock as $key => $status)
+                                <option value="{{ $key }}" {{ old('stock', $karyas->stock) == $key ? 'selected' : '' }}>
+                                    {{ $status }}
+                                </option>
+                            @endforeach
                         </select>
                         @error('stock')
                             <div class="invalid-feedback">
