@@ -13,7 +13,7 @@ class Karya extends Model
         'seniman_id',
         'pameran_id',
         'name',
-        'description',
+        'deskripsi',
         'price',
         'category',
         'medium',

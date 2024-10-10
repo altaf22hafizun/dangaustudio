@@ -8,6 +8,8 @@
   <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}">
   <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -51,7 +53,7 @@
                     aria-expanded="false"
                 >
                     <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-package fs-7 text-primary"></i>
+                    <i class="fa-solid fa-newspaper fs-5 text-primary"></i>
                     </span>
                     <span class="hide-menu ms-2 ps-1">Berita</span>
                 </a>
@@ -70,14 +72,14 @@
             </li>
             <li class="sidebar-item">
                 <a
-                    class="sidebar-link sidebar-link @yield('menuGalery') "
-                    href="/admin/galery"
+                    class="sidebar-link sidebar-link @yield('menuKarya') "
+                    href="/admin/karya"
                     aria-expanded="false"
                 >
                     <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-article fs-7 text-primary"></i>
+                    <i class="ti ti-palette fs-7 text-primary"></i>
                     </span>
-                    <span class="hide-menu ms-2 ps-1">Galery</span>
+                    <span class="hide-menu ms-2 ps-1">Karya</span>
                 </a>
             </li>
             <li class="sidebar-item">
@@ -87,7 +89,7 @@
                     aria-expanded="false"
                 >
                     <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-plant fs-7 text-primary"></i>
+                    <i class="fas fa-chart-line fs-5 text-primary"></i>
                     </span>
                     <span class="hide-menu ms-2 ps-1">Income</span>
                 </a>
@@ -99,7 +101,7 @@
                 aria-expanded="false"
               >
                 <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-package fs-7 text-primary"></i>
+                  <i class="ti ti-brush fs-7 text-primary"></i>
                 </span>
                 <span class="hide-menu ms-2 ps-1">Seniman</span>
               </a>
@@ -111,7 +113,7 @@
                 aria-expanded="false"
               >
                 <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-package fs-7 text-primary"></i>
+                  <i class="ti ti-receipt fs-7 text-primary"></i>
                 </span>
                 <span class="hide-menu ms-2 ps-1">Pameran</span>
               </a>
@@ -123,7 +125,7 @@
                 aria-expanded="false"
               >
                 <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-package fs-7 text-primary"></i>
+                  <i class="ti ti-user fs-7 text-primary"></i>
                 </span>
                 <span class="hide-menu ms-2 ps-1">User</span>
               </a>

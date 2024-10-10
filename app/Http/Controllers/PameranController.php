@@ -14,9 +14,11 @@ class PameranController extends Controller
      */
     public function index()
     {
-        $pamerans = Pameran::where('status_publikasi', 'Published')->get();
-        // return view('admin.pameran.index');
-        return response()->json(['status' => 'success', 'message' => 'Data berhasil ditemukan', 'data' => $pamerans]);
+        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+        $title = 'Hapus Pameran!';
+        $text = "Apakah kamu ingin menghapus pameran tersebut?";
+        confirmDelete($title, $text);
+        return view('admin.pameran.index', compact('pamerans'));
     }
 
     /**
@@ -24,7 +26,7 @@ class PameranController extends Controller
      */
     public function create()
     {
-        return view('admin.pameran.index');
+        return view('admin.pameran.create');
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karya;
+use App\Models\Pameran;
+use App\Models\Seniman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +15,17 @@ class KaryaController extends Controller
      */
     public function index()
     {
-        //
+        $karyas = Karya::whereIn('stock', ['Tersedia', 'Terjual'])->latest()->paginate(3);
+        // Ambil seniman dan pameran yang relevan
+        $senimanIds = $karyas->pluck('seniman_id')->unique();
+        $pameranIds = $karyas->pluck('pameran_id')->unique();
+
+        $senimans = Seniman::whereIn('id', $senimanIds)->get();
+        $pamerans = Pameran::whereIn('id', $pameranIds)->get();
+        $title = 'Hapus Karya!';
+        $text = "Apakah kamu ingin menghapus karya tersebut?";
+        confirmDelete($title, $text);
+        return view('admin.galery.index', compact('karyas', 'senimans', 'pamerans'));
     }
 
     /**
@@ -21,7 +33,9 @@ class KaryaController extends Controller
      */
     public function create()
     {
-        return view('admin.karya.index');
+        $senimans = Seniman::all();
+        $pamerans = Pameran::all();
+        return view('admin.galery.create', compact('senimans', 'pamerans'));
     }
 
     /**
@@ -31,24 +45,24 @@ class KaryaController extends Controller
     {
         // Validasi data input
         $validateData = $request->validate([
-            'seniman_id' => 'required|exists:senimans,id', // Pastikan seniman ada di database
+            'seniman_id' => 'required|exists:senimen,id', // Pastikan seniman ada di database
             'pameran_id' => 'nullable|exists:pamerans,id', // Pameran bersifat opsional
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',
             'category' => 'required|string|max:255',
             'medium' => 'required|string',
             'size' => 'required|string',
             'tahun' => 'required|integer|digits:4',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'stock' => 'required|integer|min:0',
+            'stock' => 'required|string|in:Terjual,Tersedia',
         ], [
             'seniman_id.required' => 'Seniman wajib diisi.',
             'seniman_id.exists' => 'Seniman tidak ditemukan.',
             'pameran_id.exists' => 'Pameran tidak ditemukan.',
             'name.required' => 'Nama karya wajib diisi.',
             'name.max' => 'Nama karya tidak boleh lebih dari 255 karakter.',
-            'description.required' => 'Deskripsi karya wajib diisi.',
+            'deskripsi.required' => 'Deskripsi karya wajib diisi.',
             'medium.required' => 'Medium karya wajib diisi.',
             'size.required' => 'Size karya wajib diisi.',
             'tahun.required' => 'Tahun karya wajib diisi.',
@@ -60,9 +74,9 @@ class KaryaController extends Controller
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format jpg, jpeg, atau png.',
             'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
-            'stock.required' => 'Stok karya wajib diisi.',
-            'stock.integer' => 'Stok harus berupa angka.',
-            'stock.min' => 'Stok minimal adalah 0.',
+            'stock.required' => 'Stock karya wajib diisi.',
+            'stock.string' => 'Stock karya harus berupa teks.',
+            'stock.in' => 'Stock karya harus salah satu dari: Tersedia atau Terjual.',
         ]);
 
         // Jika ada file gambar yang diunggah, simpan ke dalam folder 'public/karya'
@@ -76,13 +90,13 @@ class KaryaController extends Controller
         $karyas->setNameAttribute($validateData['name']);
         $karyas->save();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Karya berhasil ditambahkan',
-            'data' => $karyas,
-        ]);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Karya berhasil ditambahkan',
+        //     'data' => $karyas,
+        // ]);
 
-        // return redirect()->route('admin.karya.index')->with('success', 'Data karya berhasil ditambahkan');
+        return redirect()->route('karya.index')->with('success', 'Data karya berhasil ditambahkan');
     }
 
     /**
@@ -99,7 +113,9 @@ class KaryaController extends Controller
     public function edit(string $id)
     {
         $karyas = Karya::findOrFail($id);
-        return view('admin.karya.edit');
+        $senimans = Seniman::all();
+        $pamerans = Pameran::all();
+        return view('admin.galery.edit', compact('karyas', 'senimans', 'pamerans'));
     }
 
     /**
@@ -109,24 +125,25 @@ class KaryaController extends Controller
     {
         $karyas = Karya::findOrFail($id);
         $validateData = $request->validate([
-            'seniman_id' => 'required|exists:senimans,id', // Pastikan seniman ada di database
-            'pameran_id' => 'nullable|exists:pamerans,id', // Pameran bersifat opsional
+            'seniman_id' => 'required|exists:senimen,id',
+            'pameran_id' => 'nullable|exists:pamerans,id',
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',
             'category' => 'required|string|max:255',
             'medium' => 'required|string',
             'size' => 'required|string',
             'tahun' => 'required|integer|digits:4',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'stock' => 'required|string|in:Terjual,Tersedia',
+
         ], [
             'seniman_id.required' => 'Seniman wajib diisi.',
             'seniman_id.exists' => 'Seniman tidak ditemukan.',
             'pameran_id.exists' => 'Pameran tidak ditemukan.',
             'name.required' => 'Nama karya wajib diisi.',
             'name.max' => 'Nama karya tidak boleh lebih dari 255 karakter.',
-            'description.required' => 'Deskripsi karya wajib diisi.',
+            'deskripsi.required' => 'Deskripsi karya wajib diisi.',
             'medium.required' => 'Medium karya wajib diisi.',
             'size.required' => 'Size karya wajib diisi.',
             'tahun.required' => 'Tahun karya wajib diisi.',
@@ -134,13 +151,12 @@ class KaryaController extends Controller
             'price.numeric' => 'Harga harus berupa angka.',
             'category.required' => 'Kategori karya wajib diisi.',
             'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
-            'image.required' => 'Gambar karya wajib diunggah.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format jpg, jpeg, atau png.',
             'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
-            'stock.required' => 'Stok karya wajib diisi.',
-            'stock.integer' => 'Stok harus berupa angka.',
-            'stock.min' => 'Stok minimal adalah 0.',
+            'stock.required' => 'Stock karya wajib diisi.',
+            'stock.string' => 'Stock karya harus berupa teks.',
+            'stock.in' => 'Stock karya harus salah satu dari: Tersedia atau Terjual.',
         ]);
 
         if ($request->hasFile('image')) {
@@ -155,8 +171,8 @@ class KaryaController extends Controller
         }
 
         Karya::where('id', $id)->update($validateData);
-        // return redirect()->route('admin.karya.index')->with('Data karya berhasil diperbarui');
-        return response()->json(['status' => 'success', 'message' => 'Data karya berhasil diperbarui', 'data' => $validateData]);
+        return redirect()->route('karya.index')->with('Data karya berhasil diperbarui');
+        // return response()->json(['status' => 'success', 'message' => 'Data karya berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -165,9 +181,12 @@ class KaryaController extends Controller
     public function destroy(Karya $karya, string $id)
     {
         $karyas = Karya::findOrFail($id);
+        if ($karyas->image) {
+            Storage::delete('public/' . $karyas->image);
+        }
         $karyas->delete();
 
-        // return redirect()->route('admin.karya.index')->with('Data karya berhasil dihapus');
-        return response()->json(['status' => 'success', 'message' => 'Data karya berhasil dihapus']);
+        return redirect()->route('karya.index')->with('Data karya berhasil dihapus');
+        // return response()->json(['status' => 'success', 'message' => 'Data karya berhasil dihapus']);
     }
 }
