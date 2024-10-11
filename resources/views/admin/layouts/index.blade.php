@@ -24,7 +24,7 @@
           <div class="d-flex mb-4 align-items-center">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="40" height="auto" class="d-inline-block me-3 rounded-circle">
             <a class="navbar-brand d-flex d-lg-inline-block mx-auto mx-lg-0 text-center text-lg-start" href="/admin">
-              <h5 class="me-3 fw-bold fs-4 fs-md-2 fs-lg-1" style="color: #1a5319;">
+              <h5 class="me-3 fw-bold fs-4 fs-md-2 fs-lg-1" style="color: #1a5319; letter-spacing: 2px;">
                 Dangau Studio
               </h5>
             </a>

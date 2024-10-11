@@ -11,6 +11,7 @@ use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
+Route::get('/tentang', [LandingController::class, 'tentang'])->name('tentang');
 
 // Middleware
 Route::group(['middleware' => ['auth', 'verified']], function () {

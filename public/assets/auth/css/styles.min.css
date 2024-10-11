@@ -34,7 +34,7 @@
     --bs-gray-900: #111c2d;
     --bs-primary: #0085db;
     --bs-secondary: #707a82;
-    --bs-success: #4bd08b;
+    --bs-success: #1a5319;
     --bs-info: #46caeb;
     --bs-warning: #f8c076;
     --bs-danger: #fb977d;
@@ -51,7 +51,7 @@
     --bs-light-indigo: #f1ebff;
     --bs-primary-rgb: 0, 133, 219;
     --bs-secondary-rgb: 112, 122, 130;
-    --bs-success-rgb: 75, 208, 139;
+    --bs-success-rgb: 26, 83, 25;
     --bs-info-rgb: 70, 202, 235;
     --bs-warning-rgb: 248, 192, 118;
     --bs-danger-rgb: 251, 151, 125;
@@ -17518,7 +17518,7 @@ fieldset:disabled .btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px; 
+    margin-right: 10px;
 }
 
 .sidebar-nav .sidebar-list .sidebar-list-item {
@@ -17610,7 +17610,7 @@ fieldset:disabled .btn {
 }
 .navbar-nav .dropdown-menu {
     position: absolute;
-    min-width: 200px;
+    min-width: 140px;
 }
 @media (max-width: 991.98px) {
     .app-header .navbar {

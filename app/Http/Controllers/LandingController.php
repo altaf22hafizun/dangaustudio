@@ -30,6 +30,10 @@ class LandingController extends Controller
     }
     public function index()
     {
-        return view('welcome');
+        return view('landing.index');
+    }
+    public function tentang()
+    {
+        return view('landing.tentang.index');
     }
 }
