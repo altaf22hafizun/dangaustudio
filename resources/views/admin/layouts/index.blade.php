@@ -41,8 +41,8 @@
               <!-- Dashboard -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuDashboard')" href="{{ route('dashboard') }}" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-layout-dashboard fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-layout-dashboard fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Dashboard</span>
                 </a>
@@ -51,8 +51,8 @@
               <!-- Berita -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuBerita')" href="/admin/berita" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="fa-solid fa-newspaper fs-5 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="fa-solid fa-newspaper fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Berita</span>
                 </a>
@@ -61,8 +61,8 @@
               <!-- Event -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuEvent')" href="/admin/events" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-calendar-event fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-calendar-event fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Event</span>
                 </a>
@@ -71,8 +71,8 @@
               <!-- Karya -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuKarya')" href="/admin/karya" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-palette fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-palette fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Karya</span>
                 </a>
@@ -81,8 +81,8 @@
               <!-- Income -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuIncome')" href="/admin/income" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="fas fa-chart-line fs-5 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="fas fa-chart-line fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Income</span>
                 </a>
@@ -91,8 +91,8 @@
               <!-- Seniman -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuSeniman')" href="/admin/seniman" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-brush fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-brush fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Seniman</span>
                 </a>
@@ -101,8 +101,8 @@
               <!-- Pameran -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuPameran')" href="/admin/pameran" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-receipt fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-receipt fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Pameran</span>
                 </a>
@@ -111,8 +111,8 @@
               <!-- User -->
               <li class="sidebar-item">
                 <a class="sidebar-link @yield('menuUser')" href="/admin/user" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-user fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-user fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">User</span>
                 </a>
@@ -124,8 +124,8 @@
                   @csrf
                 </form>
                 <a class="sidebar-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" aria-expanded="false">
-                  <span class="aside-icon p-2 bg-light-primary rounded-3">
-                    <i class="ti ti-logout fs-7 text-primary"></i>
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-logout fs-5 text-light"></i>
                   </span>
                   <span class="hide-menu ms-2 ps-1">Logout</span>
                 </a>

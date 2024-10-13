@@ -19,14 +19,14 @@
 
         <div class="table-responsive" data-simplebar>
             <table class="table table-borderless align-middle text-nowrap text-center">
-                <thead class="table-dark text-center">
+                <thead class="table-success text-center">
                 <tr>
-                    <th scope="col">Gambar Karya</th>
-                    <th scope="col">Nama Seniman</th>
-                    <th scope="col">Nama Karya</th>
-                    <th scope="col">Harga</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Aksi</th>
+                    <th scope="col" class=" text-light">Gambar Karya</th>
+                    <th scope="col" class=" text-light">Nama Seniman</th>
+                    <th scope="col" class=" text-light">Nama Karya</th>
+                    <th scope="col" class=" text-light">Harga</th>
+                    <th scope="col" class=" text-light">Stock</th>
+                    <th scope="col" class=" text-light">Aksi</th>
                 </tr>
                 </thead>
                 <tbody>

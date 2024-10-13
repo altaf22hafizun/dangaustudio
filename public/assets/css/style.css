@@ -10,6 +10,13 @@
     box-sizing: border-box;
     outline: none;
     border: none;
+    font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+    font-family: "Poppins", serif;
 }
 
 html {

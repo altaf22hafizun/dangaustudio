@@ -19,14 +19,14 @@
 
         <div class="table-responsive" data-simplebar>
             <table class="table table-borderless align-middle text-nowrap text-center">
-                <thead class="table-dark text-center">
+                <thead class="table-success text-center">
                 <tr>
-                    <th scope="col">Foto Seniman</th>
-                    <th scope="col">Nama Seniman</th>
-                    <th scope="col">Bio Seniman</th>
-                    <th scope="col">Telepon</th>
-                    <th scope="col">Instagram</th>
-                    <th scope="col">Aksi</th>
+                    <th scope="col" class=" text-light">Foto Seniman</th>
+                    <th scope="col" class=" text-light">Nama Seniman</th>
+                    <th scope="col" class=" text-light">Bio Seniman</th>
+                    <th scope="col" class=" text-light">Telepon</th>
+                    <th scope="col" class=" text-light">Instagram</th>
+                    <th scope="col" class=" text-light">Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,8 +40,14 @@
                             @endif
                         </td>
                         <td>{{ $seniman->name }}</td>
-                        <td>{{ Str::limit($seniman->bio, 15) }}</td>
-                        <td>{{ $seniman->telp }}</td>
+                        <td>{!! Str::limit(strip_tags($seniman->bio), 15) !!}</td>
+                        <td>
+                            @if ($seniman->telp)
+                            {{ $seniman->telp }}
+                            @else
+                            <span class="text-muted">Belum ada</span>
+                            @endif
+                        </td>
                         <td><a href="{{ $seniman->medsos }}" target="_blank">@ {{ $seniman->medsos_name }}</a></td>
                         <td>
                             <a href="{{ route('seniman.edit', $seniman->id, ) }}" class="btn btn-warning"><i class="ti ti-edit"></i></a>

@@ -19,15 +19,15 @@
 
         <div class="table-responsive" data-simplebar>
             <table class="table table-borderless align-middle text-nowrap text-center">
-                <thead class="table-dark text-center">
+                <thead class="table-success text-center">
                 <tr>
-                    <th scope="col">Gambar Pameran</th>
-                    <th scope="col">Nama Pameran</th>
-                    <th scope="col">Deskripsi Pameran</th>
-                    <th scope="col">Tanggal Mulai Pameran</th>
-                    <th scope="col">Tanggal Berakhir Pameran</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Aksi</th>
+                    <th scope="col" class=" text-light">Gambar Pameran</th>
+                    <th scope="col" class=" text-light">Nama Pameran</th>
+                    <th scope="col" class=" text-light">Deskripsi Pameran</th>
+                    <th scope="col" class=" text-light">Tanggal Mulai Pameran</th>
+                    <th scope="col" class=" text-light">Tanggal Berakhir Pameran</th>
+                    <th scope="col" class=" text-light">Status</th>
+                    <th scope="col" class=" text-light">Aksi</th>
                 </tr>
                 </thead>
                 <tbody>

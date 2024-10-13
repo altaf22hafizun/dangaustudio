@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -44,7 +45,7 @@
 
     <!-- Navbar Start -->
     <div class="container-fluid position-relative p-0">
-        <nav class="navbar navbar-expand-lg bg-success navbar-light px-4 px-lg-5 py-lg-0 ">
+        <nav class="navbar navbar-expand-lg bg-success navbar-light px-4 px-lg-5 py-lg-0 shadow-lg" >
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <img src="{{ asset('assets/img/logo_dangau.png') }}" alt="Logo" width="40" height="auto" class="rounded-circle me-2">
                 <h5 class="m-0 fw-bold text-white" style="letter-spacing: 2px;">Dangau Studio</h5>
@@ -133,9 +134,9 @@
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
                             @auth
                                 @if(Auth::user()->foto_profile)
-                                   <img src="{{ asset('storage/' . Auth::user()->foto_profile) }}" alt="Foto Profil" class="rounded-circle me-2" width="30" height="30">
+                                   <img src="{{ asset('storage/' . Auth::user()->foto_profile) }}" alt="Foto Profil" class="rounded-circle me-2" width="23" height="23">
                                 @else
-                                    <img src="{{ asset('assets/img/foto-profile.png') }}" alt="Foto Profil" class="rounded-circle me-2" width="30" height="30">
+                                    <img src="{{ asset('assets/img/foto-profile.png') }}" alt="Foto Profil" class="rounded-circle me-2" width="23" height="23">
                                 @endif
                                 <span class="text-white">{{ Auth::user()->name }}</span>
                             @else

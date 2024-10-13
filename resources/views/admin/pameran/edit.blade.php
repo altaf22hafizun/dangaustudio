@@ -120,7 +120,7 @@
                 </div>
             </div>
             <div class="modal-footer mt-3">
-                <a href="{{ route('karya.index') }}" class="btn btn-secondary rounded-3 me-3 ">Kembali</a>
+                <a href="{{ route('pameran.index') }}" class="btn btn-secondary rounded-3 me-3 ">Kembali</a>
                 <button type="submit" class="btn btn-success rounded-3">Submit</button>
             </div>
         </form>

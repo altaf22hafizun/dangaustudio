@@ -42,9 +42,9 @@ class SenimanController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'bio' => 'required|string',
-            'telp' => 'required|string|min:10',
-            'medsos' => 'nullable|url',
-            'foto_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'telp' => 'nullable|string|min:10',
+            'medsos' => 'required|url',
+            'foto_profile' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'name.required' => 'Nama wajib diisi.',
             'name.string' => 'Nama harus berupa teks.',
@@ -53,12 +53,14 @@ class SenimanController extends Controller
             'bio.required' => 'Bio wajib diisi.',
             'bio.string' => 'Bio harus berupa teks.',
 
-            'telp.required' => 'Nomor telepon wajib diisi.',
+            // 'telp.required' => 'Nomor telepon wajib diisi.',
             'telp.string' => 'Nomor telepon harus berupa string.',
             'telp.min' => 'Nomor telepon minimal 10 karakter.',
 
+            'medsos.required' => 'Medsos wajib diisi.',
             'medsos.url' => 'Format URL media sosial tidak valid.',
 
+            'foto_profile.required' => 'Foto profile wajib diisi.',
             'foto_profile.image' => 'File foto profil harus berupa gambar.',
             'foto_profile.mimes' => 'Gambar harus berformat jpg, jpeg, atau png.',
             'foto_profile.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
@@ -83,7 +85,7 @@ class SenimanController extends Controller
         //     'data' => $seniman,
         // ]);
 
-        return redirect()->route('admin.seniman.index')->with('success', 'Data seniman berhasil disimpan');
+        return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil disimpan');
     }
 
     /**
@@ -105,7 +107,6 @@ class SenimanController extends Controller
     public function edit(string $id)
     {
         $senimans = Seniman::findOrFail($id);
-
         return view('admin.seniman.edit', compact('senimans'));
     }
 
@@ -118,8 +119,8 @@ class SenimanController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'bio' => 'required|string',
-            'telp' => 'required|string|min:10',
-            'medsos' => 'nullable|url',
+            'telp' => 'nullable|string|min:10',
+            'medsos' => 'required|url',
             'foto_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'name.required' => 'Nama wajib diisi.',
@@ -129,10 +130,11 @@ class SenimanController extends Controller
             'bio.required' => 'Bio wajib diisi.',
             'bio.string' => 'Bio harus berupa teks.',
 
-            'telp.required' => 'Nomor telepon wajib diisi.',
+            // 'telp.required' => 'Nomor telepon wajib diisi.',
             'telp.string' => 'Nomor telepon harus berupa string.',
             'telp.min' => 'Nomor telepon minimal 10 karakter.',
 
+            'medsos.required' => 'Medsos wajib diisi.',
             'medsos.url' => 'Format URL media sosial tidak valid.',
 
             'foto_profile.image' => 'File foto profil harus berupa gambar.',
@@ -149,17 +151,16 @@ class SenimanController extends Controller
             if ($senimans->foto_profile) {
                 Storage::delete('public/' . $senimans->foto_profile);
             }
-
             // Upload foto baru
             $imagePath = $request->file('foto_profile')->store('seniman', 'public');
             $validatedData['foto_profile'] = $imagePath;
         } else {
             // Jika tidak ada gambar baru, jangan hapus gambar lama
-            unset($validateData['foto_profile']); // Menjaga nilai gambar lama tetap di database
+            unset($validatedData['foto_profile']); // Menjaga nilai gambar lama tetap di database
         }
 
         Seniman::where('id', $id)->update($validatedData);
-        return redirect()->route('admin.seniman.index')->with('Data seniman berhasil diperbarui');
+        return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil diperbarui');
         // return response()->json(['status' => 'success', 'message' => 'Data seniman berhasil diperbarui', 'data' => $validatedData]);
     }
 
@@ -171,7 +172,7 @@ class SenimanController extends Controller
         $senimans = Seniman::findOrFail($id);
         $senimans->delete();
 
-        return redirect()->route('admin.seniman.index')->with('Data seniman berhasil dihapus');
+        return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil dihapus');
         // return response()->json(['status' => 'success', 'message' => 'Data seniman berhasil dihapus']);
     }
 }

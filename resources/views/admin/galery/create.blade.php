@@ -11,7 +11,7 @@
             <div class="row">
                 <!-- Kolom pertama -->
                 <div class="col-lg-6">
-                    <!-- Judul Event -->
+                    <!-- Judul Karya -->
                     <div class="mb-3">
                         <label for="name">
                             Nama Karya
@@ -119,12 +119,12 @@
                     <!-- Label Berita -->
                     <div class="mb-3">
                         <label for="category">
-                            Kategori Event
+                            Kategori Karya
                             <span class="text-danger">*</span>
                         </label>
                         <input type="text" name="category" id="category"
                             class="form-control rounded-0 @error('category') is-invalid @enderror"
-                            placeholder="Masukkan kategori Event" value="{{ old('category') }}">
+                            placeholder="Masukkan kategori Karya" value="{{ old('category') }}">
                         @error('category')
                             <div class="invalid-feedback">
                                 {{ $message }}
