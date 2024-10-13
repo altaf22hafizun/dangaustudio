@@ -33,8 +33,8 @@
             </div>
             <div class="col-lg-4 text-center text-lg-end">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-tiktok text-dark"></i></a>
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-instagram text-dark"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="https://www.tiktok.com/@dangaustudio?_t=8q2yUdMQMpV&_r=1"><i class="fab fa-tiktok text-dark"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="https://www.instagram.com/dangaustudio/"><i class="fab fa-instagram text-dark"></i></a>
                     <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href="#"><i class="fab fa-youtube text-dark"></i></a>
                 </div>
             </div>
@@ -180,37 +180,42 @@
                         Dangau Studio
                     </p>
                     <div class="d-flex align-items-center">
-                        {{-- <i src="{{ asset('images/ic_lokasi.png') }}" width="25" height="25" alt="Image" class="mx-3 mb-4"> --}}
                         <i class="fa fa-location-dot text-white fs-5 mx-3 mb-4"></i>
                         <a href="https://maps.app.goo.gl/7K98dC9SeptBvCCP8" class="mb-4 text-light" style="font-size: 14px">
                             Jl. Simpang Akhirat, Kuranji, Kota Padang, Sumatera Barat
                         </a>
                     </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-phone-alt text-white fs-5 mx-3 mb-4"></i>
+                        <p class="mb-4 text-light" style="font-size: 14px">
+                            +62 812 345 6789
+                        </p>
+                    </div>
                 </div>
                 <div class="col-lg-4">
-                    <h3 class="footer-heading fs-5 fw-bold text-light mb-3 mt-2"><span>Tautan Cepat</span></h3>
+                    <p class="footer-header fs-6 fw-bold text-light mb-3 mt-3 mx-3">Tautan Cepat</p>
                     <ul class="list-unstyled py-3 ">
                         <li class="pb-2">
                             <a href="/" class="text-light">
-                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                <i class="fa fa-angle-right text-white fs-5 mx-3 mb-3"></i>
                                 Beranda
                             </a>
                         </li>
                         <li class="pb-2">
                             <a href="#tentangKami"  class="text-light">
-                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                <i class="fa fa-angle-right text-white fs-5 mx-3 mb-3"></i>
                                 Tentang Kami
                             </a>
                         </li>
                         <li class="pb-2">
                             <a href="/" class="text-light">
-                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                <i class="fa fa-angle-right text-white fs-5 mx-3 mb-3"></i>
                                 Program
                             </a>
                         </li>
                         <li class="pb-2">
                             <a href="/" class="text-light">
-                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                <i class="fa fa-angle-right text-white fs-5 mx-3 mb-3"></i>
                                 Layanan Kami
                             </a>
                         </li>
@@ -218,24 +223,24 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <h3 class="footer-heading fs-5 fw-bold text-light mb-3 mt-2"><span>Ikuti Informasi Kami</span></h3>
+                    <p class="footer-heading fs-6 fw-bold text-light my-3 mx-3">Ikuti Informasi Kami</p>
                     <ul class="list-unstyled py-3">
                         <li class="pb-3">
-                            <a href="https://www.facebook.com/profile.php?id=100072834312197"  class="text-light">
-                                <img src="{{ asset('images/ic_facebook.png') }}" width="25" height="25" alt="Image" class="img-fluid mx-3">
-                                Rumah Singgah Pasien M.Ihpan
+                            <a href="https://www.tiktok.com/@dangaustudio?_t=8q2yUdMQMpV&_r=1"  class="text-light">
+                                <i class="fab fa-tiktok text-white fs-5 mx-3 mb-2"></i>
+                                Dangau Studio
                             </a>
                         </li>
                         <li class="pb-3">
-                            <a href="https://www.instagram.com/pkmpm.rspmihpan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="text-light">
-                                <img src="{{ asset('images/ic_ig.png') }}" width="25" height="25" alt="Image" class="img-fluid mx-3">
-                                pkmpm.rspmihpan
+                            <a href="https://www.instagram.com/dangaustudio/" class="text-light">
+                                <i class="fab fa-instagram text-white fs-5 mx-3 mb-2"></i>
+                                dangaustudio
                             </a>
                         </li>
                         <li class="pb-3">
-                            <a href="https://wa.me/+6285271833858" class="text-light">
-                                <img src="{{ asset('images/ic_wa.png') }}" width="25" height="25" alt="Image" class="img-fluid mx-3">
-                                0852-7183-3858
+                            <a href="https://www.instagram.com/dangaustudio/" class="text-light">
+                                <i class="fab fa-youtube text-white fs-5 mx-3 mb-2"></i>
+                                Dangau Studio Channel
                             </a>
                         </li>
                     </ul>

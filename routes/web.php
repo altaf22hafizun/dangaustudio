@@ -28,6 +28,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('/admin/pameran', PameranController::class);
         //Karya
         Route::resource('/admin/karya', KaryaController::class);
+        //Income
+        Route::resource('/admin/karya', KaryaController::class);
+        //User
+        Route::get('/admin/user', [LandingController::class, 'adminUser']);
     });
 
     // User Routes

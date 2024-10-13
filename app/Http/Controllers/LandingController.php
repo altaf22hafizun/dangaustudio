@@ -13,7 +13,6 @@ class LandingController extends Controller
 {
     public function admin()
     {
-
         $senimanCount = Seniman::count();
         $karyaSeniCount = Karya::where('stock', 'Tersedia')->count();
         $eventCount = Pameran::where('status_publikasi', 'Published')->count();
@@ -28,6 +27,16 @@ class LandingController extends Controller
 
         return view('admin.index', compact('upcomingEvents', 'senimanCount', 'karyaSeniCount', 'userCount', 'eventCount'));
     }
+
+    public function adminUser()
+    {
+        $users = User::where('role', 'user')
+        ->whereNotNull('email_verified_at')
+        ->latest()
+        ->paginate(5);
+        return view('admin.user.index',compact('users'));
+    }
+
     public function index()
     {
         return view('landing.index');
