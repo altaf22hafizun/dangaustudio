@@ -9,7 +9,6 @@
             <div class="row justify-content-center">
                 <div class="col-lg-12 text-center">
                     <h1 class="display-3 text-white mb-3 fw-bold">Selamat Datang di <br> Dangau Studio</h1>
-                    {{-- <h1 class="display-3 text-white mb-3 fw-bold font-monospace">Selamat Datang di <br> Dangau Studio</h1> --}}
                     <p class="text-white mb-4">Temukan keindahan dan makna dalam karya seni terbaik dari para seniman berbakat di sini.</p>
                 </div>
             </div>

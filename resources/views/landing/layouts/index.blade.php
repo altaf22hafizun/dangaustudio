@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -170,6 +169,94 @@
     <!-- Navbar End -->
 
     @yield('content')
+
+    <!--MyFooterStart-->
+    <div class="footer pt-5 border border-top bg-success border-white px-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <p class="mb-4 fs-6 fw-bold text-light" style="letter-spacing: 2px;">
+                        <img src="{{ asset('assets/img/logo_dangau.png') }}" width="60" alt="Image" class="img-fluid me-2">
+                        Dangau Studio
+                    </p>
+                    <div class="d-flex align-items-center">
+                        {{-- <i src="{{ asset('images/ic_lokasi.png') }}" width="25" height="25" alt="Image" class="mx-3 mb-4"> --}}
+                        <i class="fa fa-location-dot text-white fs-5 mx-3 mb-4"></i>
+                        <a href="https://maps.app.goo.gl/7K98dC9SeptBvCCP8" class="mb-4 text-light" style="font-size: 14px">
+                            Jl. Simpang Akhirat, Kuranji, Kota Padang, Sumatera Barat
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h3 class="footer-heading fs-5 fw-bold text-light mb-3 mt-2"><span>Tautan Cepat</span></h3>
+                    <ul class="list-unstyled py-3 ">
+                        <li class="pb-2">
+                            <a href="/" class="text-light">
+                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                Beranda
+                            </a>
+                        </li>
+                        <li class="pb-2">
+                            <a href="#tentangKami"  class="text-light">
+                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                Tentang Kami
+                            </a>
+                        </li>
+                        <li class="pb-2">
+                            <a href="/" class="text-light">
+                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                Program
+                            </a>
+                        </li>
+                        <li class="pb-2">
+                            <a href="/" class="text-light">
+                                <img src="{{ asset('images/ic_step.png') }}" width="10" height="10" alt="Image" class="img-fluid mx-3">
+                                Layanan Kami
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4">
+                    <h3 class="footer-heading fs-5 fw-bold text-light mb-3 mt-2"><span>Ikuti Informasi Kami</span></h3>
+                    <ul class="list-unstyled py-3">
+                        <li class="pb-3">
+                            <a href="https://www.facebook.com/profile.php?id=100072834312197"  class="text-light">
+                                <img src="{{ asset('images/ic_facebook.png') }}" width="25" height="25" alt="Image" class="img-fluid mx-3">
+                                Rumah Singgah Pasien M.Ihpan
+                            </a>
+                        </li>
+                        <li class="pb-3">
+                            <a href="https://www.instagram.com/pkmpm.rspmihpan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="text-light">
+                                <img src="{{ asset('images/ic_ig.png') }}" width="25" height="25" alt="Image" class="img-fluid mx-3">
+                                pkmpm.rspmihpan
+                            </a>
+                        </li>
+                        <li class="pb-3">
+                            <a href="https://wa.me/+6285271833858" class="text-light">
+                                <img src="{{ asset('images/ic_wa.png') }}" width="25" height="25" alt="Image" class="img-fluid mx-3">
+                                0852-7183-3858
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row py-3">
+                <div class="col-12">
+                    <div class="copyright text-light">
+                        <p>
+                            Copyright &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 
     <!-- Include SweetAlert (Optional) -->
     @include('sweetalert::alert')

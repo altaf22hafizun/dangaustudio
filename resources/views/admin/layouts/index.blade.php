@@ -7,7 +7,7 @@
   <title>@yield('title', 'Admin | Dangau Studio')</title>
   <link rel="shortcut icon" href="{{ asset('assets/img/logo_dangau.png') }}">
   <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"> --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
@@ -24,7 +24,7 @@
           <div class="d-flex mb-4 align-items-center">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="40" height="auto" class="d-inline-block me-3 rounded-circle">
             <a class="navbar-brand d-flex d-lg-inline-block mx-auto mx-lg-0 text-center text-lg-start" href="/admin">
-              <h5 class="me-3 fw-bold fs-4 fs-md-2 fs-lg-1" style="color: #1a5319; letter-spacing: 2px;">
+              <h5 class="me-3 fw-bold fs-4 fs-md-2 fs-lg-1 text-success mt-2" style="letter-spacing: 2px;">
                 Dangau Studio
               </h5>
             </a>
@@ -39,7 +39,7 @@
           <nav class="sidebar-nav">
             <ul id="sidebarnav" class="mb-4 pb-2">
               <!-- Dashboard -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuDashboard')" href="{{ route('dashboard') }}" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="ti ti-layout-dashboard fs-5 text-light"></i>
@@ -49,7 +49,7 @@
               </li>
 
               <!-- Berita -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuBerita')" href="/admin/berita" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="fa-solid fa-newspaper fs-5 text-light"></i>
@@ -59,7 +59,7 @@
               </li>
 
               <!-- Event -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuEvent')" href="/admin/events" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="ti ti-calendar-event fs-5 text-light"></i>
@@ -69,7 +69,7 @@
               </li>
 
               <!-- Karya -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuKarya')" href="/admin/karya" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="ti ti-palette fs-5 text-light"></i>
@@ -79,7 +79,7 @@
               </li>
 
               <!-- Income -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuIncome')" href="/admin/income" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="fas fa-chart-line fs-5 text-light"></i>
@@ -89,7 +89,7 @@
               </li>
 
               <!-- Seniman -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuSeniman')" href="/admin/seniman" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="ti ti-brush fs-5 text-light"></i>
@@ -99,7 +99,7 @@
               </li>
 
               <!-- Pameran -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuPameran')" href="/admin/pameran" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="ti ti-receipt fs-5 text-light"></i>
@@ -109,7 +109,7 @@
               </li>
 
               <!-- User -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuUser')" href="/admin/user" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="ti ti-user fs-5 text-light"></i>
@@ -119,7 +119,7 @@
               </li>
 
               <!-- Logout -->
-              <li class="sidebar-item">
+              <li class="sidebar-item mb-4">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                   @csrf
                 </form>
