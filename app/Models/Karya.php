@@ -20,7 +20,8 @@ class Karya extends Model
         'size',
         'tahun',
         'image',
-        'stock'
+        'stock',
+        'slug'
     ];
 
     public function setNameAttribute($value)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Karya;
 use App\Models\Pameran;
 use App\Models\Seniman;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -84,6 +85,10 @@ class KaryaController extends Controller
             $imagePath = $request->file('image')->store('karya', 'public');
             $validateData['image'] = $imagePath;
         }
+
+        // Membuat slug dari judul karya
+        $slug = Str::slug($request->name);
+        $validateData['slug'] = $slug;
 
         // Simpan data karya
         $karyas = Karya::create($validateData);
@@ -173,6 +178,9 @@ class KaryaController extends Controller
             // Jika tidak ada gambar baru, jangan hapus gambar lama
             unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
         }
+
+        $slug = Str::slug($request->name);
+        $validateData['slug'] = $slug;
 
         Karya::where('id', $id)->update($validateData);
         return redirect()->route('karya.index')->with('Data karya berhasil diperbarui');

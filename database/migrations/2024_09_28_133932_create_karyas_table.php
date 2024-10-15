@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('tahun');
             $table->string('image');
             $table->enum('stock', ['Tersedia', 'Terjual'])->default('Tersedia');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

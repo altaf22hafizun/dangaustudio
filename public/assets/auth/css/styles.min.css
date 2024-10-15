@@ -248,7 +248,7 @@ h5,
 h6 {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-weight: 800;
     line-height: 1.2;
     color: var(--bs-heading-color);
 }
@@ -3670,10 +3670,10 @@ fieldset:disabled .btn {
     --bs-btn-border-color: #1a5319;
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #1a4310;
-    --bs-btn-hover-border-color: #3ca66f;
+    --bs-btn-hover-border-color: #1a4310;
     --bs-btn-focus-shadow-rgb: 102, 215, 156;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #3ca66f;
+    --bs-btn-active-bg: #1a4310;
     --bs-btn-active-border-color: #389c68;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     --bs-btn-disabled-color: #fff;
@@ -3729,11 +3729,11 @@ fieldset:disabled .btn {
     --bs-btn-disabled-border-color: #fb977d;
 }
 .btn-light {
-    --bs-btn-color: #000;
+    --bs-btn-color: #1a5319;
     --bs-btn-bg: #e7ecf0;
     --bs-btn-border-color: #e7ecf0;
-    --bs-btn-hover-color: #000;
-    --bs-btn-hover-bg: #c4c9cc;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: #1a5319;
     --bs-btn-hover-border-color: #b9bdc0;
     --bs-btn-focus-shadow-rgb: 196, 201, 204;
     --bs-btn-active-color: #fff;
@@ -10718,27 +10718,30 @@ fieldset:disabled .btn {
     font-size: 1.25rem !important;
 }
 .fs-7 {
-    font-size: calc(1.275rem + 0.3vw) !important;
+    font-size: 1.75rem !important;
 }
 .fs-8 {
-    font-size: calc(1.3125rem + 0.75vw) !important;
+    font-size: calc(1.275rem + 0.3vw) !important;
 }
 .fs-9 {
-    font-size: calc(1.35rem + 1.2vw) !important;
+    font-size: calc(1.3125rem + 0.75vw) !important;
 }
 .fs-10 {
-    font-size: calc(1.375rem + 1.5vw) !important;
+    font-size: calc(1.35rem + 1.2vw) !important;
 }
 .fs-11 {
-    font-size: calc(1.40625rem + 1.875vw) !important;
+    font-size: calc(1.375rem + 1.5vw) !important;
 }
 .fs-12 {
-    font-size: calc(1.425rem + 2.1vw) !important;
+    font-size: calc(1.40625rem + 1.875vw) !important;
 }
 .fs-13 {
-    font-size: calc(1.46875rem + 2.625vw) !important;
+    font-size: calc(1.425rem + 2.1vw) !important;
 }
 .fs-14 {
+    font-size: calc(1.46875rem + 2.625vw) !important;
+}
+.fs-15 {
     font-size: calc(1.25625rem + 0.075vw) !important;
 }
 .fst-italic {
@@ -10763,7 +10766,7 @@ fieldset:disabled .btn {
     font-weight: 600 !important;
 }
 .fw-bold {
-    font-weight: 600 !important;
+    font-weight: 800 !important;
 }
 .fw-bolder {
     font-weight: 700 !important;
@@ -17396,7 +17399,7 @@ fieldset:disabled .btn {
 }
 @media (min-width: 1200px) {
     .fs-7 {
-        font-size: 1.5rem !important;
+        font-size: 1.75rem !important;
     }
     .fs-8 {
         font-size: 1.875rem !important;

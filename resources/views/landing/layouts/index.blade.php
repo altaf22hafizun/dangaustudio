@@ -9,6 +9,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/auth/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/lib/owlcarousel/assets/owl.carousel.min.css ') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -47,7 +48,7 @@
         <nav class="navbar navbar-expand-lg bg-success navbar-light px-4 px-lg-5 py-lg-0 shadow-lg" >
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <img src="{{ asset('assets/img/logo_dangau.png') }}" alt="Logo" width="40" height="auto" class="rounded-circle me-2">
-                <h5 class="m-0 fw-bold text-white" style="letter-spacing: 2px;">Dangau Studio</h5>
+                <p class="m-0 text-white fs-5" style="letter-spacing: 2px;">Dangau Studio</p>
             </a>
             <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
@@ -117,10 +118,10 @@
                 <div class="navbar-nav ms-auto">
                     <a class="nav-item nav-link text-white @yield('menuBeranda')" href="/">Beranda</a>
                     <a class="nav-item nav-link text-white @yield('menuTentang')" href="/tentang">Tentang</a>
-                    <a class="nav-item nav-link text-white @yield('menuEvent')" href="/event">Event</a>
-                    <a class="nav-item nav-link text-white @yield('menuPameran')" href="/artikel">Pameran</a>
                     <a class="nav-item nav-link text-white @yield('menuSeniman')" href="/seniman">Seniman</a>
                     <a class="nav-item nav-link text-white @yield('menuGalery')" href="/galery">Galery</a>
+                    <a class="nav-item nav-link text-white @yield('menuPameran')" href="/artikel">Pameran</a>
+                    <a class="nav-item nav-link text-white @yield('menuEvent')" href="/event">Event</a>
                     <a class="nav-item nav-link text-white @yield('menuBerita')" href="/berita">Berita</a>
                 </div>
 
@@ -171,7 +172,7 @@
     @yield('content')
 
     <!--MyFooterStart-->
-    <div class="footer pt-5 border border-top bg-success border-white px-3">
+    <div class="footer pt-5 border border-top bg-success border-white px-3" style="margin-top: 8rem">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
@@ -249,7 +250,7 @@
 
             <div class="row py-3">
                 <div class="col-12">
-                    <div class="copyright text-light">
+                    <div class="copyright text-light border-top border-white pt-4 text-center">
                         <p>
                             Copyright &copy;
                             <script>
@@ -270,6 +271,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {{-- <script src="{{ asset('assets/auth/js/app.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 

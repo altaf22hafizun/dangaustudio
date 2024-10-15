@@ -31,15 +31,26 @@ class LandingController extends Controller
     public function adminUser()
     {
         $users = User::where('role', 'user')
-        ->whereNotNull('email_verified_at')
-        ->latest()
-        ->paginate(5);
-        return view('admin.user.index',compact('users'));
+            ->whereNotNull('email_verified_at')
+            ->latest()
+            ->paginate(5);
+        return view('admin.user.index', compact('users'));
     }
 
     public function index()
     {
-        return view('landing.index');
+        //Karya
+        $karyas = Karya::where('stock', 'Tersedia')->get();
+        $senimanIds = $karyas->pluck('seniman_id')->unique();
+        $senimans = Seniman::whereIn('id', $senimanIds)->get();
+
+        //seniman
+        $senimans = Seniman::inRandomOrder()->take(5)->get();
+        // $senimans = Seniman::latest()->get();
+        foreach ($senimans as $seniman) {
+            $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
+        }
+        return view('landing.index', compact('senimans', 'karyas'));
     }
     public function tentang()
     {

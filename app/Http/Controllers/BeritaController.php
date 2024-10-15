@@ -76,7 +76,7 @@ class BeritaController extends Controller
             $validateData['image'] = $imagePath;
         }
 
-        // Membuat slug dari judul event
+        // Membuat slug dari judul berita
         $slug = Str::slug($request->name);
         $validateData['slug'] = $slug;
 
@@ -174,7 +174,7 @@ class BeritaController extends Controller
         }
 
 
-        // Membuat slug dari judul event
+        // Membuat slug dari judul berita
         $slug = Str::slug($request->name);
         $validateData['slug'] = $slug;
 
