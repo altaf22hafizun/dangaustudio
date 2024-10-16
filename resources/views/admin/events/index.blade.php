@@ -41,7 +41,7 @@
                             @endif
                         </td>
                         <td>{{ Str::limit($event->nama_event, 15) }}</td>
-                        <td>{{ $event->location }}</td>
+                        <td>{!! Str::limit(strip_tags($event->location), 15) !!}</td>
                         <td>{{ $event->start_date }}</td>
                         <td>{{ $event->end_date }}</td>
                         <td>

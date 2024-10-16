@@ -15,7 +15,7 @@ class Karya extends Model
         'name',
         'deskripsi',
         'price',
-        'category',
+        // 'category',
         'medium',
         'size',
         'tahun',

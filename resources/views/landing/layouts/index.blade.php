@@ -120,7 +120,7 @@
                     <a class="nav-item nav-link text-white @yield('menuTentang')" href="/tentang">Tentang</a>
                     <a class="nav-item nav-link text-white @yield('menuSeniman')" href="/seniman">Seniman</a>
                     <a class="nav-item nav-link text-white @yield('menuGalery')" href="/galery">Galery</a>
-                    <a class="nav-item nav-link text-white @yield('menuPameran')" href="/artikel">Pameran</a>
+                    <a class="nav-item nav-link text-white @yield('menuPameran')" href="/pameran">Pameran</a>
                     <a class="nav-item nav-link text-white @yield('menuEvent')" href="/event">Event</a>
                     <a class="nav-item nav-link text-white @yield('menuBerita')" href="/berita">Berita</a>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
 use App\Models\Event;
 use App\Models\Karya;
 use App\Models\Pameran;
@@ -44,13 +45,19 @@ class LandingController extends Controller
         $senimanIds = $karyas->pluck('seniman_id')->unique();
         $senimans = Seniman::whereIn('id', $senimanIds)->get();
 
+        //pameran
+        $pamerans = Pameran::where('status_publikasi', 'Published')->get();
+        //event
+        $events = Event::where('status_publikasi', 'Published')->get();
+        //berita
+        $beritas = Berita::where('status_publikasi', 'Published')->get();
+
         //seniman
         $senimans = Seniman::inRandomOrder()->take(5)->get();
-        // $senimans = Seniman::latest()->get();
         foreach ($senimans as $seniman) {
             $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
         }
-        return view('landing.index', compact('senimans', 'karyas'));
+        return view('landing.index', compact('senimans', 'karyas', 'pamerans', 'events', 'beritas'));
     }
     public function tentang()
     {

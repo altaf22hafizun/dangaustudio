@@ -70,6 +70,38 @@
     </div>
 </section>
 
+{{-- SenimanDangau --}}
+<section>
+    <div class="container-fluid seniman">
+        <div class="container">
+            <h2 class="text-dark mb-5 fw-bold text-center">SENIMAN <span class="text-success fs-7 mb-3 fw-bold">KAMI</span></h2>
+            <div class="owl-carousel card-carousel position-relative">
+                @forelse ($senimans as $seniman)
+                <div class="card-item">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="{{ asset('storage/' . $seniman->foto_profile) }}" alt="{{ $seniman->name }}" style="height: 300px; object-fit: contain;">
+                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
+                            <a class="btn btn-square mx-1 rounded-5" href="{{ $seniman->medsos }}">
+                                <i class="fab fa-instagram"></i> {{ $seniman->medsos_name }}
+                            </a>
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="mb-3">{{ $seniman->name }}</h5>
+                            <small class="mb-3">{!! Str::limit(strip_tags($seniman->bio), 100) !!}</small>
+                            <a href="/seniman/{{ $seniman->slug }}" class="btn btn-success">
+                                Lihat Detail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <span class="text-muted">Belum ada</span>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</section>
+
 {{-- KaryaDangau --}}
 <section>
     <div class="container-fluid karya">
@@ -79,20 +111,20 @@
                 @forelse ($karyas as $karya)
                 <div class="card-item">
                     <div class="card">
-                        <img class="card-img-top" src="{{ asset('storage/' . $karya->image) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: cover;">
+                        <img class="card-img-top" src="{{ asset('storage/' . $karya->image) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: contain;">
                         <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
                             <button class="btn btn-light rounded-5 btn-square mx-1">
                                {{ $karya->stock }}
                             </button>
                         </div>
                         <div class="card-body ">
-                            <h4 class="">{{ $karya->name }}</h4>
-                            <p class="card-text">Karya : {{ $karya->seniman->name }}</p>
-                        </div>
-                        <div class="card-footer bg-light d-flex align-items-center justify-content-between">
-                            {{-- <h5 class="card-text">Rp {{ number_format($karya->price, 0, ',', '.') }}</h5> --}}
+                            <h4 class="card-title">{{ $karya->name }}</h4>
                             <h5 class="card-text" style="color: #C62E2E;">Rp {{ number_format($karya->price, 0, ',', '.') }}</h5>
-                            <a href="/galery/{{ $karya->slug }}" class="btn btn-success">Lihat Detail</a>
+                            <p class="card-text fw-bold">Karya : {{ $karya->seniman->name }}</p>
+                            <p class="card-text">{{ Str::limit(strip_tags($karya->deskripsi), 100) }}</p>
+                            <a href="/galery/{{ $karya->slug }}" class="btn btn-success">
+                                Lihat Detail
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -104,46 +136,102 @@
     </div>
 </section>
 
-{{-- SenimanDangau --}}
+{{-- PameranDangau --}}
 <section>
-    <div class="container-fluid seniman">
+    <div class="container-fluid pameran">
         <div class="container">
-            <h2 class="text-dark mb-5 fw-bold text-center">SENIMAN <span class="text-success fs-7 mb-3 fw-bold">KAMI</span></h2>
+            <h2 class="text-dark mb-5 fw-bold text-center">PAMERAN <span class="text-success fs-7 mb-3 fw-bold">SENI</span></h2>
             <div class="owl-carousel card-carousel position-relative">
-                @forelse ($senimans as $seniman)
+                @forelse ($pamerans as $pameran)
                 <div class="card-item">
-                    <div class="card ">
-                        <img class="card-img-top" src="{{ asset('storage/' . $seniman->foto_profile) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: cover;">
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                            <a class="btn btn-square mx-1" href="{{ $seniman->medsos }}">
-                                <i class="fab fa-instagram"></i> {{ $seniman->medsos_name }}
+                    <div class="card">
+                        <img class="card-img-top" src="{{ asset('storage/' . $pameran->image) }}" alt="{{ $pameran->name }}" style="height: 300px; object-fit: contain;">
+                        {{-- <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
+                            <button class="btn btn-light rounded-5 btn-square mx-1">
+                               {{ $pameran->stock }}
+                            </button>
+                        </div> --}}
+                        <div class="card-body ">
+                            <h4 class="card-title">{{ $pameran->name_pameran }}</h4>
+                            {{-- <h5 class="card-text" style="color: #C62E2E;">Rp {{ number_format($pameran->price, 0, ',', '.') }}</h5> --}}
+                            {{-- <p class="card-text fw-bold">pameran : {{ $pameran->seniman->name }}</p> --}}
+                            <p class="card-text">{{ Str::limit(strip_tags($pameran->description), 100) }}</p>
+                            <a href="/pameran/{{ $pameran->slug }}" class="btn btn-success">
+                                Lihat Detail
                             </a>
                         </div>
-                        <div class="card-body text-center">
-                            <h5 class="mb-3">{{ $seniman->name }}</h5>
-                            <small>{!! Str::limit(strip_tags($seniman->bio), 150) !!}</small>
-                        </div>
                     </div>
-                    {{-- <div class="overflow-hidden">
-                        <img class="img-fluid" src="{{ asset('storage/' . $seniman->foto_profile) }}" alt="">
-                    </div>
-                    <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                        <a class="btn btn-square mx-1" href="{{ $seniman->medsos }}">
-                            <i class="fab fa-instagram"></i> {{ $seniman->medsos_name }}
-                        </a>
-                    </div>
-                    <div class="text-center p-4">
-                        <h5 class="mb-3">{{ $seniman->name }}</h5>
-                        <small>{!! Str::limit(strip_tags($seniman->bio), 150) !!}</small>
-                    </div> --}}
                 </div>
                 @empty
-                <span class="text-muted">Belum ada</span>
+                <div class="text-center w-100">
+                    <p class="text-muted fs-5 fw-bolder">Belum ada</p>
+                </div>
                 @endforelse
             </div>
         </div>
     </div>
 </section>
 
+{{-- EventDangau --}}
+<section>
+    <div class="container-fluid event">
+        <div class="container">
+            <h2 class="text-dark mb-5 fw-bold text-center">EVENT <span class="text-success fs-7 mb-3 fw-bold">SENI</span></h2>
+            <div class="owl-carousel card-carousel position-relative">
+                @forelse ($events as $event)
+                <div class="card-item">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" style="height: 300px; object-fit: contain;">
+                        {{-- <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
+                            <button class="btn btn-light rounded-5 btn-square mx-1">
+                               {{ $event->stock }}
+                            </button>
+                        </div> --}}
+                        <div class="card-body ">
+                            <h4 class="card-title">{{ $event->nama_event }}</h4>
+                            {{-- <h5 class="card-text" style="color: #C62E2E;">Rp {{ number_format($event->price, 0, ',', '.') }}</h5> --}}
+                            <p class="card-text fw-bold">Insert : {{ $event->category }}</p>
+                            <p class="card-text">{{ Str::limit(strip_tags($event->description), 100) }}</p>
+                            <a href="/event/{{ $event->slug }}" class="btn btn-success">
+                                Lihat Detail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <p class="text-muted fs-5 fw-bolder">Belum ada</p>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- BeritaDangau --}}
+<section>
+    <div class="container-fluid berita">
+        <div class="container">
+            <h2 class="text-dark mb-5 fw-bold text-center">BERITA <span class="text-success fs-7 mb-3 fw-bold">MENARIK</span></h2>
+            <div class="owl-carousel card-carousel position-relative">
+                @forelse ($beritas as $berita)
+                <div class="card-item">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ asset('storage/' . $berita->image) }}" alt="{{ $berita->name }}" style="height: 300px; object-fit: cover;">
+                        <div class="card-body ">
+                            <h4 class="card-title">{{ Str::limit(($berita->name), 50) }}</h4>
+                            <p class="card-text text-end">{{ \Carbon\Carbon::parse($berita->tgl)->format('d F Y') }}</p>
+                            <p class="card-text">{{ Str::limit(strip_tags($berita->description), 100) }}</p>
+                            <a href="/berita/{{ $berita->slug }}" class="btn btn-success">
+                                Lihat Detail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <p class="text-muted fs-5 fw-bolder">Belum ada</p>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</section>
 
 @endsection

@@ -12,6 +12,12 @@ class BeritaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function landing()
+    {
+        return view('landing.berita.index');
+    }
+
     public function index()
     {
         $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);

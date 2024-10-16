@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Seniman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class SenimanController extends Controller
@@ -11,9 +12,21 @@ class SenimanController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function landing()
+    {
+        $senimans = Seniman::orderBy('name', 'asc')->paginate(12);
+        foreach ($senimans as $seniman) {
+            // Memproses URL media sosial yang disimpan di properti 'medsos'
+            // Fungsi rtrim() menghapus karakter '/' yang mungkin ada di akhir URL
+            // Fungsi basename() mengambil bagian terakhir dari URL (misalnya, nama pengguna dari URL media sosial)
+            $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
+        }
+        return view('landing.seniman.index', compact('senimans'));
+    }
+
     public function index()
     {
-        $senimans = Seniman::orderBy('created_at', 'desc')->paginate(3);
+        $senimans = Seniman::orderBy('name', 'asc')->paginate(5);
         $title = 'Hapus Seniman!';
         $text = "Apakah kamu ingin menghapus seniman tersebut?";
         confirmDelete($title, $text);
@@ -71,6 +84,10 @@ class SenimanController extends Controller
             $validatedData['foto_profile'] = $imagePath;
         }
 
+        // Membuat slug dari name
+        $slug = Str::slug($request->name);
+        $validatedData['slug'] = $slug;
+
         // Membuat objek seniman baru
         $seniman = new Seniman($validatedData);
 
@@ -91,14 +108,13 @@ class SenimanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        // $paket = Seniman::find($id);
-        // if (!$paket) {
-        //     return response()->json(['status' => 'false', 'message' => 'Data gagal ditemukan']);
-        // } else {
-        //     return response()->json(['status' => 'true', 'message' => 'Data berhasil ditemukan', 'data' => $paket]);
-        // }
+        $seniman = Seniman::where('slug', $slug)->firstOrFail();
+        $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
+        $karyas = $seniman->karyas()->paginate(9);
+
+        return view('landing.seniman.detail', compact('seniman', 'karyas'));
     }
 
     /**
@@ -158,6 +174,10 @@ class SenimanController extends Controller
             // Jika tidak ada gambar baru, jangan hapus gambar lama
             unset($validatedData['foto_profile']); // Menjaga nilai gambar lama tetap di database
         }
+
+        // Membuat slug dari name
+        $slug = Str::slug($request->name);
+        $validatedData['slug'] = $slug;
 
         Seniman::where('id', $id)->update($validatedData);
         return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil diperbarui');

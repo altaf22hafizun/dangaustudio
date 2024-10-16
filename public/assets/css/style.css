@@ -192,7 +192,10 @@ body {
 
 .tentang-kami,
 .seniman,
-.karya {
+.karya,
+.berita,
+.pameran,
+.event {
     /* padding-bottom: 2rem; */
     padding-top: 6rem;
 }
@@ -218,7 +221,7 @@ body {
 .card-item .btn {
     background: #ffffff;
     color: var(--primary);
-    border-radius: 20px;
+    /* border-radius: 20px; */
     border: 1px solid var(--primary);
     padding: 10px 20px;
     text-transform: uppercase;
@@ -306,8 +309,6 @@ body {
         width: 200px;
     }
 }
-
-
 
 .card-carousel .owl-item.center .card-item h5,
 .card-carousel .owl-item.center .card-item small {

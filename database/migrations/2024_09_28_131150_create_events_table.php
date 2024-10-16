@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->string('image');
             $table->enum('status_publikasi', ['Published', 'Hidden'])->default('Published');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

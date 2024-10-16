@@ -12,9 +12,15 @@ class PameranController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function landing()
+    {
+        return view('landing.pameran.index');
+    }
+
     public function index()
     {
-        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(5);
         $title = 'Hapus Pameran!';
         $text = "Apakah kamu ingin menghapus pameran tersebut?";
         confirmDelete($title, $text);
@@ -71,7 +77,7 @@ class PameranController extends Controller
             $validateData['image'] = $imagePath;
         }
 
-        // Membuat slug dari judul event
+        // Membuat slug dari judul pameran
         $slug = Str::slug($request->name_pameran);
         $validateData['slug'] = $slug;
 

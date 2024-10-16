@@ -118,8 +118,8 @@
                         @enderror
                     </div>
 
-                    <!-- Label Berita -->
-                    <div class="mb-3">
+                    <!-- Label Karya -->
+                    {{-- <div class="mb-3">
                         <label for="category">
                             Kategori Karya
                             <span class="text-danger">*</span>
@@ -132,7 +132,7 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <!-- Stok Karya -->
                     <div class="mb-3">
@@ -153,12 +153,6 @@
                             </div>
                         @enderror
                     </div>
-                </div>
-            </div>
-
-            <!-- Isi Karya dan Gambar Karya -->
-            <div class="row">
-                <div class="col-lg-12">
                     <!-- Pilih Pameran -->
                     <div class="mb-3">
                         <label for="pameran_id">
@@ -179,6 +173,12 @@
                             </div>
                         @enderror
                     </div>
+                </div>
+            </div>
+
+            <!-- Isi Karya dan Gambar Karya -->
+            <div class="row">
+                <div class="col-lg-12">
                     <!-- Isi Karya -->
                     <div class="mb-3">
                         <label for="deskripsi">

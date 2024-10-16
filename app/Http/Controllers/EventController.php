@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -12,18 +13,14 @@ class EventController extends Controller
      * Display a listing of the resource.
      */
 
-    // public function user()
-    // {
-    //     $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
-    //     $title = 'Hapus Event!';
-    //     $text = "Apakah kamu ingin menghapus event tersebut?";
-    //     confirmDelete($title, $text);
-    //     return view('admin.events.index', compact('events'));
-    // }
+    public function landing()
+    {
+        return view('landing.event.index');
+    }
 
     public function index()
     {
-        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->orderBy('start_date', 'DESC')->latest()->paginate(5);
         $title = 'Hapus Event!';
         $text = "Apakah kamu ingin menghapus event tersebut?";
         confirmDelete($title, $text);
@@ -88,9 +85,13 @@ class EventController extends Controller
             $validateData['image'] = $imagePath;
         }
 
+        // Membuat slug dari judul event
+        $slug = Str::slug($request->nama_event);
+        $validateData['slug'] = $slug;
+
         $event = new Event($validateData);
         $event->setNameEventAttribute($validateData['nama_event']);
-        $event->setLocationEventAttribute($validateData['location']);
+        // $event->setLocationEventAttribute($validateData['location']);
         $event->setCategoryEventAttribute($validateData['category']);
         $event->save();
 
@@ -176,6 +177,10 @@ class EventController extends Controller
             // Jika tidak ada gambar baru, jangan hapus gambar lama
             unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
         }
+
+        // Membuat slug dari judul event
+        $slug = Str::slug($request->nama_event);
+        $validateData['slug'] = $slug;
 
         Event::where('id', $id)->update($validateData);
         return redirect()->route('events.index')->with('success', 'Data event berhasil diperbarui');

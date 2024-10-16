@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('bio');
-            $table->string('telp');
-            $table->string('medsos')->nullable();
+            $table->string('telp')->nullable();
+            $table->string('medsos');
             $table->string('foto_profile')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

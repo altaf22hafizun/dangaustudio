@@ -57,10 +57,13 @@
     <!-- Card Grafik -->
     <div class="col-md-8 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-body p-4">
-                <div class="d-flex mb-4 justify-content-between align-items-center">
+            <div class="card-header p-4">
+                <div class="d-flex align-items-center">
                     <h5 class="mb-0 fw-bold">Grafik</h5>
                 </div>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <small>Belum ada grafik</small>
             </div>
         </div>
     </div>
@@ -78,10 +81,12 @@
     <!-- Card Karya Seni -->
     <div class="col-md-4 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-body p-4">
-                <div class="d-flex mb-4 justify-content-between align-items-center">
+            <div class="card-header p-4">
+                <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold">Event Mendatang</h5>
                 </div>
+            </div>
+            <div class="card-body p-4">
                 <ul class="list-group ">
                     @forelse ($upcomingEvents as $event)
                         <li class="list-group-item d-flex justify-content-between bg-success align-items-center rounded-3">
@@ -92,7 +97,7 @@
                                 <div class="vr me-3" style="border-left: 5px solid #fff; height: auto;"></div>
                                 <div class="mt-3">
                                     <h6 class="fw-bold text-light">{{ $event->nama_event }}</h6>
-                                    <p class="text-light fst-italic">{{ $event->location }}</p>
+                                    <p class="text-light fst-italic">{!! Str::limit(strip_tags($event->location), 15) !!}</p>
                                 </div>
                             </div>
                         </li>

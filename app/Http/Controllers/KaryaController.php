@@ -14,9 +14,15 @@ class KaryaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function landing()
+    {
+        return view('landing.galery.index');
+    }
+
     public function index()
     {
-        $karyas = Karya::whereIn('stock', ['Tersedia', 'Terjual'])->latest()->paginate(3);
+        $karyas = Karya::whereIn('stock', ['Tersedia', 'Terjual'])->latest()->paginate(5);
         // Ambil seniman dan pameran yang relevan
         $senimanIds = $karyas->pluck('seniman_id')->unique();
         $pameranIds = $karyas->pluck('pameran_id')->unique();
@@ -51,11 +57,12 @@ class KaryaController extends Controller
             'name' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'required|string|max:255',
+            // 'category' => 'required|string|max:255',
             'medium' => 'required|string',
             'size' => 'required|string',
             'tahun' => 'required|integer|digits:4',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png',
+            // 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'stock' => 'required|string|in:Terjual,Tersedia',
         ], [
             'seniman_id.required' => 'Seniman wajib diisi.',
@@ -69,12 +76,12 @@ class KaryaController extends Controller
             'tahun.required' => 'Tahun karya wajib diisi.',
             'price.required' => 'Harga karya wajib diisi.',
             'price.numeric' => 'Harga harus berupa angka.',
-            'category.required' => 'Kategori karya wajib diisi.',
-            'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
+            // 'category.required' => 'Kategori karya wajib diisi.',
+            // 'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
             'image.required' => 'Gambar karya wajib diunggah.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format jpg, jpeg, atau png.',
-            'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
+            // 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
             'stock.required' => 'Stock karya wajib diisi.',
             'stock.string' => 'Stock karya harus berupa teks.',
             'stock.in' => 'Stock karya harus salah satu dari: Tersedia atau Terjual.',
@@ -139,11 +146,12 @@ class KaryaController extends Controller
             'name' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'category' => 'required|string|max:255',
+            // 'category' => 'required|string|max:255',
             'medium' => 'required|string',
             'size' => 'required|string',
             'tahun' => 'required|integer|digits:4',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png',
+            // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'stock' => 'required|string|in:Terjual,Tersedia',
 
         ], [
@@ -158,11 +166,11 @@ class KaryaController extends Controller
             'tahun.required' => 'Tahun karya wajib diisi.',
             'price.required' => 'Harga karya wajib diisi.',
             'price.numeric' => 'Harga harus berupa angka.',
-            'category.required' => 'Kategori karya wajib diisi.',
-            'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
+            // 'category.required' => 'Kategori karya wajib diisi.',
+            // 'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format jpg, jpeg, atau png.',
-            'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
+            // 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
             'stock.required' => 'Stock karya wajib diisi.',
             'stock.string' => 'Stock karya harus berupa teks.',
             'stock.in' => 'Stock karya harus salah satu dari: Tersedia atau Terjual.',
