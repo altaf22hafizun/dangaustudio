@@ -33,7 +33,7 @@ class VerifyEmailController extends Controller
         if ($role == 'admin'){
             return redirect()->route('dashboard', ['verified' => 1]);
         } else{
-            return redirect()->route('user');
+            return redirect()->route('home');
         }
     }
 }

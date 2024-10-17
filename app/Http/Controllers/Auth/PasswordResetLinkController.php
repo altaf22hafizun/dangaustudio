@@ -38,7 +38,7 @@ class PasswordResetLinkController extends Controller
         $email = $request->input('email');
 
         return $status == Password::RESET_LINK_SENT
-            ? back()->with('status', __('Tautan reset kata sandi telah dikirim ke email :email.', ['email' => $email]))
+            ? back()->with('success', __('Tautan reset kata sandi telah dikirim ke email :email.', ['email' => $email]))
             : back()->withInput($request->only('email'))
             ->withErrors(['email' => __('Gagal mengirim tautan reset kata sandi. Silakan periksa alamat email Anda.')]);
     }

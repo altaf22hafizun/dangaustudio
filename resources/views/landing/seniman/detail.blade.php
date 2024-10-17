@@ -49,8 +49,8 @@
                     <div class="col-12 col-sm-6 col-md-4 mb-4">
                         <div class="card-item">
                             <div class="card h-100">
-                                <img class="card-img-top" src="{{ asset('storage/' . $karya->image) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: contain;">
-                                <div class="card-body text-center">
+                                <img class="card-img-top" src="{{ asset('storage/' . $karya->image) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: cover;">
+                                <div class="card-body">
                                     <h5 class="mb-3">{{ $karya->name }}</h5>
                                     <small class="mb-3">{!! Str::limit(strip_tags($karya->deskripsi), 100) !!}</small>
                                     <a href="admin/karya/{{ $karya->slug }}" class="btn btn-success">

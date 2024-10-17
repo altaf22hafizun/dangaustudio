@@ -20,7 +20,7 @@ class EventController extends Controller
 
     public function index()
     {
-        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->orderBy('start_date', 'DESC')->latest()->paginate(5);
+        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->orderBy('start_date', 'ASC')->latest()->paginate(5);
         $title = 'Hapus Event!';
         $text = "Apakah kamu ingin menghapus event tersebut?";
         confirmDelete($title, $text);

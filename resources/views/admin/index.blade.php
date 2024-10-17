@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="vr me-3" style="border-left: 5px solid #fff; height: auto;"></div>
                                 <div class="mt-3">
-                                    <h6 class="fw-bold text-light">{{ $event->nama_event }}</h6>
+                                    <h7 class="fw-bold text-light">{{ $event->nama_event }}</h7>
                                     <p class="text-light fst-italic">{!! Str::limit(strip_tags($event->location), 15) !!}</p>
                                 </div>
                             </div>

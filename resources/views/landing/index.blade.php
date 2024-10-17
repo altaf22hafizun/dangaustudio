@@ -164,7 +164,7 @@
                 </div>
                 @empty
                 <div class="text-center w-100">
-                    <p class="text-muted fs-5 fw-bolder">Belum ada</p>
+                    <p class="text-muted fs-5 fw-bolder">Belum ada pameran</p>
                 </div>
                 @endforelse
             </div>

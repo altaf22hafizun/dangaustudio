@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="col" class=" text-light">Nama Pengguna</th>
                     <th scope="col" class=" text-light">Email Pengguna</th>
-                    <th scope="col" class=" text-light">Alamat Pengguna</th>
+                    <th scope="col" class=" text-light">Email Verifikasi</th>
                     <th scope="col" class=" text-light">Telepon</th>
                     {{-- <th scope="col" class=" text-light">Aksi</th> --}}
                 </tr>
@@ -34,8 +34,8 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            @if ($user->alamat)
-                            {!! Str::limit(strip_tags($user->alamat), 15) !!}
+                            @if ($user->email_verified_at)
+                            <span class="btn btn-success">Verifikasi</span>
                             @else
                             <span class="text-muted">Belum ada</span>
                             @endif

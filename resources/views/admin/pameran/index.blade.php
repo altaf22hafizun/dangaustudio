@@ -58,7 +58,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center pt-4">Belum ada data event</td>
+                        <td colspan="6" class="text-center pt-4">Belum ada data pameran</td>
                     </tr>
                     @endforelse
                 </tbody>

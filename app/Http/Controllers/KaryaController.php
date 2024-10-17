@@ -198,7 +198,7 @@ class KaryaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Karya $karya, string $id)
+    public function destroy(string $id)
     {
         $karyas = Karya::findOrFail($id);
         if ($karyas->image) {
@@ -206,7 +206,7 @@ class KaryaController extends Controller
         }
         $karyas->delete();
 
-        return redirect()->route('karya.index')->with('Data karya berhasil dihapus');
+        return redirect()->route('karya.index')->with('success', 'Data karya berhasil dihapus');
         // return response()->json(['status' => 'success', 'message' => 'Data karya berhasil dihapus']);
     }
 }
