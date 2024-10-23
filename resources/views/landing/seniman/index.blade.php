@@ -59,7 +59,7 @@
                 {{-- <a class="btn btn-link fw-semibold text-decoration-none text-end" href="#">Lihat Semua</a> --}}
             </div>
         </div>
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
             @forelse ($senimans as $seniman)
                 <div class="col mb-4">
                     <div class="card-item h-100">

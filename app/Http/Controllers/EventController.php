@@ -15,7 +15,8 @@ class EventController extends Controller
 
     public function landing()
     {
-        return view('landing.event.index');
+        $events = Event::orderBy('start_date', 'ASC')->latest()->paginate(12);
+        return view('landing.event.index', compact('events'));
     }
 
     public function index()
