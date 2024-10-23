@@ -30,12 +30,7 @@ class SenimanController extends Controller
         $title = 'Hapus Seniman!';
         $text = "Apakah kamu ingin menghapus seniman tersebut?";
         confirmDelete($title, $text);
-        foreach ($senimans as $seniman) {
-            // Memproses URL media sosial yang disimpan di properti 'medsos'
-            // Fungsi rtrim() menghapus karakter '/' yang mungkin ada di akhir URL
-            // Fungsi basename() mengambil bagian terakhir dari URL (misalnya, nama pengguna dari URL media sosial)
-            $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
-        }
+        $senimans->medsos_name = basename(rtrim($senimans->medsos, '/'));
         return view('admin.seniman.index', compact('senimans'));
     }
 
@@ -110,11 +105,11 @@ class SenimanController extends Controller
      */
     public function show(string $slug)
     {
-        $seniman = Seniman::where('slug', $slug)->firstOrFail();
-        $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
-        $karyas = $seniman->karyas()->paginate(9);
+        $senimans = Seniman::where('slug', $slug)->firstOrFail();
+        $senimans->medsos_name = basename(rtrim($senimans->medsos, '/'));
+        $karyas = $senimans->karyas()->paginate(9);
 
-        return view('landing.seniman.detail', compact('seniman', 'karyas'));
+        return view('landing.seniman.detail', compact('senimans', 'karyas'));
     }
 
     /**

@@ -58,125 +58,6 @@ body {
     color: var(--light) !important;
 }
 
-@media (max-width: 991.98px) {
-    .sticky-top.navbar-light {
-        position: relative;
-        background: #ffffff;
-    }
-
-    .navbar-light .navbar-collapse {
-        margin-top: 15px;
-        border-top: 1px solid #dddddd;
-    }
-
-    .navbar-light .navbar-nav .nav-link,
-    .sticky-top.navbar-light .navbar-nav .nav-link {
-        padding: 10px 0;
-        margin-left: 0;
-        color: var(--light) !important;
-    }
-
-    .navbar-light .navbar-brand img {
-        max-height: 45px;
-    }
-    h1 {
-        font-size: 3.5rem;
-    }
-
-    h2 {
-        font-size: 2.75rem;
-    }
-
-    h3 {
-        font-size: 2rem;
-    }
-
-    h4 {
-        font-size: 1.5rem;
-    }
-
-    h5 {
-        font-size: 1.25rem;
-    }
-
-    h6 {
-        font-size: 1rem;
-    }
-
-    p,
-    span,
-    li {
-        font-size: 1rem;
-    }
-}
-
-@media (min-width: 992px) {
-    .navbar-light {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 0;
-        border-bottom: 1px solid rgba(256, 256, 256, 0.1);
-        z-index: 999;
-    }
-
-    .sticky-top.navbar-light {
-        position: fixed;
-        background: #ffffff;
-    }
-
-    .navbar-light .navbar-nav .nav-link::before {
-        position: absolute;
-        content: "";
-        width: 0;
-        height: 2px;
-        bottom: -1px;
-        left: 50%;
-        background: var(--light);
-        transition: 0.5s;
-    }
-
-    .navbar-light .navbar-nav .nav-link:hover::before,
-    .navbar-light .navbar-nav .nav-link.active::before {
-        width: calc(100% - 2px);
-        left: 1px;
-    }
-
-    .navbar-light .navbar-nav .nav-link.nav-contact::before {
-        display: none;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.75rem;
-    }
-
-    h3 {
-        font-size: 1.5rem;
-    }
-
-    h4 {
-        font-size: 1.25rem;
-    }
-
-    h5 {
-        font-size: 1.1rem;
-    }
-
-    h6 {
-        font-size: 1rem;
-    }
-
-    p,
-    span,
-    li {
-        font-size: 0.9rem;
-    }
-}
-
 /*** Hero Header ***/
 .hero-header {
     background: linear-gradient(rgba(20, 20, 31, 0.7), rgba(20, 20, 31, 0.7)),
@@ -303,7 +184,129 @@ body {
     }
 }
 
+@media (max-width: 991.98px) {
+    .sticky-top.navbar-light {
+        position: relative;
+        background: #ffffff;
+    }
+
+    .navbar-light .navbar-collapse {
+        margin-top: 15px;
+        border-top: 1px solid #dddddd;
+    }
+
+    .navbar-light .navbar-nav .nav-link,
+    .sticky-top.navbar-light .navbar-nav .nav-link {
+        padding: 10px 0;
+        margin-left: 0;
+        color: var(--light) !important;
+    }
+
+    .navbar-light .navbar-brand img {
+        max-height: 45px;
+    }
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    h2 {
+        font-size: 2.75rem;
+    }
+
+    h3 {
+        font-size: 2rem;
+    }
+
+    h4 {
+        font-size: 1.5rem;
+    }
+
+    h5 {
+        font-size: 1.25rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+    }
+
+    p,
+    span,
+    li {
+        font-size: 1rem;
+    }
+
+    .card-carousel::before,
+    .card-carousel::after {
+        width: 100px;
+    }
+}
+
 @media (min-width: 992px) {
+    .navbar-light {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-bottom: 1px solid rgba(256, 256, 256, 0.1);
+        z-index: 999;
+    }
+
+    .sticky-top.navbar-light {
+        position: fixed;
+        background: #ffffff;
+    }
+
+    .navbar-light .navbar-nav .nav-link::before {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 2px;
+        bottom: -1px;
+        left: 50%;
+        background: var(--light);
+        transition: 0.5s;
+    }
+
+    .navbar-light .navbar-nav .nav-link:hover::before,
+    .navbar-light .navbar-nav .nav-link.active::before {
+        width: calc(100% - 2px);
+        left: 1px;
+    }
+
+    .navbar-light .navbar-nav .nav-link.nav-contact::before {
+        display: none;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    h4 {
+        font-size: 1.25rem;
+    }
+
+    h5 {
+        font-size: 1.1rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+    }
+
+    p,
+    span,
+    li {
+        font-size: 0.9rem;
+    }
+
     .card-carousel::before,
     .card-carousel::after {
         width: 200px;

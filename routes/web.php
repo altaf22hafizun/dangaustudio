@@ -24,7 +24,7 @@ Route::get('/event', [EventController::class, 'landing'])->name('event');
 // Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
 //Karya
 Route::get('/galery', [KaryaController::class, 'landing'])->name('galery');
-// Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
+Route::get('/galery/{slug}', [KaryaController::class, 'show'])->name('galery.show');
 //Pameran
 Route::get('/pameran', [PameranController::class, 'landing'])->name('pameran');
 // Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');

@@ -17,7 +17,8 @@ class KaryaController extends Controller
 
     public function landing()
     {
-        return view('landing.galery.index');
+        $karyas = Karya::orderBy('name', 'ASC')->paginate(12);
+        return view('landing.galery.index', compact('karyas'));
     }
 
     public function index()
@@ -114,10 +115,13 @@ class KaryaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Karya $karya)
+    public function show(string $slug)
     {
-        //
+        $karya = Karya::where('slug', $slug)->firstOrFail();
+        $seniman = $karya->seniman;
+        return view('landing.galery.detail', compact('karya', 'seniman'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
