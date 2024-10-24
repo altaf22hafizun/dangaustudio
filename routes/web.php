@@ -21,7 +21,7 @@ Route::get('/berita', [BeritaController::class, 'landing'])->name('berita');
 // Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
 //Event
 Route::get('/event', [EventController::class, 'landing'])->name('event');
-// Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
+Route::get('/event/{slug}', [EventController::class, 'show'])->name('seniman.show');
 //Karya
 Route::get('/galery', [KaryaController::class, 'landing'])->name('galery');
 Route::get('/galery/{slug}', [KaryaController::class, 'show'])->name('galery.show');
@@ -54,9 +54,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // User Routes
     Route::group(['middleware' => ['RoleMiddleware:user']], function () {
-        Route::get('/user', function () {
-            return view('user');
-        })->name('user');
+        // Route::get('/user', function () {
+        //     return view('user');
+        // })->name('user');
         // Route::get('/events', [EventController::class, 'user'])->name('user.event');
         // Settings
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -20,7 +20,7 @@
                         <img class="card-img-top" src="{{ Storage::url($event->image) }}" alt="{{ $event->name }}" style="object-fit: contain; height: 200px;" />
                         <div class="card-body d-flex flex-column flex-grow-1">
                             <h5 class="card-title">{!! Str::limit(strip_tags($event->nama_event), 30) !!}</h5>
-                            <p class="card-text fw-bold">Insert : {{ $event->category }}</p>
+                            <p class="card-text fw-bold">{{ $event->category }}</p>
                             <small class="card-text mb-3">{!! Str::limit(strip_tags($event->description), 50) !!}</small>
                             <a href="event/{{ $event->slug }}" class="btn btn-success mt-auto">
                                 Lihat Detail

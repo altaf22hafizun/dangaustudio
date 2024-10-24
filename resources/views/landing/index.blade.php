@@ -56,11 +56,12 @@
 <section>
     <div class="container-fluid tentang-kami">
         <div class="container">
+            <h2 class="text-dark mb-5 fw-bold ">TENTANG <span class="text-success fs-7 mb-3 fw-bold">KAMI</span></h2>
             <div class="row flex-wrap-reverse">
                 <div class="col-lg-5 col-md-12 text-lg-start">
-                    <h2 class="text-dark mb-3 fw-bold ">TENTANG <span class="text-success fs-7 mb-3 fw-bold">KAMI</span></h2>
-                    <p class="text-dark mb-4 pt-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur, nobis ipsum voluptatem perferendis veritatis unde quaerat saepe dolore ex deleniti reprehenderit repudiandae minus necessitatibus facere! Placeat, iure aspernatur! Modi esse odio placeat cumque recusandae debitis aliquid, dolorum porro ipsum quidem architecto, nam, quo quibusdam cum excepturi! Placeat, dignissimos? Blanditiis, eius?</p>
-                    <p class="text-dark mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum ipsam ea libero dolorum, fuga in aperiam. Distinctio reiciendis ipsa iusto, omnis nemo totam adipisci, fugiat dolore nisi impedit, eum laboriosam fuga non tempore mollitia. Omnis repellat nulla placeat voluptatum voluptas nihil eveniet minus ratione sit reprehenderit asperiores, odit vero vel!</p>
+                    <p class="text-dark mb-4">Dangau Studio adalah sebuah komunitas seni yang berlokasi di Jl. Simpang Akhirat, Kec. Kuranji, Kota Padang, Sumatra Barat. Sejak didirikan pada tahun 2015, komunitas ini telah berkomitmen untuk menjadi wadah bagi para seniman dan pecinta seni dalam menjelajahi berbagai ekspresi kreatif. Dengan berbagai program yang dirancang untuk meningkatkan apresiasi seni, Dangau Studio telah berhasil menarik perhatian masyarakat luas, khususnya kalangan muda yang kini semakin antusias untuk terlibat dalam kegiatan seni.</p>
+                    <p class="text-dark mb-4">Salah satu program unggulan yang diinisiasi oleh Dangau Studio adalah Art Therapy, yang bertujuan untuk meningkatkan minat kawula muda terhadap seni sekaligus memberikan mereka ruang untuk mengekspresikan diri. Melalui pendekatan ini, peserta tidak hanya belajar tentang teknik seni, tetapi juga menemukan cara untuk menyalurkan emosi dan pengalaman hidup mereka. Dengan dukungan berbagai kegiatan dan workshop, Dangau Studio terus berupaya untuk memperkaya budaya seni di daerahnya dan menciptakan lingkungan yang inspiratif bagi generasi mendatang.
+                    </p>
                 </div>
                 <div class="col-lg-6 col-md-12 text-center mb-5 ms-auto">
                     <img src="{{ asset('assets/img/tentang.png') }}" class="img-fluid rounded-4" alt="background">

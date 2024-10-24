@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -13,9 +14,10 @@ class EventController extends Controller
      * Display a listing of the resource.
      */
 
-    public function landing()
+    public function landing(Event $event)
     {
         $events = Event::orderBy('start_date', 'ASC')->latest()->paginate(12);
+
         return view('landing.event.index', compact('events'));
     }
 
@@ -102,9 +104,12 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show($slug)
     {
-        //
+        $events = Event::where('slug', $slug)->firstOrFail();
+        $events->start_date = Carbon::parse($events->start_date)->format('d F Y');
+        $events->end_date = Carbon::parse($events->end_date)->format('d F Y');
+        return view('landing.event.detail', compact('events'));
     }
 
     /**

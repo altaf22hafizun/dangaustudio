@@ -15,7 +15,8 @@ class PameranController extends Controller
 
     public function landing()
     {
-        return view('landing.pameran.index');
+        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(12);
+        return view('landing.pameran.index', compact('pamerans'));
     }
 
     public function index()
