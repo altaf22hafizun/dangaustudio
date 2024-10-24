@@ -42,7 +42,7 @@
             </div>
             <div class="row mb-5">
                 <div class="col-lg d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0 text-success">Seniman Dangau Studio</h3>
+                    <h2 class="mb-0 text-success">Karya Seniman</h2>
                 </div>
             </div>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">

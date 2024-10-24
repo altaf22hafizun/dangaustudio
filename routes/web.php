@@ -9,6 +9,7 @@ use App\Http\Controllers\PameranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SenimanController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Models\Pameran;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
@@ -27,7 +28,7 @@ Route::get('/galery', [KaryaController::class, 'landing'])->name('galery');
 Route::get('/galery/{slug}', [KaryaController::class, 'show'])->name('galery.show');
 //Pameran
 Route::get('/pameran', [PameranController::class, 'landing'])->name('pameran');
-// Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
+Route::get('/pameran/{slug}', [PameranController::class, 'show'])->name('pemeran.show');
 
 // Middleware
 Route::group(['middleware' => ['auth', 'verified']], function () {

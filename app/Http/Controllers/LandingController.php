@@ -53,7 +53,7 @@ class LandingController extends Controller
         $beritas = Berita::where('status_publikasi', 'Published')->get();
 
         //seniman
-        $senimans = Seniman::inRandomOrder()->take(5)->get();
+        $senimans = Seniman::inRandomOrder()->take(6)->get();
         foreach ($senimans as $seniman) {
             $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
         }

@@ -5,35 +5,38 @@
 
 {{-- PameranDangau --}}
 <section>
-    <div class="container-fluid seniman">
-        <div class="container">
-            <h2 class="text-dark mb-5 fw-bold text-center">PAMERAN <span class="text-success fs-7 mb-3 fw-bold">ONLINE</span></h2>
-        </div>
-        @forelse ($pamerans as $pameran)
-        <div class="card-item">
-            <div class="card">
-                <img class="card-img-top" src="{{ asset('storage/' . $pameran->image) }}" alt="{{ $pameran->name }}" style="height: 300px; object-fit: contain;">
-                {{-- <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                    <button class="btn btn-light rounded-5 btn-square mx-1">
-                       {{ $pameran->stock }}
-                    </button>
-                </div> --}}
-                <div class="card-body ">
-                    <h4 class="card-title">{{ $pameran->name_pameran }}</h4>
-                    {{-- <h5 class="card-text" style="color: #C62E2E;">Rp {{ number_format($pameran->price, 0, ',', '.') }}</h5> --}}
-                    {{-- <p class="card-text fw-bold">pameran : {{ $pameran->seniman->name }}</p> --}}
-                    <p class="card-text">{{ Str::limit(strip_tags($pameran->description), 100) }}</p>
-                    <a href="/pameran/{{ $pameran->slug }}" class="btn btn-success">
-                        Lihat Detail
-                    </a>
-                </div>
+    <div class="container mt-5 px-4">
+        <div class="row mb-5">
+            <div class="col-lg d-flex justify-content-between align-items-center">
+                <h2 class="mb-0 text-success">Pameran Online</h2>
+                {{-- <a class="btn btn-link fw-semibold text-decoration-none text-end" href="#">Lihat Semua</a> --}}
             </div>
         </div>
-        @empty
-        <div class="text-center w-100">
-            <p class="text-muted fs-5 fw-bolder">Belum ada pameran</p>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
+            @forelse ($pamerans as $karya)
+                <div class="col mb-4">
+                <div class="card-item h-100">
+                    <div class="card h-100 d-flex flex-column">
+                        <img class="card-img-top" src="{{ Storage::url($karya->image) }}" alt="{{ $karya->name }}" style="object-fit: contain; height: 200px;" />
+                        <div class="card-body d-flex flex-column flex-grow-1">
+                            <h5 class="card-title">{{ $karya->name_pameran }}</h5>
+                            <small class="card-text mb-3">{!! Str::limit(strip_tags($karya->description), 50) !!}</small>
+                            <a href="pameran/{{ $karya->slug }}" class="btn btn-success mt-auto">
+                                Lihat Detail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            @empty
+                <div class="col-12 text-center">
+                    <p class="text-muted">Tidak ada pameran yang tersedia saat ini.</p>
+                </div>
+            @endforelse
         </div>
-        @endforelse
+        <div class="d-flex justify-content-center mt-4">
+            {{ $pamerans->links() }}
+        </div>
     </div>
 </section>
 

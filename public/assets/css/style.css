@@ -148,7 +148,7 @@ body {
 }
 
 .card-carousel::before {
-    position: absolute;
+    position: relative;
     content: "";
     top: 0;
     left: 0;

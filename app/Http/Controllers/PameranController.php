@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pameran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class PameranController extends Controller
 
     public function landing()
     {
-        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(12);
+        $pamerans = Pameran::whereIn('status_publikasi', ['Published'])->latest()->paginate(12);
         return view('landing.pameran.index', compact('pamerans'));
     }
 
@@ -101,7 +102,9 @@ class PameranController extends Controller
     public function show(Pameran $pameran, string $slug)
     {
         $pamerans = Pameran::where('slug', $slug)->firstOrFail();
-        return view('user.pameran.show', compact('pamerans'));
+        $pamerans->start_date = Carbon::parse($pamerans->start_date)->format('d F Y');
+        $pamerans->end_date = Carbon::parse($pamerans->end_date)->format('d F Y');
+        return view('landing.pameran.detail', compact('pamerans'));
     }
 
     /**

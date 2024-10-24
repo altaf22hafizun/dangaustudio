@@ -30,10 +30,10 @@
         $(".card-carousel").owlCarousel({
             autoplay: true,
             smartSpeed: 1000,
-            center: true,
+            // center: true,
             margin: 24,
             dots: true,
-            loop: true,
+            // loop: true,
             nav: false,
             responsive: {
                 0: {
