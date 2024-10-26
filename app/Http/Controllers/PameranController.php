@@ -104,7 +104,8 @@ class PameranController extends Controller
         $pamerans = Pameran::where('slug', $slug)->firstOrFail();
         $pamerans->start_date = Carbon::parse($pamerans->start_date)->format('d F Y');
         $pamerans->end_date = Carbon::parse($pamerans->end_date)->format('d F Y');
-        return view('landing.pameran.detail', compact('pamerans'));
+        $karyas = $pamerans->karyas()->with('seniman')->paginate(12);
+        return view('landing.pameran.detail', compact('pamerans', 'karyas'));
     }
 
     /**

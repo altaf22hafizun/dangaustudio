@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,12 +16,13 @@ class BeritaController extends Controller
 
     public function landing()
     {
-        return view('landing.berita.index');
+        $beritas = Berita::where('status_publikasi', 'Published')->latest()->paginate(5);
+        return view('landing.berita.index', compact('beritas'));
     }
 
     public function index()
     {
-        $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(3);
+        $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(5);
         $title = 'Hapus Berita!';
         $text = "Apakah kamu ingin menghapus berita tersebut?";
         confirmDelete($title, $text);
@@ -101,15 +103,14 @@ class BeritaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Berita $berita, $slug)
+    public function show($slug)
     {
         $beritas = Berita::where('slug', $slug)->firstOrFail();
-        return view('user.berita.show', compact('beritas'));
-        // if (!$beritas) {
-        //     return response()->json(['status' => 'false', 'message' => 'Data gagal ditemukan']);
-        // } else {
-        //     return response()->json(['status' => 'true', 'message' => 'Data berhasil ditemukan', 'data' => $beritas]);
-        // }
+        $beritas->start_date = Carbon::parse($beritas->start_date)->format('d F Y');
+        $randomBerita = Berita::where('status_publikasi', 'Published')->inRandomOrder()->take(3)->get();
+        $rekomenBerita = Berita::where('status_publikasi', 'Published')->inRandomOrder()->take(6)->get();
+
+        return view('landing.berita.detail', compact('beritas', 'randomBerita', 'rekomenBerita'));
     }
 
     /**

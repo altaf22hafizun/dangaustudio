@@ -31,7 +31,7 @@
                             </tr>
                             <tr>
                                 <td>Bio</td>
-                                <td>{!! strip_tags($senimans->bio) !!}</td>
+                                <td>{!! $senimans->bio !!}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -51,12 +51,17 @@
                         <div class="card-item h-100">
                             <div class="card h-100 d-flex flex-column">
                                 <img class="card-img-top" src="{{ Storage::url($karya->image) }}" alt="{{ $karya->name }}" style="object-fit: cover; height: 300px;" />
+                                <div class="overlay d-flex align-items-center justify-content-center">
+                                    <div class="text-center text-white">
+                                        <p><strong>Tahun:</strong> {{ $karya->tahun }}</p>
+                                        <p><strong>Ukuran:</strong> {{ $karya->size }}</p>
+                                        <p><strong>Media:</strong> {{ $karya->medium }}</p>
+                                        <a href="/galery/{{ $karya->slug }}" class="btn btn-light mt-2">Lihat Detail</a>
+                                    </div>
+                                </div>
                                 <div class="card-body d-flex flex-column flex-grow-1">
                                     <h5 class="card-title">{!! Str::limit(strip_tags($karya->name), 30) !!}</h5>
-                                    <small class="card-text mb-3">{!! Str::limit(strip_tags($karya->deskripsi), 50) !!}</small>
-                                    <a href="/galery/{{ $karya->slug }}" class="btn btn-success mt-auto">
-                                        Lihat Detail
-                                    </a>
+                                    <small class="card-text">{!! Str::limit(strip_tags($karya->deskripsi), 50) !!}</small>
                                 </div>
                             </div>
                         </div>

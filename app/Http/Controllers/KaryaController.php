@@ -53,8 +53,8 @@ class KaryaController extends Controller
     {
         // Validasi data input
         $validateData = $request->validate([
-            'seniman_id' => 'required|exists:senimen,id', // Pastikan seniman ada di database
-            'pameran_id' => 'nullable|exists:pamerans,id', // Pameran bersifat opsional
+            'seniman_id' => 'required|exists:senimen,id',
+            'pameran_id' => 'nullable|exists:pamerans,id',
             'name' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',

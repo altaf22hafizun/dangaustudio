@@ -19,7 +19,7 @@ Route::get('/seniman', [SenimanController::class, 'landing'])->name('seniman');
 Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
 //Berita
 Route::get('/berita', [BeritaController::class, 'landing'])->name('berita');
-// Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
+Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 //Event
 Route::get('/event', [EventController::class, 'landing'])->name('event');
 Route::get('/event/{slug}', [EventController::class, 'show'])->name('seniman.show');
