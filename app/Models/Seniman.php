@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Seniman extends Model
 {
@@ -28,5 +29,15 @@ class Seniman extends Model
     public function karyas()
     {
         return $this->hasMany(Karya::class);
+    }
+
+    public function scopePencarian(Builder $query): void
+    {
+        if (request('search')) {
+            $search = request('search');
+
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('medsos', 'like', '%' . $search . '%');
+        }
     }
 }

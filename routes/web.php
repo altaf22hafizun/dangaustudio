@@ -15,19 +15,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::get('/tentang', [LandingController::class, 'tentang'])->name('tentang');
 //Seniman
-Route::get('/seniman', [SenimanController::class, 'landing'])->name('seniman');
+Route::get('/seniman', [SenimanController::class, 'landing'])->name('seniman.landing');
 Route::get('/seniman/{slug}', [SenimanController::class, 'show'])->name('seniman.show');
 //Berita
-Route::get('/berita', [BeritaController::class, 'landing'])->name('berita');
+Route::get('/berita', [BeritaController::class, 'landing'])->name('berita.landing');
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 //Event
-Route::get('/event', [EventController::class, 'landing'])->name('event');
+Route::get('/event', [EventController::class, 'landing'])->name('event.landing');
 Route::get('/event/{slug}', [EventController::class, 'show'])->name('seniman.show');
 //Karya
-Route::get('/galery', [KaryaController::class, 'landing'])->name('galery');
+Route::get('/galery', [KaryaController::class, 'landing'])->name('galery.landing');
 Route::get('/galery/{slug}', [KaryaController::class, 'show'])->name('galery.show');
 //Pameran
-Route::get('/pameran', [PameranController::class, 'landing'])->name('pameran');
+Route::get('/pameran', [PameranController::class, 'landing'])->name('pameran.landing');
 Route::get('/pameran/{slug}', [PameranController::class, 'show'])->name('pemeran.show');
 
 // Middleware

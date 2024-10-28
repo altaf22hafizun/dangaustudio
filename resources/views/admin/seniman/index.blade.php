@@ -5,16 +5,22 @@
 
 <div class="card w-100">
     <div class="card-body p-4">
-        <div class="d-flex mb-4 justify-content-between align-items-center">
-            <h5 class="mb-0 fw-bold">Seniman</h5>
-            <a
-            href="{{ route('seniman.create') }}"
-            class="btn btn-success rounded-3 btn-sm d-flex align-items-center py-2 px-3 me-2"
-            role="button"
-            >
-            <i class="ti ti-plus fs-7 me-2"></i>
-            Tambah Seniman
-            </a>
+        <div class="nav d-flex flex-column flex-md-row mb-3 align-items-md-center">
+            <h5 class="mb-3 fw-bold me-md-auto">Seniman</h5>
+            <div class="nav d-flex  flex-column flex-md-row align-items-md-center">
+                <a
+                    href="{{ route('seniman.create') }}"
+                    class="btn btn-success rounded-3 btn-sm d-flex align-items-center py-2 px-3 me-3 mb-3"
+                    role="button"
+                >
+                    <i class="ti ti-plus fs-7 me-2"></i>
+                    Tambah Seniman
+                </a>
+                <form class="d-flex mb-3" role="search" method="GET" action="{{ route('seniman.index') }}">
+                    <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}">
+                    <button class="btn btn-success" type="submit">Cari</button>
+                </form>
+            </div>
         </div>
 
         <div class="table-responsive" data-simplebar>
@@ -56,7 +62,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center pt-4">Belum ada data karya</td>
+                        <td colspan="6" class="text-center pt-4">Belum ada data seniman</td>
                     </tr>
                     @endforelse
                 </tbody>

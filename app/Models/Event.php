@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Event extends Model
 {
@@ -23,5 +25,20 @@ class Event extends Model
     public function setCategoryEventAttribute($value)
     {
         $this->attributes['category'] = ucwords(strtolower($value));
+    }
+    public function scopePencarian(Builder $query): void
+    {
+        if ($search = request('search')) {
+            if ($search == 'free') {
+                $query->where('category', 'free');
+            } else {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_event', 'like', '%' . $search . '%')
+                        ->orWhere('start_date', 'like', '%' . $search . '%')
+                        ->orWhere('end_date', 'like', '%' . $search . '%')
+                        ->orWhere('category', 'like', '%' . $search . '%');
+                });
+            }
+        }
     }
 }

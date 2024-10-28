@@ -17,13 +17,13 @@ class KaryaController extends Controller
 
     public function landing()
     {
-        $karyas = Karya::orderBy('name', 'ASC')->paginate(12);
+        $karyas = Karya::orderBy('name', 'ASC')->pencarian()->paginate(12);
         return view('landing.galery.index', compact('karyas'));
     }
 
     public function index()
     {
-        $karyas = Karya::whereIn('stock', ['Tersedia', 'Terjual'])->latest()->paginate(5);
+        $karyas = Karya::whereIn('stock', ['Tersedia', 'Terjual'])->latest()->pencarian()->paginate(5);
         // Ambil seniman dan pameran yang relevan
         $senimanIds = $karyas->pluck('seniman_id')->unique();
         $pameranIds = $karyas->pluck('pameran_id')->unique();

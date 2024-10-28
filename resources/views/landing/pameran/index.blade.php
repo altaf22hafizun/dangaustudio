@@ -6,11 +6,22 @@
 {{-- PameranDangau --}}
 <section>
     <div class="container mt-5 px-4">
-        <div class="row mb-5">
+        {{-- <div class="row mb-5">
             <div class="col-lg d-flex justify-content-between align-items-center">
                 <h2 class="mb-0 text-success">Pameran Online</h2>
-                {{-- <a class="btn btn-link fw-semibold text-decoration-none text-end" href="#">Lihat Semua</a> --}}
+                {{-- <a class="btn btn-link fw-semibold text-decoration-none text-end" href="#">Lihat Semua</a>
+                <form class="d-flex mb-3" role="search" method="GET" action="{{ route('karya.index') }}">
+                    <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}">
+                    <button class="btn btn-success" type="submit">Cari</button>
+                </form>
             </div>
+        </div> --}}
+        <div class="nav d-flex flex-column flex-md-row mb-5 align-items-md-center">
+            <h2 class="mb-3 me-md-auto text-success">Pameran Online</h2>
+            <form class="d-flex mb-3" role="search" method="GET" action="{{ route('pameran.index') }}">
+                <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}">
+                <button class="btn btn-success" type="submit">Cari</button>
+            </form>
         </div>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
             @forelse ($pamerans as $karya)
@@ -29,7 +40,7 @@
                 </div>
                 </div>
             @empty
-                <div class="col-12 text-center">
+                <div class="col-12 text-center mt-3">
                     <p class="text-muted">Tidak ada pameran yang tersedia saat ini.</p>
                 </div>
             @endforelse

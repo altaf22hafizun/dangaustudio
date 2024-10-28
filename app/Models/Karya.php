@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class Karya extends Model
 {
@@ -45,5 +47,20 @@ class Karya extends Model
     public function pesanan()
     {
         return $this->hasMany(Pesanan::class);
+    }
+
+    public function scopePencarian(Builder $query): void
+    {
+        if (request('search')) {
+            $search = request('search');
+
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('price', 'like', '%' . $search . '%')
+                ->orWhere('medium', 'like', '%' . $search . '%')
+                ->orWhere('tahun', 'like', '%' . $search . '%')
+                ->orWhereHas('seniman', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
+        }
     }
 }

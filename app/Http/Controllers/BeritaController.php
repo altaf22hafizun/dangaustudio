@@ -22,7 +22,7 @@ class BeritaController extends Controller
 
     public function index()
     {
-        $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(5);
+        $beritas = Berita::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->pencarian()->paginate(5);
         $title = 'Hapus Berita!';
         $text = "Apakah kamu ingin menghapus berita tersebut?";
         confirmDelete($title, $text);

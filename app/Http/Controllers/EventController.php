@@ -16,14 +16,14 @@ class EventController extends Controller
 
     public function landing(Event $event)
     {
-        $events = Event::orderBy('start_date', 'ASC')->latest()->paginate(12);
+        $events = Event::orderBy('start_date', 'ASC')->latest()->pencarian()->paginate(12);
 
         return view('landing.event.index', compact('events'));
     }
 
     public function index()
     {
-        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->orderBy('start_date', 'ASC')->latest()->paginate(5);
+        $events = Event::whereIn('status_publikasi', ['Published', 'Hidden'])->orderBy('start_date', 'ASC')->latest()->pencarian()->paginate(5);
         $title = 'Hapus Event!';
         $text = "Apakah kamu ingin menghapus event tersebut?";
         confirmDelete($title, $text);

@@ -14,7 +14,7 @@ class SenimanController extends Controller
      */
     public function landing()
     {
-        $senimans = Seniman::orderBy('name', 'asc')->paginate(12);
+        $senimans = Seniman::orderBy('name', 'asc')->pencarian()->paginate(12);
         foreach ($senimans as $seniman) {
             // Memproses URL media sosial yang disimpan di properti 'medsos'
             // Fungsi rtrim() menghapus karakter '/' yang mungkin ada di akhir URL
@@ -26,11 +26,13 @@ class SenimanController extends Controller
 
     public function index()
     {
-        $senimans = Seniman::orderBy('name', 'asc')->paginate(5);
+        $senimans = Seniman::orderBy('name', 'asc')->pencarian()->paginate(5);
         $title = 'Hapus Seniman!';
         $text = "Apakah kamu ingin menghapus seniman tersebut?";
         confirmDelete($title, $text);
-        $senimans->medsos_name = basename(rtrim($senimans->medsos, '/'));
+        foreach ($senimans as $seniman) {
+            $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
+        }
         return view('admin.seniman.index', compact('senimans'));
     }
 

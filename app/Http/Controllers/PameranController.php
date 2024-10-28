@@ -16,13 +16,13 @@ class PameranController extends Controller
 
     public function landing()
     {
-        $pamerans = Pameran::whereIn('status_publikasi', ['Published'])->latest()->paginate(12);
+        $pamerans = Pameran::whereIn('status_publikasi', ['Published'])->latest()->pencarian()->paginate(12);
         return view('landing.pameran.index', compact('pamerans'));
     }
 
     public function index()
     {
-        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->paginate(5);
+        $pamerans = Pameran::whereIn('status_publikasi', ['Published', 'Hidden'])->latest()->pencarian()->paginate(5);
         $title = 'Hapus Pameran!';
         $text = "Apakah kamu ingin menghapus pameran tersebut?";
         confirmDelete($title, $text);
