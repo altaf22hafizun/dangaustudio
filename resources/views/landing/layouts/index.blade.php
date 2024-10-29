@@ -129,7 +129,7 @@
                 <!-- Cart and User Authentication -->
                 <div class="navbar-nav ms-auto">
                     <!-- Cart Icon -->
-                    <a class="nav-item nav-link rounded-circle text-white" href="#"><i class="fa fa-shopping-cart text-white me-2"></i> Cart</a>
+                    <a class="nav-item nav-link rounded-circle text-white @yield('menuCart')" href="/cart"><i class="fa fa-shopping-cart text-white me-2"></i> Cart</a>
                     <!-- User Authentication Dropdown -->
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">

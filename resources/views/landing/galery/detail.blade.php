@@ -25,12 +25,21 @@
                 @endif
                 <div class="d-flex justify-content-start align-items-center mt-5">
                     @if ($karya->stock == 'Tersedia')
-                        <a class="btn btn-success me-3" href="{{ $karya->price }}" style="min-width: 150px;">
-                            <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang
-                        </a>
-                        <a class="btn btn-danger" href="{{ $karya->price }}" style="min-width: 150px;">
-                            <i class="fa fa-shopping-cart me-2"></i> Beli Sekarang
-                        </a>
+                        @if (Auth::check() && Auth::user()->role == 'user')
+                            <a class="btn btn-success me-3" href="{{ route('cart.index') }}" style="min-width: 150px;">
+                                <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang
+                            </a>
+                            <a class="btn btn-danger" href="{{ route('cart.index') }}" style="min-width: 150px;">
+                                <i class="fa fa-shopping-cart me-2"></i> Beli Sekarang
+                            </a>
+                        @else
+                            <a class="btn btn-success me-3" href="{{ route('login', ['redirect' => url()->current()]) }}" style="min-width: 150px;">
+                                <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang
+                            </a>
+                            <a class="btn btn-danger" href="{{ route('login', ['redirect' => url()->current()]) }}" style="min-width: 150px;">
+                                <i class="fa fa-shopping-cart me-2"></i> Beli Sekarang
+                            </a>
+                        @endif
                     @else
                         <button class="btn btn-danger me-3 w-100" disabled>
                             <i class="fa fa-cart-plus me-2"></i> Barang terjual

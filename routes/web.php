@@ -6,6 +6,7 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\KaryaController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PameranController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SenimanController;
 use App\Http\Middleware\RoleMiddleware;
@@ -56,13 +57,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // User Routes
     Route::group(['middleware' => ['RoleMiddleware:user']], function () {
         // Route::get('/user', function () {
-        //     return view('user');
-        // })->name('user');
+            //     return view('user');
+            // })->name('user');
         // Route::get('/events', [EventController::class, 'user'])->name('user.event');
         // Settings
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        //Keranjang
+        Route::get('/cart', [PesananController::class, 'cart'])->name('cart.index');
     });
 });
 

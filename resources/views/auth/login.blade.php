@@ -4,6 +4,7 @@
 
 <form id="formAuthentication" class="mb-3" action="/login" method="POST">
     @csrf
+    <input type="hidden" name="redirect" value="{{ request()->get('redirect') }}">
   <div class="mb-3 text-dark fw-bold">
     <label for="email" class="form-label">Email</label>
     <input type="email" id="email" class="form-control border-success @error('email') is-invalid @enderror"

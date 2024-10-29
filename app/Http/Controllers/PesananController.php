@@ -10,6 +10,11 @@ class PesananController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function cart()
+    {
+        return view('landing.cart.index');
+    }
+
     public function index()
     {
         //

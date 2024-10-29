@@ -59,7 +59,7 @@
                 <div class="row my-5 align-items-center mb-4">
                     <div class="col-lg d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-success">Rekomendasi Berita</h5>
-                        <a class="btn btn-link fw-semibold text-decoration-none text-success" href="{{ route('berita') }}">Lihat Semua</a>
+                        <a class="btn btn-link fw-semibold text-decoration-none text-success" href="{{ route('berita.landing') }}">Lihat Semua</a>
                     </div>
                 </div>
 
