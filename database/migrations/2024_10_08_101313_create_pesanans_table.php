@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Pengguna yang membuat pesanan
-            $table->foreignId('karya_id')->constrained('karyas')->cascadeOnDelete(); // Karya yang dipilih
-            $table->unsignedInteger('jumlah'); // Jumlah karya yang dipilih
-            $table->unsignedInteger('price');  // Harga karya
-            $table->enum('status', ['Pending', 'Checkout'])->default('Pending'); // Status pesanan
-            $table->string('trx_id')->nullable(); // Hubungkan ke trx_id transaksi
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('karya_id')->constrained('karyas')->cascadeOnDelete();
+            // $table->unsignedInteger('jumlah');
+            $table->unsignedInteger('price');
             $table->timestamps();
         });
     }

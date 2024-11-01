@@ -127,9 +127,9 @@
                 </div>
 
                 <!-- Cart and User Authentication -->
-                <div class="navbar-nav ms-auto">
+                <div class="navbar-nav ms-auto me-5">
                     <!-- Cart Icon -->
-                    <a class="nav-item nav-link rounded-circle text-white @yield('menuCart')" href="/cart"><i class="fa fa-shopping-cart text-white me-2"></i> Cart</a>
+                    <a class="nav-item nav-link rounded-circle text-white @yield('menuCart')" href="{{ route('cart.index') }}"><i class="fa fa-cart-plus text-white me-2"></i> Cart</a>
                     <!-- User Authentication Dropdown -->
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
@@ -147,6 +147,7 @@
                         <div class="dropdown-menu m-0">
                             @auth
                                 @if (auth()->user()->role == 'user')
+                                    <a class="dropdown-item" href="/user/riwayat-pesanan"><i class="fa fa-shopping-cart me-3"></i> Riwayat Pesanan</a>
                                     <a class="dropdown-item" href="/user/account"><i class="fa fa-cog me-3"></i> Setting</a>
                                 @elseif (auth()->user()->role == 'admin')
                                     <a class="dropdown-item" href="/admin"><i class="fa fa-home-alt me-3"></i> Dashboard</a>

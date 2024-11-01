@@ -26,9 +26,14 @@
                 <div class="d-flex justify-content-start align-items-center mt-5">
                     @if ($karya->stock == 'Tersedia')
                         @if (Auth::check() && Auth::user()->role == 'user')
-                            <a class="btn btn-success me-3" href="{{ route('cart.index') }}" style="min-width: 150px;">
-                                <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang
-                            </a>
+                            <form action="{{ route('cart.store') }}" method="POST" class="me-3">
+                                @csrf
+                                <input type="hidden" name="karya_id" value="{{ $karya->id }}">
+                                <input type="hidden" name="price" value="{{ $karya->price }}">
+                                <button type="submit" class="btn btn-success" style="min-width: 150px;">
+                                    <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang
+                                </button>
+                            </form>
                             <a class="btn btn-danger" href="{{ route('cart.index') }}" style="min-width: 150px;">
                                 <i class="fa fa-shopping-cart me-2"></i> Beli Sekarang
                             </a>

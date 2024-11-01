@@ -3,23 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
-class Transaksi extends Model
+class DetailPesanan extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'karya_id',
+        'pesanan_id',
+        'trx_id',
         'tgl_transaksi',
-        'jumlah',
-        'price',
+        'proof',
         'status_pembayaran',
         'metode_pengiriman',
-        'proof',
-        'trx_id'
     ];
+
+    public function pesanan()
+    {
+        return $this->belongsTo(Pesanan::class);
+    }
 
     public static function generateUniqueTransaction()
     {
@@ -38,7 +41,4 @@ class Transaksi extends Model
 
         return $randomString;
     }
-
-    // Relasi: Transaksi dimiliki oleh Karya
-  
 }

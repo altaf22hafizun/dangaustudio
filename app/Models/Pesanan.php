@@ -15,4 +15,14 @@ class Pesanan extends Model
     {
         return $this->belongsTo(Karya::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function detailPesanans()
+    {
+        return $this->hasMany(DetailPesanan::class);
+    }
 }

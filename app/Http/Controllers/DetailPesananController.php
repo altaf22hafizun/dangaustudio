@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
-class TransaksiController extends Controller
+class DetailPesananController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +33,7 @@ class TransaksiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaksi $transaksi)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +41,7 @@ class TransaksiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Transaksi $transaksi)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +49,7 @@ class TransaksiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Transaksi $transaksi)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +57,7 @@ class TransaksiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transaksi $transaksi)
+    public function destroy(string $id)
     {
         //
     }

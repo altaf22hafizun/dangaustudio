@@ -57,15 +57,17 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // User Routes
     Route::group(['middleware' => ['RoleMiddleware:user']], function () {
         // Route::get('/user', function () {
-            //     return view('user');
-            // })->name('user');
+        //     return view('user');
+        // })->name('user');
         // Route::get('/events', [EventController::class, 'user'])->name('user.event');
+
         // Settings
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
         //Keranjang
-        Route::get('/cart', [PesananController::class, 'cart'])->name('cart.index');
+        Route::resource('/cart', PesananController::class)->only('index', 'store', 'destroy');
     });
 });
 

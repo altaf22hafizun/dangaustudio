@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaksis', function (Blueprint $table) {
+        Schema::create('detail_pesanans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('pesanan_id')->constrained('pesanans')->cascadeOnDelete();
             $table->string('trx_id');
             $table->date('tgl_transaksi');
-            $table->string('proof');
+            $table->string('proof')->nullable();
             $table->enum('status_pembayaran', ['Pending', 'Lunas', 'Dibatalkan'])->default('Pending');
-            $table->enum('opsi_pengambilan', ['Dijemput', 'Diantarkan'])->default('Dijemput');
+            $table->enum('metode_pengiriman', ['Dijemput', 'Diantarkan'])->default('Dijemput');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaksis');
+        Schema::dropIfExists('detail_pesanans');
     }
 };
