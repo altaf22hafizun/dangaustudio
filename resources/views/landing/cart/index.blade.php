@@ -6,10 +6,10 @@
 <section>
     <div class="container mt-5 px-4">
         <h2 class="mb-5 text-success">Keranjang Belanja</h2>
-        <form action="" method="POST">
+        <form action="{{ route('pesanan.index') }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-8 shadow p-3 mb-5">
                     <!-- Checkbox untuk pilih semua -->
                     <div class="form-check mb-3">
                         <input type="checkbox" class="form-check-input" id="select-all">
@@ -17,7 +17,7 @@
                     </div>
 
                     @foreach ($pesanans as $pesanan)
-                    <div class="cart-item border p-3 mb-3">
+                    <div class="cart-item border p-3 mb-3 shadow-sm">
                         <div class="row align-items-center">
                             <div class="col-2">
                                 <img src="{{ Storage::url($pesanan->karya->image) }}" alt="Karya" class="img-fluid rounded">
@@ -36,18 +36,14 @@
                                 @endif
                             </div>
                             <div class="col-4 text-end">
-                                <form action="{{ route('cart.destroy', $pesanan->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger ms-2">Hapus</button>
-                                </form>
+                                <a href="{{ route('cart.destroy', $pesanan->id) }}" class="btn btn-danger" data-confirm-delete="true"><i class="ti ti-trash"></i></a>
                             </div>
                         </div>
                     </div>
                     @endforeach
                 </div>
                 <div class="col-lg-4">
-                    <div class="border p-3">
+                    <div class="border p-3 shadow-sm mb-5">
                         <h4 class="text-success">Ringkasan Belanja</h4>
                         <div class="d-flex justify-content-between">
                             <span>Total Item:</span>
