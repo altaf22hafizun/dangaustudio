@@ -18,7 +18,7 @@
         </div> --}}
         <div class="nav d-flex flex-column flex-md-row mb-5 align-items-md-center">
             <h2 class="mb-3 me-md-auto text-success">Pameran Online</h2>
-            <form class="d-flex mb-3" role="search" method="GET" action="{{ route('pameran.index') }}">
+            <form class="d-flex mb-3" role="search" method="GET" action="{{ route('pameran.landing') }}">
                 <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}">
                 <button class="btn btn-success" type="submit">Cari</button>
             </form>

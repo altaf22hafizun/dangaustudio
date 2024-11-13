@@ -40,7 +40,7 @@
                     <img src="{{ asset('storage/' . $senimans->foto_profile) }}" class="img-fluid rounded-4" style="height: 300px; object-fit: contain;" alt="Foto {{ $senimans->name }}">
                 </div>
             </div>
-            {{-- <div class="row mb-5">
+            <div class="row mb-5">
                 <div class="col-lg d-flex justify-content-between align-items-center">
                     <h2 class="mb-0 text-success">Karya Seniman</h2>
                 </div>
@@ -74,7 +74,7 @@
             </div>
             <div class="d-flex justify-content-center mt-4 ">
                 {{ $karyas->links() }}
-            </div> --}}
+            </div>
             <a href="/seniman" class="btn btn-success mt-5"><i class="fa-solid fa-angle-left me-2"></i>Kembali</a>
         </div>
     </div>
