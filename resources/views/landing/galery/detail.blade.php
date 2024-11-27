@@ -34,14 +34,14 @@
                                     <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang
                                 </button>
                             </form>
-                            <form action="{{ route('pesanan.langsung') }}" method="POST">
+                            {{-- <form action="{{ route('pesanan.langsung') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="karya_id" value="{{ $karya->id }}">
                                 <input type="hidden" name="price" value="{{ $karya->price }}">
                                 <button type="submit" class="btn btn-danger" style="min-width: 150px;">
                                     <i class="fa fa-shopping-cart me-2"></i> Beli Sekarang
                                 </button>
-                            </form>
+                            </form> --}}
                         @else
                             <a class="btn btn-success me-3" href="{{ route('login', ['redirect' => url()->current()]) }}" style="min-width: 150px;">
                                 <i class="fa fa-cart-plus me-2"></i> Masukkan Keranjang

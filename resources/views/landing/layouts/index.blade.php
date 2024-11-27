@@ -135,7 +135,7 @@
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
                             @auth
                                 @if(Auth::user()->foto_profile)
-                                   <img src="{{ asset('storage/' . Auth::user()->foto_profile) }}" alt="Foto Profil" class="rounded-circle me-2" width="23" height="23">
+                                   <img src="{{ asset('storage/' . Auth::user()->foto_profile) }}" alt="Foto Profil" class="rounded-circle me-2" width="25" height="25">
                                 @else
                                     <img src="{{ asset('assets/img/foto-profile.png') }}" alt="Foto Profil" class="rounded-circle me-2" width="23" height="23">
                                 @endif

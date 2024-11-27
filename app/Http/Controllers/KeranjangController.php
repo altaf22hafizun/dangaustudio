@@ -24,26 +24,26 @@ class KeranjangController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function pesanan(Request $request)
-    {
-        $request->validate([
-            'karya_id' => 'required|exists:karyas,id',
-            'price' => 'required|numeric',
-        ]);
+    // public function pesanan(Request $request)
+    // {
+    //     $request->validate([
+    //         'karya_id' => 'required|exists:karyas,id',
+    //         'price' => 'required|numeric',
+    //     ]);
 
-        // Ambil ID pengguna yang sedang login
-        $userId = Auth::id();
+    //     // Ambil ID pengguna yang sedang login
+    //     $userId = Auth::id();
 
-        // Simpan pesanan baru ke database
-        $pesanan = Pesanan::create([
-            'user_id' => $userId,
-            'karya_id' => $request->input('karya_id'),
-            'price' => $request->input('price'),
-        ]);
+    //     // Simpan pesanan baru ke database
+    //     $pesanan = Pesanan::create([
+    //         'user_id' => $userId,
+    //         'karya_id' => $request->input('karya_id'),
+    //         'price' => $request->input('price'),
+    //     ]);
 
-        // Redirect langsung ke halaman detail pesanan setelah berhasil membuat pesanan
-        return redirect()->route('pesanan.index', ['id' => $pesanan->id]);
-    }
+    //     // Redirect langsung ke halaman detail pesanan setelah berhasil membuat pesanan
+    //     return redirect()->route('pesanan.index', ['id' => $pesanan->id]);
+    // }
 
     public function store(Request $request)
     {
@@ -54,6 +54,14 @@ class KeranjangController extends Controller
 
         // Ambil ID pengguna yang sedang login
         $userId = Auth::id();
+
+        $existingPesanan = Pesanan::where('user_id', $userId)
+            ->where('karya_id', $request->input('karya_id'))
+            ->first();
+
+        if ($existingPesanan) {
+            return redirect()->route('cart.index')->with('info', 'Item sudah ada di keranjang!');
+        }
 
         Pesanan::create([
             'user_id' => $userId,

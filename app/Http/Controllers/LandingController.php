@@ -41,19 +41,19 @@ class LandingController extends Controller
     public function index()
     {
         //Karya
-        $karyas = Karya::where('stock', 'Tersedia')->get();
+        $karyas = Karya::where('stock', 'Tersedia')->inRandomOrder()->take(12)->get();
         $senimanIds = $karyas->pluck('seniman_id')->unique();
         $senimans = Seniman::whereIn('id', $senimanIds)->get();
 
         //pameran
-        $pamerans = Pameran::where('status_publikasi', 'Published')->get();
+        $pamerans = Pameran::where('status_publikasi', 'Published')->take(6)->get();
         //event
-        $events = Event::where('status_publikasi', 'Published')->get();
+        $events = Event::where('status_publikasi', 'Published')->take(6)->get();
         //berita
-        $beritas = Berita::where('status_publikasi', 'Published')->get();
+        $beritas = Berita::where('status_publikasi', 'Published')->take(6)->get();
 
         //seniman
-        $senimans = Seniman::inRandomOrder()->take(6)->get();
+        $senimans = Seniman::inRandomOrder()->take(12)->get();
         foreach ($senimans as $seniman) {
             $seniman->medsos_name = basename(rtrim($seniman->medsos, '/'));
         }

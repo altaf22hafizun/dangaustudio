@@ -116,7 +116,7 @@
                 @forelse ($karyas as $karya)
                 <div class="card-item">
                     <div class="card">
-                        <img class="card-img-top" src="{{ asset('storage/' . $karya->image) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: contain;">
+                        <img class="card-img-top" src="{{ asset('storage/' . $karya->image) }}" alt="{{ $karya->name }}" style="height: 300px; object-fit: cover;">
                         <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
                             <button class="btn btn-light rounded-5 btn-square mx-1">
                                {{ $karya->stock }}

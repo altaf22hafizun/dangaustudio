@@ -37,4 +37,9 @@ class DetailPesananController extends Controller
         // Redirect ke halaman pembayaran dengan data pesanan
         return view('landing.pesanan.index', ['pesanans' => $pesanans]);
     }
+
+    public function riwayatPesanan()
+    {
+        return view('landing.user.riwayat');
+    }
 }

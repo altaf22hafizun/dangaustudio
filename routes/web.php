@@ -64,18 +64,21 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Route::get('/events', [EventController::class, 'user'])->name('user.event');
 
         // Settings
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/user/account', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/user/account/edit-profile', [ProfileController::class, 'updateprofile'])->name('profile.update-profile');
+        Route::post('/user/account/update-password', [ProfileController::class, 'updatepassword'])->name('profile.update-password');
 
         //Keranjang
         Route::resource('/cart', KeranjangController::class)->only('index', 'store', 'destroy');
         // Route untuk langsung melakukan pembelian dan melihat detail pesanan
-        Route::post('/pesanan-langsung', [KeranjangController::class, 'pesanan'])->name('pesanan.langsung');
+        // Route::post('/pesanan-langsung', [KeranjangController::class, 'pesanan'])->name('pesanan.langsung');
 
         // Pesanan
         Route::post('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
         // Route::get('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
+
+        //Riwayat Pesanan
+        ROute::get('/user/riwayat-pesanan', [DetailPesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
     });
 });
 
