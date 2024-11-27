@@ -17,8 +17,22 @@ class KaryaController extends Controller
 
     public function landing()
     {
-        $karyas = Karya::orderBy('name', 'ASC')->pencarian()->paginate(12);
-        return view('landing.galery.index', compact('karyas'));
+        // $karyas = Karya::orderBy('name', 'ASC')->pencarian()->paginate(12);
+        // return view('landing.galery.index', compact('karyas'));
+
+        // Ambil kategori medium yang unik dari tabel karya
+        $categories = Karya::select('medium')->distinct()->get();
+
+        // Ambil daftar tahun yang unik dari kolom 'tahun'
+        $years = Karya::select('tahun')->distinct()->orderByDesc('tahun')->pluck('tahun');
+
+        // Ambil karya yang sesuai dengan filter
+        $karyas = Karya::query()
+            ->pencarian()
+            ->paginate(12);
+
+        // Mengirimkan data kategori medium, tahun dan karya ke view
+        return view('landing.galery.index', compact('categories', 'years', 'karyas'));
     }
 
     public function index()
@@ -41,8 +55,8 @@ class KaryaController extends Controller
      */
     public function create()
     {
-        $senimans = Seniman::all();
-        $pamerans = Pameran::all();
+        $senimans = Seniman::orderBy('name', 'asc')->get();
+        $pamerans = Pameran::where('status_publikasi', 'Published')->orderBy('name_pameran', 'asc')->get();
         return view('admin.galery.create', compact('senimans', 'pamerans'));
     }
 
@@ -129,8 +143,8 @@ class KaryaController extends Controller
     public function edit(string $id)
     {
         $karyas = Karya::findOrFail($id);
-        $senimans = Seniman::all();
-        $pamerans = Pameran::all();
+        $senimans = Seniman::orderBy('name', 'asc')->get();
+        $pamerans = Pameran::where('status_publikasi', 'Published')->orderBy('name_pameran', 'asc')->get();
         $stock = [
             'Terjual' => 'Terjual',
             'Tersedia' => 'Tersedia',

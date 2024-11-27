@@ -26,19 +26,36 @@ class Event extends Model
     {
         $this->attributes['category'] = ucwords(strtolower($value));
     }
+    // public function scopePencarian(Builder $query): void
+    // {
+    //     if ($search = request('search')) {
+    //         if ($search == 'free') {
+    //             $query->where('category', 'free');
+    //         } else {
+    //             $query->where(function ($q) use ($search) {
+    //                 $q->where('nama_event', 'like', '%' . $search . '%')
+    //                     ->orWhere('start_date', 'like', '%' . $search . '%')
+    //                     ->orWhere('end_date', 'like', '%' . $search . '%')
+    //                     ->orWhere('category', 'like', '%' . $search . '%');
+    //             });
+    //         }
+    //     }
+    // }
     public function scopePencarian(Builder $query): void
     {
-        if ($search = request('search')) {
-            if ($search == 'free') {
-                $query->where('category', 'free');
-            } else {
-                $query->where(function ($q) use ($search) {
-                    $q->where('nama_event', 'like', '%' . $search . '%')
-                        ->orWhere('start_date', 'like', '%' . $search . '%')
-                        ->orWhere('end_date', 'like', '%' . $search . '%')
-                        ->orWhere('category', 'like', '%' . $search . '%');
-                });
-            }
+        // // Pencarian berdasarkan kata kunci
+        // if ($search = request('search')) {
+        //     $query->where(function ($q) use ($search) {
+        //         $q->where('nama_event', 'like', '%' . $search . '%')
+        //             ->orWhere('start_date', 'like', '%' . $search . '%')
+        //             ->orWhere('end_date', 'like', '%' . $search . '%')
+        //             ->orWhere('category', 'like', '%' . $search . '%'); // Pencarian berdasarkan kategori
+        //     });
+        // }
+
+        // Pencarian berdasarkan kategori yang dipilih
+        if ($category = request('category')) {
+            $query->where('category', $category); // Mencocokkan kategori dari kolom 'category' di tabel events
         }
     }
 }

@@ -71,15 +71,19 @@
                 <div class="col mb-4">
                     <div class="card-item h-100">
                         <div class="card h-100 d-flex flex-column">
-                            <img class="card-img-top" src="{{ Storage::url($seniman->foto_profile) }}" alt="{{ $seniman->name }}" style="object-fit: cover; height: 200px;" />
+                            @if ($seniman->foto_profile)
+                                <img src="{{ asset('storage/' . $seniman->foto_profile) }}" class="img-fluid rounded-4" style="height: 300px; object-fit: contain;" alt="Foto {{ $seniman->name }}">
+                            @else
+                                <img src="{{ asset('assets/img/foto-profile.png') }}"  class="img-fluid rounded-4" style="height: 300px; object-fit: contain;" alt="Foto {{ $seniman->name }}">
+                            @endif
                             <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
                                 <a class="btn btn-square btn-sm mx-1 rounded-5" href="{{ $seniman->medsos }}" style="min-width: 150px; font-size: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                     <i class="fab fa-instagram"></i> {{ $seniman->medsos_name }}
                                 </a>
                             </div>
                             <div class="card-body d-flex flex-column flex-grow-1">
-                                <h5 class="card-title">{!! Str::limit(strip_tags($seniman->name), 30) !!}</h5>
-                                <small class="card-text mb-3">{!! Str::limit(strip_tags($seniman->bio), 50) !!}</small>
+                                <h5 class="card-title text-center">{!! Str::limit(strip_tags($seniman->name), 30) !!}</h5>
+                                <small class="card-text mb-3 text-center">{!! Str::limit(strip_tags($seniman->bio), 50) !!}</small>
                                 <a href="seniman/{{ $seniman->slug }}" class="btn btn-success mt-auto">
                                     Lihat Detail
                                 </a>

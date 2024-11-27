@@ -53,8 +53,8 @@ class SenimanController extends Controller
             'name' => 'required|string|max:255',
             'bio' => 'required|string',
             'telp' => 'nullable|string|min:10',
-            'medsos' => 'required|url',
-            'foto_profile' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'medsos' => 'nullable|url',
+            'foto_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'name.required' => 'Nama wajib diisi.',
             'name.string' => 'Nama harus berupa teks.',
@@ -133,7 +133,7 @@ class SenimanController extends Controller
             'name' => 'required|string|max:255',
             'bio' => 'required|string',
             'telp' => 'nullable|string|min:10',
-            'medsos' => 'required|url',
+            'medsos' => 'nullable|url',
             'foto_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'name.required' => 'Nama wajib diisi.',

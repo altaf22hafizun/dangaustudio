@@ -80,7 +80,11 @@
                 @forelse ($senimans as $seniman)
                 <div class="card-item">
                     <div class="card h-100">
-                        <img class="card-img-top" src="{{ asset('storage/' . $seniman->foto_profile) }}" alt="{{ $seniman->name }}" style="height: 300px; object-fit: contain;">
+                        @if ($seniman->foto_profile)
+                            <img class="card-img-top" src="{{ asset('storage/' . $seniman->foto_profile) }}" alt="{{ $seniman->name }}" style="height: 300px; object-fit: contain;">
+                        @else
+                            <img src="{{ asset('assets/img/foto-profile.png') }}" alt="{{ $seniman->name }}" style="height: 300px; object-fit: contain;">
+                        @endif
                         <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
                             <a class="btn btn-square mx-1 rounded-5" href="{{ $seniman->medsos }}">
                                 <i class="fab fa-instagram"></i> {{ $seniman->medsos_name }}

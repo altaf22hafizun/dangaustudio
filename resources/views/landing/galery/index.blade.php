@@ -15,7 +15,26 @@
         <div class="nav d-flex flex-column flex-md-row mb-5 align-items-md-center">
             <h2 class="mb-3 me-md-auto text-success">Galery Dangau Studio</h2>
             <form class="d-flex mb-3" role="search" method="GET" action="{{ route('galery.landing') }}">
-                <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}">
+                {{-- <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}"> --}}
+                <!-- Filter berdasarkan Medium -->
+                <select class="form-control me-2 shadow-sm" name="medium" aria-label="Pilih Medium">
+                    <option value="">Pilih Medium</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->medium }}" {{ request('medium') == $category->medium ? 'selected' : '' }}>
+                            {{ $category->medium }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <!-- Filter berdasarkan Tahun -->
+                <select class="form-control me-2 shadow-sm" name="tahun" aria-label="Pilih Tahun">
+                    <option value="">Pilih Tahun</option>
+                    @foreach($years as $year)
+                        <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>
+                            {{ $year }}
+                        </option>
+                    @endforeach
+                </select>
                 <button class="btn btn-success" type="submit">Cari</button>
             </form>
         </div>
@@ -24,7 +43,7 @@
                 <div class="col mb-4">
                 <div class="card-item h-100">
                     <div class="card h-100 d-flex flex-column">
-                        <img class="card-img-top" src="{{ Storage::url($karya->image) }}" alt="{{ $karya->name }}" style="object-fit: contain; height: 200px;" />
+                        <img class="card-img-top" src="{{ Storage::url($karya->image) }}" alt="{{ $karya->name }}" style="object-fit: cover; height: 200px;" />
                         <div class="card-body d-flex flex-column flex-grow-1">
                             <h5 class="card-title">{{ $karya->name }}</h5>
                             <small class="card-text mb-3">{!! Str::limit(strip_tags($karya->deskripsi), 50) !!}</small>

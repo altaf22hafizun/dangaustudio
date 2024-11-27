@@ -27,7 +27,13 @@
                             </tr>
                             <tr>
                                 <td>Instagram</td>
-                                <td>@ {{ $senimans->medsos_name }}</td>
+                                <td>
+                                    @if ($senimans->medsos_name)
+                                        @ {{ $senimans->medsos_name }}
+                                    @else
+                                        <span class="text-muted">Tidak Ada</span>
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>Bio</td>
@@ -37,7 +43,12 @@
                     </table>
                 </div>
                 <div class="col-lg-6 col-md-12 text-center mb-5 ms-auto">
-                    <img src="{{ asset('storage/' . $senimans->foto_profile) }}" class="img-fluid rounded-4" style="height: 300px; object-fit: contain;" alt="Foto {{ $senimans->name }}">
+                    @if ($senimans->foto_profile)
+                        <img src="{{ asset('storage/' . $senimans->foto_profile) }}" class="img-fluid rounded-4" style="height: 300px; object-fit: contain;" alt="Foto {{ $senimans->name }}">
+                    @else
+                        <img src="{{ asset('assets/img/foto-profile.png') }}"  class="img-fluid rounded-4" style="height: 300px; object-fit: contain;" alt="Foto {{ $senimans->name }}">
+                    @endif
+
                 </div>
             </div>
             <div class="row mb-5">
@@ -75,7 +86,7 @@
             <div class="d-flex justify-content-center mt-4 ">
                 {{ $karyas->links() }}
             </div>
-            <a href="/seniman" class="btn btn-success mt-5"><i class="fa-solid fa-angle-left me-2"></i>Kembali</a>
+            {{-- <a href="/seniman" class="btn btn-success mt-5"><i class="fa-solid fa-angle-left me-2"></i>Kembali</a> --}}
         </div>
     </div>
 </section>

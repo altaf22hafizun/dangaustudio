@@ -49,18 +49,31 @@ class Karya extends Model
         return $this->hasMany(Pesanan::class);
     }
 
+    // public function scopePencarian(Builder $query): void
+    // {
+    //     if (request('search')) {
+    //         $search = request('search');
+
+    //         $query->where('name', 'like', '%' . $search . '%')
+    //             ->orWhere('price', 'like', '%' . $search . '%')
+    //             ->orWhere('medium', 'like', '%' . $search . '%')
+    //             ->orWhere('tahun', 'like', '%' . $search . '%')
+    //             ->orWhereHas('seniman', function ($q) use ($search) {
+    //                 $q->where('name', 'like', '%' . $search . '%');
+    //             });
+    //     }
+    // }
+
     public function scopePencarian(Builder $query): void
     {
-        if (request('search')) {
-            $search = request('search');
+        // Filter berdasarkan medium yang dipilih
+        if ($medium = request('medium')) {
+            $query->where('medium', $medium);
+        }
 
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('price', 'like', '%' . $search . '%')
-                ->orWhere('medium', 'like', '%' . $search . '%')
-                ->orWhere('tahun', 'like', '%' . $search . '%')
-                ->orWhereHas('seniman', function ($q) use ($search) {
-                    $q->where('name', 'like', '%' . $search . '%');
-                });
+        // Filter berdasarkan tahun yang dipilih
+        if ($tahun = request('tahun')) {
+            $query->where('tahun', $tahun);
         }
     }
 }

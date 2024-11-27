@@ -39,10 +39,10 @@
                     </div>
 
                     <!-- Total Pajak -->
-                    <div class="d-flex justify-content-between mt-2" id="tax-container" style="display: none;">
+                    {{-- <div class="d-flex justify-content-between mt-2" id="tax-container" style="display: none;">
                         <span>Pajak (5%):</span>
                         <span id="tax-amount">Rp 0</span>
-                    </div>
+                    </div> --}}
 
                     <!-- Grand Total -->
                     <div class="d-flex justify-content-between mt-2">
@@ -72,6 +72,26 @@
                             <label for="address" class="form-label">Alamat Pengiriman</label>
                             <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                         </div>
+
+                        <!-- Bank Transfer -->
+                        <div class="mt-3">
+                            <label for="payment_proof" class="form-label">Bank Transfer:</label>
+                            <div class="row align-items-center">
+                                <div class="col col-lg-3">
+                                    <!-- Added alt description for accessibility -->
+                                    <img src="{{ asset('assets/img/bri.png') }}" alt="Bank Rakyat Indonesia logo" class="w-100">
+                                </div>
+                                <div class="col col-lg-9">
+                                    <div>
+                                        <small class="form-text text-muted">A/N Dangau Studio</small>
+                                    </div>
+                                    <div>
+                                        <small class="form-text text-muted">No Rek. : 110910219210</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <!-- Upload Bukti Pembayaran -->
                         <div class="mt-3">

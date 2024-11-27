@@ -18,10 +18,10 @@
         </div> --}}
         <div class="nav d-flex flex-column flex-md-row mb-5 align-items-md-center">
             <h2 class="mb-3 me-md-auto text-success">Pameran Online</h2>
-            <form class="d-flex mb-3" role="search" method="GET" action="{{ route('pameran.landing') }}">
+            {{-- <form class="d-flex mb-3" role="search" method="GET" action="{{ route('pameran.landing') }}">
                 <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}">
                 <button class="btn btn-success" type="submit">Cari</button>
-            </form>
+            </form> --}}
         </div>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
             @forelse ($pamerans as $karya)
