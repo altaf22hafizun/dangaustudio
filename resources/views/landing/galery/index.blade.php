@@ -6,16 +6,9 @@
 {{-- KaryaDangau --}}
 <section>
     <div class="container mt-5 px-4">
-        {{-- <div class="row mb-5">
-            <div class="col-lg d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 text-success">Galery Dangau Studio</h2>
-                {{-- <a class="btn btn-link fw-semibold text-decoration-none text-end" href="#">Lihat Semua</a>
-            </div>
-        </div> --}}
         <div class="nav d-flex flex-column flex-md-row mb-5 align-items-md-center">
             <h2 class="mb-3 me-md-auto text-success">Galery Dangau Studio</h2>
             <form class="d-flex mb-3" role="search" method="GET" action="{{ route('galery.landing') }}">
-                {{-- <input class="form-control me-2 shadow-sm" type="search" placeholder="Cari" aria-label="Search" name="search" value="{{ request('search') }}"> --}}
                 <!-- Filter berdasarkan Medium -->
                 <select class="form-control me-2 shadow-sm" name="medium" aria-label="Pilih Medium">
                     <option value="">Pilih Medium</option>
@@ -41,18 +34,23 @@
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
             @forelse ($karyas as $karya)
                 <div class="col mb-4">
-                <div class="card-item h-100">
-                    <div class="card h-100 d-flex flex-column">
-                        <img class="card-img-top" src="{{ Storage::url($karya->image) }}" alt="{{ $karya->name }}" style="object-fit: cover; height: 200px;" />
-                        <div class="card-body d-flex flex-column flex-grow-1">
-                            <h5 class="card-title">{{ $karya->name }}</h5>
-                            <small class="card-text mb-3">{!! Str::limit(strip_tags($karya->deskripsi), 50) !!}</small>
-                            <a href="galery/{{ $karya->slug }}" class="btn btn-success mt-auto">
-                                Lihat Detail
-                            </a>
+                    <div class="card-item h-100">
+                        <div class="card h-100 d-flex flex-column">
+                            <div class="position-relative">
+                                <img class="card-img-top" src="{{ Storage::url($karya->image) }}" alt="{{ $karya->name }}" style="object-fit: cover; height: 200px;" />
+                                @if ($karya->stock == "Terjual")
+                                    <span class="badge bg-danger position-absolute top-0 start-0 m-2 rounded-5 py-2 px-3">Terjual</span>
+                                @endif
+                            </div>
+                            <div class="card-body d-flex flex-column flex-grow-1">
+                                <h5 class="card-title">{{ $karya->name }}</h5>
+                                <small class="card-text mb-3">{!! Str::limit(strip_tags($karya->deskripsi), 50) !!}</small>
+                                <a href="galery/{{ $karya->slug }}" class="btn btn-success mt-auto">
+                                    Lihat Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             @empty
                 <div class="col-12 text-center">
