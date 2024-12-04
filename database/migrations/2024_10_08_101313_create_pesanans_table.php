@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('karya_id')->constrained('karyas')->cascadeOnDelete();
-            // $table->unsignedInteger('jumlah');
             $table->unsignedInteger('price');
             $table->timestamps();
         });

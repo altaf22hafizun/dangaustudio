@@ -39,10 +39,10 @@
                     </div>
 
                     <!-- Total Pajak -->
-                    {{-- <div class="d-flex justify-content-between mt-2" id="tax-container" style="display: none;">
+                    <div class="d-flex justify-content-between mt-2" id="tax-container" style="display: none;">
                         <span>Pajak (5%):</span>
                         <span id="tax-amount">Rp 0</span>
-                    </div> --}}
+                    </div>
 
                     <!-- Grand Total -->
                     <div class="d-flex justify-content-between mt-2">
