@@ -51,7 +51,7 @@
                     </div>
 
                     <!-- Form Checkout -->
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="/checkout" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="total_price" value="{{ $pesanans->sum('price') }}">
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
@@ -62,15 +62,15 @@
                             <label for="shipping_method" class="form-label">Metode Pengiriman</label>
                             <select class="form-select" id="shipping_method" name="shipping_method" required>
                                 <option value="" selected disabled>Pilih Metode Pengiriman</option>
-                                <option value="pickup">Dapat Dijemput</option>
-                                <option value="delivery">Diantarkan</option>
+                                <option value="Dijemput">Dapat Dijemput</option>
+                                <option value="Diantarkan">Diantarkan</option>
                             </select>
                         </div>
 
                         <!-- Alamat Pengiriman -->
-                        <div class="mt-3" id="address-container" style="display: none;">
-                            <label for="address" class="form-label">Alamat Pengiriman</label>
-                            <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                        <div class="mt-3" id="alamat-container" style="display: none;">
+                            <label for="alamat" class="form-label">Alamat Pengiriman</label>
+                            <textarea class="form-control" id="alamat" name="alamat" rows="3"></textarea>
                         </div>
 
                         <!-- Bank Transfer -->
@@ -120,10 +120,10 @@
         const totalPrice = {{ $pesanans->sum('price') }};
         const taxContainer = document.getElementById('tax-container');
         const taxAmount = document.getElementById('tax-amount');
-        const addressContainer = document.getElementById('address-container');
+        const addressContainer = document.getElementById('alamat-container');
         const grandTotalElement = document.getElementById('grand-total');
 
-        if (shippingMethod === 'delivery') {
+        if (shippingMethod === 'Diantarkan') {
             // Tampilkan alamat dan pajak
             addressContainer.style.display = 'block';
             taxContainer.style.display = 'block';
@@ -133,7 +133,7 @@
             const grandTotal = totalPrice + tax;
             taxAmount.innerText = 'Rp ' + tax.toLocaleString('id-ID');
             grandTotalElement.innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
-        } else if (shippingMethod === 'pickup') {
+        } else if (shippingMethod === 'Dijemput') {
             // Tampilkan pengambilan tanpa pajak
             addressContainer.style.display = 'none';
             taxContainer.style.display = 'none';

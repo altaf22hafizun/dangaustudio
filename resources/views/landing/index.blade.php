@@ -3,26 +3,6 @@
 @section('menuBeranda','active')
 @section('content')
 
-
-{{-- Plan 1 --}}
-{{-- <section class="bg-light">
-    <div class="container-fluid" style="padding-bottom: 13rem; padding-top: 5rem;">
-        <div class="container">
-            <div class="row flex-wrap-reverse justify-content-center align-items-center">
-                <div class="col-lg-8 col-md-12 text-center text-lg-start px-5">
-                    <h1 class="display-3 text-dark mb-3 fw-bold">Selamat Datang di <br><span class="display-3 fw-bold text-success">Dangau Studio</span></h1>
-                    <p class="text-dark mb-4 fst-italic">" Temukan keindahan dan makna dalam karya seni terbaik dari para seniman berbakat di sini. "</p>
-                    <a href="#about" class="btn btn-success btn-lg px-4 py-2">Lihat Detail</a>
-                </div>
-                <div class="col-lg-4 col-md-12 text-center">
-                    <img src="{{ asset('assets/img/dngau.png') }}" class="img-fluid rounded-circle" alt="background" style="max-width: 350px; height: auto;">
-                </div>
-            </div>
-        </div>
-    </div>
-</section> --}}
-
-
 {{-- Plan 2 --}}
 <section>
     <div class="container-fluid hero-header">
@@ -36,21 +16,6 @@
         </div>
     </div>
 </section>
-
-
-{{-- Plan 3 --}}
-{{-- <section style="background-image: url({{ asset('assets/img/background.png') }}); background-size: cover; background-position: center;">
-    <div class="hero-header">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 text-center">
-                    <h1 class="display-3 text-dark mb-3 fw-bold font-monospace">Selamat Datang di <br> Dangau Studio</h1>
-                    <p class="text-dark mb-4">Temukan keindahan dan makna dalam karya seni terbaik dari para seniman berbakat di sini.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> --}}
 
 {{-- TentangDangau --}}
 <section>
@@ -180,14 +145,8 @@
                 <div class="card-item">
                     <div class="card">
                         <img class="card-img-top" src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" style="height: 300px; object-fit: contain;">
-                        {{-- <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                            <button class="btn btn-light rounded-5 btn-square mx-1">
-                               {{ $event->stock }}
-                            </button>
-                        </div> --}}
                         <div class="card-body ">
                             <h4 class="card-title">{{ $event->nama_event }}</h4>
-                            {{-- <h5 class="card-text" style="color: #C62E2E;">Rp {{ number_format($event->price, 0, ',', '.') }}</h5> --}}
                             <p class="card-text fw-bold">Insert : {{ $event->category }}</p>
                             <p class="card-text">{{ Str::limit(strip_tags($event->description), 100) }}</p>
                             <a href="/event/{{ $event->slug }}" class="btn btn-success">
