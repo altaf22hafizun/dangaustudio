@@ -38,10 +38,10 @@
                         <span id="total-price">Rp {{ number_format($pesanans->sum('price'), 0, ',', '.') }}</span>
                     </div>
 
-                    <!-- Total Pajak -->
-                    <div class="d-flex justify-content-between mt-2" id="tax-container" style="display: none;">
-                        <span>Pajak (5%):</span>
-                        <span id="tax-amount">Rp 0</span>
+                    <!-- Ongkos Kirim -->
+                    <div class="d-flex justify-content-between mt-2" id="shipping-container" style="display: none;">
+                        <span>Ongkos Kirim:</span>
+                        <span id="shipping-fee">Rp 0</span>
                     </div>
 
                     <!-- Grand Total -->
@@ -92,7 +92,6 @@
                             </div>
                         </div>
 
-
                         <!-- Upload Bukti Pembayaran -->
                         <div class="mt-3">
                             <label for="payment_proof" class="form-label">Bukti Pembayaran</label>
@@ -114,29 +113,30 @@
 
 @push('custom-script')
 <script>
-    // Update harga, pajak, dan grand total berdasarkan pilihan pengiriman
+    // Update harga, ongkos kirim, dan grand total berdasarkan pilihan pengiriman
     document.getElementById('shipping_method').addEventListener('change', function() {
         const shippingMethod = this.value;
         const totalPrice = {{ $pesanans->sum('price') }};
-        const taxContainer = document.getElementById('tax-container');
-        const taxAmount = document.getElementById('tax-amount');
+        const shippingContainer = document.getElementById('shipping-container');
+        const shippingFeeElement = document.getElementById('shipping-fee');
         const addressContainer = document.getElementById('alamat-container');
         const grandTotalElement = document.getElementById('grand-total');
 
         if (shippingMethod === 'Diantarkan') {
-            // Tampilkan alamat dan pajak
+            // Tampilkan alamat dan ongkos kirim
             addressContainer.style.display = 'block';
-            taxContainer.style.display = 'block';
+            shippingContainer.style.display = 'block';
 
-            // Hitung pajak 5%
-            const tax = totalPrice * 0.05;
-            const grandTotal = totalPrice + tax;
-            taxAmount.innerText = 'Rp ' + tax.toLocaleString('id-ID');
+            // Tentukan biaya ongkos kirim (contoh: Rp 20,000)
+            const shippingFee = 20000;
+            const grandTotal = totalPrice + shippingFee;
+
+            shippingFeeElement.innerText = 'Rp ' + shippingFee.toLocaleString('id-ID');
             grandTotalElement.innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
         } else if (shippingMethod === 'Dijemput') {
-            // Tampilkan pengambilan tanpa pajak
+            // Tampilkan pengambilan tanpa ongkos kirim
             addressContainer.style.display = 'none';
-            taxContainer.style.display = 'none';
+            shippingContainer.style.display = 'none';
             grandTotalElement.innerText = 'Rp ' + totalPrice.toLocaleString('id-ID');
         }
     });

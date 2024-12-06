@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class DetailPesananController extends Controller
 {
@@ -70,5 +71,40 @@ class DetailPesananController extends Controller
     public function riwayatPesanan()
     {
         return view('landing.user.riwayat');
+    }
+
+    public function cekOngkir()
+    {
+        $response = Http::withHeaders([
+            'key' => 'ee887248ab9a52cdb808a833290bf396'
+        ])->get('https://api.rajaongkir.com/starter/city');
+
+        $cities = $response['rajaongkir']['results'];
+        $ongkir = $response['rajaongkir']['results'];
+
+        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => '']);
+    }
+
+    public function ongkirKiriman(Request $request)
+    {
+        $response = Http::withHeaders([
+            'key' => 'ee887248ab9a52cdb808a833290bf396'
+        ])->get('https://api.rajaongkir.com/starter/city');
+
+        $responseCost = Http::withHeaders([
+            'key' => 'ee887248ab9a52cdb808a833290bf396'
+        ])->post('https://api.rajaongkir.com/starter/cost', [
+            'origin' => $request->origin,
+            'destination' => $request->destination,
+            'weight' => $request->weight,
+            'courier' => $request->courier,
+        ]);
+
+        $cities = $response['rajaongkir']['results'];
+        $ongkir = $responseCost['rajaongkir'];
+
+        // dd($ongkir);
+
+        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => $ongkir]);
     }
 }

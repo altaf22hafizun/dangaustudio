@@ -78,6 +78,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
         Route::post('/checkout', [DetailPesananController::class, 'checkout'])->name('pesanan.checkout');
 
+        //Cek ongkir
+        Route::get('/cekongkir',[DetailPesananController::class, 'cekOngkir']);
+        Route::post('/cekongkir',[DetailPesananController::class, 'ongkirKiriman']);
+
         //Riwayat Pesanan
         ROute::get('/user/riwayat-pesanan', [DetailPesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
     });
