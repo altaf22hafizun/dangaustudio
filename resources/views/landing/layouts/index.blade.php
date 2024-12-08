@@ -4,6 +4,8 @@
 <head>
     <meta charset="ut-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dangau Studio')</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/logo_dangau.png') }}">
     <!-- Stylesheets -->

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\DetailPesananController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\IncomeController;
@@ -76,11 +77,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Pesanan
         Route::post('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
         Route::get('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
+        Route::post('/get-shipping-services', [DetailPesananController::class, 'getShippingServices'])->name('getShippingServices');
+
+        // Checkout
         Route::post('/checkout', [DetailPesananController::class, 'checkout'])->name('pesanan.checkout');
 
         //Cek ongkir
-        Route::get('/cekongkir',[DetailPesananController::class, 'cekOngkir']);
-        Route::post('/cekongkir',[DetailPesananController::class, 'ongkirKiriman']);
+        Route::get('/cekongkir', [DetailController::class, 'cekOngkir'])->name('pesanan.cekOngkir');
+        Route::post('/cekongkir', [DetailController::class, 'ongkirKiriman'])->name('pesanan.hitungOngkir');
 
         //Riwayat Pesanan
         ROute::get('/user/riwayat-pesanan', [DetailPesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');

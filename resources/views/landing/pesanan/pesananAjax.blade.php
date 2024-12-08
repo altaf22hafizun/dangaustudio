@@ -5,7 +5,8 @@
 <section>
     <div class="container mt-5 px-4">
         <h2 class="mb-5 text-success">Detail Pesanan</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
+        <!-- Form Checkout -->
+        <form action="/checkout" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="row">
                 <div class="col-lg-8">
@@ -64,8 +65,14 @@
                             <label for="province" class="form-label">Provinsi</label>
                             <input type="text" name="province" id="province" class="form-control" readonly placeholder="Provinsi"/>
                         </div>
-                        <input type="hidden" id="origin" name="origin" class="form-control" value="{{ $cityPadang['city_id'] }}" disabled readonly/>
+                        <!-- Kota Awal -->
+                        <input type="hidden" id="origin" name="origin" class="form-control" value="{{ $cityPadang['city_name'] }}" disabled readonly/>
+
+                        <!-- Berat Paket -->
                         <input type="hidden" id="weight" name="weight" class="form-control" value="1000" disabled readonly/>
+
+                        <!-- Alamat lengkap yang akan digabungkan -->
+                        <input type="hidden" name="alamat" id="alamat" class="form-control delivery-address"/>
                     </div>
 
                     <!-- Delivery Service -->
@@ -75,13 +82,15 @@
                         </h5>
                         <div class="mt-3">
                             <div class="form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input courier-code" id="jne" name="courier" value="jne">
+                                <input type="radio" class="form-check-input courier-code" id="jne" name="courier" value="jne">
                                 <label for="courier" class="form-check-label">JNE</label>
                             </div>
                         </div>
                         <div class="mt-3">
                             <p>Available Services:</p>
-                            <div class="list-group list-group-flush available-services" style="display: none;"></div>
+                            <div class="list-group list-group-flush available-services" style="display: none;">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,86 +131,13 @@
 @push('custom-script')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const apiKey = '{{ env("RAJAONGKIR_API_KEY") }}';
     const destinationSelect = document.getElementById('destination');
     const provinceInput = document.getElementById('province');
+    const alamatTextarea = document.getElementById('address');
+    const alamatInput = document.getElementById('alamat');
     const shippingMethodRadioButtons = document.querySelectorAll('input[name="metode_pengiriman"]');
     const alamatContainer = document.getElementById('alamat-container');
     const deliveryContainer = document.getElementById('delivery');
-    const availableServicesContainer = document.querySelector('.available-services');
-    const shippingFeeContainer = document.getElementById('shipping-fee');
-    const grandTotalContainer = document.getElementById('grand-total');
-    const totalPriceElement = document.getElementById('total-price');
-    let shippingFee = 0;
-    let subTotal = parseInt(totalPriceElement.textContent.replace('Rp ', '').replace(',', ''));
-
-    // Pastikan elemen-elemen ini ada
-    if (!shippingFeeContainer || !grandTotalContainer || !totalPriceElement) {
-        console.error("Elemen untuk ongkos kirim atau total grand tidak ditemukan!");
-        return;
-    }
-
-    // Fungsi untuk memperbarui data pengiriman
-    function updateShippingServices(destinationId) {
-        if (destinationId) {
-            // Panggil API untuk mengambil data layanan pengiriman
-            fetch("{{ route('getShippingServices') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'API_KEY': apiKey
-                },
-                body: JSON.stringify({
-                    destination: destinationId,
-                    courier: 'jne',
-                    origin: document.getElementById('origin').value,
-                    weight: document.getElementById('weight').value,
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Clear previous services
-                availableServicesContainer.innerHTML = '';
-
-                if (data && Array.isArray(data) && data.length > 0) {
-                    const service = data[0]; // Asumsikan data pertama adalah JNE
-
-                    // Looping melalui setiap biaya pengiriman
-                    service.costs.forEach((cost, index) => {
-                        cost.cost.forEach((item, itemIndex) => {
-                            const serviceItem = document.createElement('div');
-                            serviceItem.classList.add('list-group-item');
-
-                            // Cek apakah etd dan value ada, jika tidak beri nilai default
-                            const etd = item.etd || 'TBA'; // Jika tidak ada etd, tampilkan 'TBA'
-                            const value = item.value ? `Rp ${new Intl.NumberFormat().format(item.value)}` : 'Rp 0'; // Jika tidak ada value, tampilkan Rp 0
-
-                            serviceItem.innerHTML = `
-                                <input type="radio" id="service-${index}-${itemIndex}" name="shipping_service" value="${item.value}" class="form-check-input" onclick="updateShippingFee(${item.value})">
-                                <label for="service-${index}-${itemIndex}" class="form-check-label ms-3">
-                                    <strong>${cost.description} (${cost.service})</strong><br>
-                                    Estimated Delivery: ${etd} days<br>
-                                    Price: ${value}
-                                </label>
-                            `;
-                            availableServicesContainer.appendChild(serviceItem);
-                        });
-                    });
-                } else {
-                    console.error('No shipping services found or data is in an unexpected format:', data);
-                    availableServicesContainer.innerHTML = '<p>No available services found for this destination.</p>';
-                }
-
-                availableServicesContainer.style.display = 'block'; // Show services
-            })
-            .catch(error => {
-                console.error('Error fetching services:', error);
-                availableServicesContainer.innerHTML = '<p>Failed to fetch services.</p>';
-                availableServicesContainer.style.display = 'block';
-            });
-        }
-    }
 
     // Event listener untuk memilih kota tujuan
     destinationSelect.addEventListener('change', function() {
@@ -210,36 +146,19 @@ document.addEventListener('DOMContentLoaded', function() {
         provinceInput.value = provinceName || '';
     });
 
-    // Menampilkan layanan pengiriman ketika JNE dipilih
-    document.querySelectorAll('input[name="courier"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'jne') {
-                const destinationId = destinationSelect.value;
-                // Panggil API untuk mengambil data layanan pengiriman
-                updateShippingServices(destinationId);
-                availableServicesContainer.style.display = 'block';
-            } else {
-                // Menyembunyikan layanan pengiriman jika selain JNE
-                availableServicesContainer.innerHTML = ''; // Clear the services list
-                availableServicesContainer.style.display = 'none'; // Hide services list
-            }
-        });
+    // Event listener untuk mengisi alamat lengkap saat form dikirim
+    document.querySelector('form').addEventListener('submit', function() {
+        // Gabungkan alamat dari textarea (address), kota (destination), dan provinsi
+        const address = alamatTextarea.value;
+        const city = destinationSelect.options[destinationSelect.selectedIndex]?.text || '';
+        const province = provinceInput.value || '';
+
+        // Membuat alamat lengkap dengan format yang sesuai
+        const fullAddress = `${address}, ${city}, ${province}`;
+
+        // Memasukkan alamat lengkap ke dalam input hidden #alamat
+        alamatInput.value = fullAddress;
     });
-
-    // Update shipping fee and grand total when service is selected
-    window.updateShippingFee = function(fee) {
-        shippingFee = fee; // Update shipping fee
-
-        // Update Ongkos Kirim
-        if (shippingFeeContainer && grandTotalContainer) {
-            shippingFeeContainer.style.display = 'block';
-            shippingFeeContainer.querySelector('span').textContent = `Rp ${new Intl.NumberFormat().format(shippingFee)}`;
-
-            // Calculate and update grand total
-            const grandTotal = subTotal + shippingFee;
-            grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(grandTotal)}`;
-        }
-    };
 
     // Menyembunyikan atau menampilkan alamat dan layanan pengiriman berdasarkan metode pengiriman
     shippingMethodRadioButtons.forEach(radio => {
@@ -247,43 +166,36 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value === 'Diantarkan') {
                 alamatContainer.style.display = 'block';
                 deliveryContainer.style.display = 'block';
-                // Reset form alamat dan layanan pengiriman
-                resetForm();
             } else {
                 alamatContainer.style.display = 'none';
                 deliveryContainer.style.display = 'none';
-                availableServicesContainer.style.display = 'none'; // Sembunyikan layanan pengiriman jika memilih "Dijemput"
             }
         });
     });
 
-    // Fungsi untuk mereset form dan layanan pengiriman
-    function resetForm() {
-        // Reset alamat
-        document.getElementById('address').value = '';
-        destinationSelect.value = '';
-        provinceInput.value = '';
+    $('.courier-code').click(function() {
+        let courier = $(this).val();
+        let alamat = $('.delivery-address').val();
 
-        // Reset checkbox layanan pengiriman (JNE)
-        document.querySelectorAll('input[name="courier"]').forEach((checkbox) => {
-            checkbox.checked = false; // Uncheck all checkboxes
-        });
-
-        // Menyembunyikan dan mengosongkan layanan pengiriman
-        availableServicesContainer.innerHTML = '';
-        availableServicesContainer.style.display = 'none';
-
-        // Reset ongkos kirim dan grand total
-        shippingFee = 0;
-        shippingFeeContainer.style.display = 'none';
-        shippingFeeContainer.querySelector('span').textContent = 'Rp 0';
-
-        // Reset grand total
-        const grandTotal = subTotal;
-        grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(grandTotal)}`;
-    }
+        $.ajax({
+            url:"/pesanan",
+            method:"POST",
+            data:{
+                alamat: alamat,
+                courier: courier,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                $('.available-services').show();
+                $('.available-services').html(result);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
+    })
 });
+
 </script>
 @endpush
-
 

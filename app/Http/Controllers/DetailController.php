@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-class DetailPesananController extends Controller
+class DetailController extends Controller
 {
     /**
      * Handle the post request and show selected items for payment.
