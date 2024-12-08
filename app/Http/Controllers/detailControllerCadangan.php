@@ -27,7 +27,7 @@ class DetailPesananController extends Controller
         // Ambil data pesanan berdasarkan harga yang dipilih
         $pesanans = Pesanan::whereIn('price', $selectedItems)
             ->where('user_id', Auth::id())
-            ->with('karya.seniman')
+            ->with('karya', 'karya.seniman')  // Mengambil data karya dan seniman
             ->get();
 
         // Pastikan tidak ada pesanan yang kosong atau tidak valid
@@ -35,23 +35,20 @@ class DetailPesananController extends Controller
             return redirect()->route('cart.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
-        // Cek kota tujuan dan ongkir
+        // Cek ongkir
         $response = Http::withHeaders([
             'key' => 'ee887248ab9a52cdb808a833290bf396'
         ])->get('https://api.rajaongkir.com/starter/city');
 
         $cities = $response['rajaongkir']['results'];
+        $ongkir = $response['rajaongkir']['results'];
 
         // Filter kota padang dengan city_id = 318
         $cityPadang = collect($cities)->firstWhere('city_id', 318);
 
-        return view('landing.pesanan.index', [
-            'pesanans' => $pesanans,
-            'cities' => $cities,
-            'cityPadang' => $cityPadang
-        ]);
+        // Redirect ke halaman pembayaran dengan data pesanan
+        return view('landing.pesanan.index', ['pesanans' => $pesanans, 'cities' => $cities, 'ongkir' => '', 'cityPadang' => $cityPadang,]);
     }
-
 
     public function checkout(Request $request)
     {
@@ -95,10 +92,9 @@ class DetailPesananController extends Controller
         ])->get('https://api.rajaongkir.com/starter/city');
 
         $cities = $response['rajaongkir']['results'];
-        // $ongkir = $response['rajaongkir']['results'];
+        $ongkir = $response['rajaongkir']['results'];
 
-        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => null]);
-        // return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => '']);
+        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => '']);
     }
 
     public function ongkirKiriman(Request $request)
@@ -107,24 +103,20 @@ class DetailPesananController extends Controller
             'key' => 'ee887248ab9a52cdb808a833290bf396'
         ])->get('https://api.rajaongkir.com/starter/city');
 
-        // Mengambil data kota
-        $cities = $response['rajaongkir']['results'];
-
-        // Memanggil API untuk menghitung ongkir
         $responseCost = Http::withHeaders([
             'key' => 'ee887248ab9a52cdb808a833290bf396'
         ])->post('https://api.rajaongkir.com/starter/cost', [
-            'origin' => $request->origin,         // ID Kota Asal (Padang)
-            'destination' => $request->destination,  // ID Kota Tujuan
-            'weight' => $request->weight,            // Berat barang dalam gram
-            'courier' => $request->courier,          // Kode kurir (jne, tiki, dll.)
+            'origin' => $request->origin,
+            'destination' => $request->destination,
+            'weight' => $request->weight,
+            'courier' => $request->courier,
         ]);
 
-        $ongkir = $responseCost['rajaongkir']; // Ongkir yang diterima dari API RajaOngkir
+        $cities = $response['rajaongkir']['results'];
+        $ongkir = $responseCost['rajaongkir'];
 
-        return view('landing.pesanan.cekongkir', [
-            'cities' => $cities,  // Mengirimkan data kota
-            'ongkir' => $ongkir    // Mengirimkan data ongkir untuk ditampilkan
-        ]);
+        // dd($ongkir);
+
+        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => $ongkir]);
     }
 }

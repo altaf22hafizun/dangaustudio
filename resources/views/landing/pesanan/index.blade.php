@@ -5,107 +5,128 @@
 <section>
     <div class="container mt-5 px-4">
         <h2 class="mb-5 text-success">Detail Pesanan</h2>
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="border p-3 shadow-sm">
-                    @foreach ($pesanans as $pesanan)
-                    <div class="border p-3 mb-3 shadow-sm">
-                        <div class="row align-items-center">
-                            <div class="col-2">
-                                <img src="{{ Storage::url($pesanan->karya->image) }}" alt="Karya" class="img-fluid rounded">
+        <!-- Form Checkout -->
+        <form action="/checkout" method="POST" enctype="multipart/form-data">
+        @csrf
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="border p-3 shadow-sm">
+                        @foreach ($pesanans as $pesanan)
+                        <div class="border p-3 mb-3 shadow-sm">
+                            <div class="row align-items-center">
+                                <div class="col-2">
+                                    <img src="{{ Storage::url($pesanan->karya->image) }}" alt="Karya" class="img-fluid rounded">
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="text-dark">{{ $pesanan->karya->name }}</h5>
+                                    <p class="text-muted">Seniman: <strong>{{ $pesanan->karya->seniman->name }}</strong></p>
+                                    <p class="text-danger fw-bold">Rp {{ number_format($pesanan->price, 0, ',', '.') }}</p>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <h5 class="text-dark">{{ $pesanan->karya->name }}</h5>
-                                <p class="text-muted">Seniman: <strong>{{ $pesanan->karya->seniman->name }}</strong></p>
-                                <p class="text-danger fw-bold">Rp {{ number_format($pesanan->price, 0, ',', '.') }}</p>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Metode Pengiriman -->
+                    <div class="border p-3 my-3 shadow-sm">
+                        <h5 class="text-success">Metode Pengiriman</h5>
+                        <div class="mt-3">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="shipping_method_pickup" name="metode_pengiriman" value="Dijemput">
+                                <label for="shipping_method_pickup" class="form-check-label">Dijemput</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="shipping_method_delivery" name="metode_pengiriman" value="Diantarkan">
+                                <label for="shipping_method_delivery" class="form-check-label">Diantarkan</label>
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                </div>
-            </div>
 
-            <!-- Ringkasan Pembayaran dan Form Checkout -->
-            <div class="col-lg-4">
-                <div class="border p-3 shadow-sm">
-                    <h4 class="text-success">Ringkasan Pembayaran</h4>
-                    <div class="d-flex justify-content-between">
-                        <span>Total Item:</span>
-                        <span>{{ count($pesanans) }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-2">
-                        <span>SubTotal:</span>
-                        <span id="total-price">Rp {{ number_format($pesanans->sum('price'), 0, ',', '.') }}</span>
-                    </div>
-
-                    <!-- Ongkos Kirim -->
-                    <div class="d-flex justify-content-between mt-2" id="shipping-container" style="display: none;">
-                        <span>Ongkos Kirim:</span>
-                        <span id="shipping-fee">Rp 0</span>
-                    </div>
-
-                    <!-- Grand Total -->
-                    <div class="d-flex justify-content-between mt-2">
-                        <span><strong>Grand Total:</strong></span>
-                        <span id="grand-total">Rp {{ number_format($pesanans->sum('price'), 0, ',', '.') }}</span>
-                    </div>
-
-                    <!-- Form Checkout -->
-                    <form action="/checkout" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="total_price" value="{{ $pesanans->sum('price') }}">
-                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                        <input type="hidden" name="pesanan_ids" value="{{ implode(',', $pesanans->pluck('id')->toArray()) }}">
-
-                        <!-- Pilihan Pengiriman -->
+                    <!-- Alamat Pengiriman -->
+                    <div class="border p-3 my-3 shadow-sm" id="alamat-container" style="display: none;">
+                        <h5 class="text-success">
+                            <i class="fas fa-map-marker-alt me-2"></i> Alamat Pengiriman
+                        </h5>
                         <div class="mt-3">
-                            <label for="shipping_method" class="form-label">Metode Pengiriman</label>
-                            <select class="form-select" id="shipping_method" name="shipping_method" required>
-                                <option value="" selected disabled>Pilih Metode Pengiriman</option>
-                                <option value="Dijemput">Dapat Dijemput</option>
-                                <option value="Diantarkan">Diantarkan</option>
+                            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Masukan Alamat Pengiriman">{{ Auth::user()->alamat ?? '' }}</textarea>
+                        </div>
+                        <div class="mt-3">
+                            <label for="destination" class="form-label">Kota</label>
+                            <select name="destination" id="destination" class="form-control">
+                                <option value="">Pilih Tujuan Kota</option>
+                                @foreach ($cities as $city)
+                                    <option value="{{ $city['city_id'] }}" data-province-id="{{ $city['province_id'] }}" data-province="{{ $city['province'] }}">
+                                        {{ $city['city_name'] }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
-
-                        <!-- Alamat Pengiriman -->
-                        <div class="mt-3" id="alamat-container" style="display: none;">
-                            <label for="alamat" class="form-label">Alamat Pengiriman</label>
-                            <textarea class="form-control" id="alamat" name="alamat" rows="3"></textarea>
-                        </div>
-
-                        <!-- Bank Transfer -->
                         <div class="mt-3">
-                            <label for="payment_proof" class="form-label">Bank Transfer:</label>
-                            <div class="row align-items-center">
-                                <div class="col col-lg-3">
-                                    <!-- Added alt description for accessibility -->
-                                    <img src="{{ asset('assets/img/bri.png') }}" alt="Bank Rakyat Indonesia logo" class="w-100">
-                                </div>
-                                <div class="col col-lg-9">
-                                    <div>
-                                        <small class="form-text text-muted">A/N Dangau Studio</small>
-                                    </div>
-                                    <div>
-                                        <small class="form-text text-muted">No Rek. : 110910219210</small>
-                                    </div>
-                                </div>
+                            <label for="province" class="form-label">Provinsi</label>
+                            <input type="text" name="province" id="province" class="form-control" readonly placeholder="Provinsi"/>
+                        </div>
+                        <!-- Mengganti full_address menjadi alamat -->
+                        <input type="hidden" name="alamat" id="alamat"/>
+                        <!-- Kota Awal -->
+                        <input type="hidden" id="origin" name="origin" class="form-control" value="{{ $cityPadang['city_name'] }}" disabled readonly/>
+                        <!-- Berat Paket -->
+                        <input type="hidden" id="weight" name="weight" class="form-control" value="1000" disabled readonly/>
+                    </div>
+
+                    <!-- Delivery Service -->
+                    <div class="border p-3 my-3 shadow-sm" id="delivery" style="display: none;">
+                        <h5 class="text-success">
+                            <i class="fas fa-truck me-2"></i> Delivery Service
+                        </h5>
+                        <div class="mt-3">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input courier-code" id="jne" name="courier_code" value="jne">
+                                <label for="jne" class="form-check-label">JNE</label>
                             </div>
                         </div>
+                        <div class="mt-3" id="jne-options" style="display: none;">
+                            <label for="jne-service" class="form-label">Pilih Jenis Pengiriman</label>
+                            <select name="jne_service" id="jne-service" class="form-control">
+                                <option value="">Pilih Layanan</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="mt-3" id="jne-cost" style="display: none;">
+                            <span>Biaya Pengiriman: </span>
+                            <span id="jne-fee">Rp 0</span>
+                            <div>Estimasi: <span id="jne-estimation">-</span> Hari</div>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Upload Bukti Pembayaran -->
+                <!-- Ringkasan Pembayaran dan Form Checkout -->
+                <div class="col-lg-4">
+                    <div class="border p-3 shadow-sm">
+                        <h5 class="text-success mb-3">Ringkasan Pembayaran</h5>
+                        <div class="d-flex justify-content-between">
+                            <span>Total Item:</span>
+                            <span>{{ count($pesanans) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span>SubTotal:</span>
+                            <span id="total-price">Rp {{ number_format($pesanans->sum('price'), 0, ',', '.') }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2" id="shipping-container" style="display: none;">
+                            <span>Ongkos Kirim:</span>
+                            <span id="shipping-fee">Rp 0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span><strong>Grand Total:</strong></span>
+                            <span id="grand-total">Rp {{ number_format($pesanans->sum('price'), 0, ',', '.') }}</span>
+                        </div>
+                        <!-- Submit -->
                         <div class="mt-3">
-                            <label for="payment_proof" class="form-label">Bukti Pembayaran</label>
-                            <input type="file" class="form-control" id="payment_proof" name="payment_proof" accept="image/*,application/pdf" required>
-                            <small class="form-text text-muted">Upload bukti pembayaran berupa gambar atau PDF.</small>
+                            <button type="submit" class="btn btn-success w-100">Checkout</button>
                         </div>
-
-                        <div class="mt-3 text-end">
-                            <button type="submit" class="btn btn-success w-100">Lanjutkan ke Pembayaran</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </section>
 
@@ -113,32 +134,78 @@
 
 @push('custom-script')
 <script>
-    // Update harga, ongkos kirim, dan grand total berdasarkan pilihan pengiriman
-    document.getElementById('shipping_method').addEventListener('change', function() {
-        const shippingMethod = this.value;
-        const totalPrice = {{ $pesanans->sum('price') }};
-        const shippingContainer = document.getElementById('shipping-container');
-        const shippingFeeElement = document.getElementById('shipping-fee');
-        const addressContainer = document.getElementById('alamat-container');
-        const grandTotalElement = document.getElementById('grand-total');
+ document.addEventListener('DOMContentLoaded', function() {
+    const destinationSelect = document.getElementById('destination');
+    const provinceInput = document.getElementById('province');
+    const alamatTextarea = document.getElementById('address');
+    const alamatInput = document.getElementById('alamat');
+    const shippingMethodRadioButtons = document.querySelectorAll('input[name="metode_pengiriman"]');
+    const alamatContainer = document.getElementById('alamat-container');
+    const deliveryContainer = document.getElementById('delivery');
+    const jneOptions = document.getElementById('jne-options');
+    const jneServiceSelect = document.getElementById('jne-service');
+    const jneCostContainer = document.getElementById('jne-cost');
+    const jneFeeSpan = document.getElementById('jne-fee');
+    const jneEstimationSpan = document.getElementById('jne-estimation');
 
-        if (shippingMethod === 'Diantarkan') {
-            // Tampilkan alamat dan ongkos kirim
-            addressContainer.style.display = 'block';
-            shippingContainer.style.display = 'block';
+    // Event listener untuk memilih kota tujuan
+    destinationSelect.addEventListener('change', function() {
+        const selectedOption = destinationSelect.options[destinationSelect.selectedIndex];
+        const provinceName = selectedOption.getAttribute('data-province');
+        provinceInput.value = provinceName || '';
+    });
 
-            // Tentukan biaya ongkos kirim (contoh: Rp 20,000)
-            const shippingFee = 20000;
-            const grandTotal = totalPrice + shippingFee;
+    // Event listener untuk mengisi alamat lengkap saat form dikirim
+    document.querySelector('form').addEventListener('submit', function() {
+        const alamat = `${alamatTextarea.value}, ${destinationSelect.options[destinationSelect.selectedIndex]?.text || ''}, ${provinceInput.value}`;
+        alamatInput.value = alamat;
+    });
 
-            shippingFeeElement.innerText = 'Rp ' + shippingFee.toLocaleString('id-ID');
-            grandTotalElement.innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
-        } else if (shippingMethod === 'Dijemput') {
-            // Tampilkan pengambilan tanpa ongkos kirim
-            addressContainer.style.display = 'none';
-            shippingContainer.style.display = 'none';
-            grandTotalElement.innerText = 'Rp ' + totalPrice.toLocaleString('id-ID');
+    // Menyembunyikan atau menampilkan alamat dan layanan pengiriman berdasarkan metode pengiriman
+    shippingMethodRadioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'Diantarkan') {
+                alamatContainer.style.display = 'block';
+                deliveryContainer.style.display = 'block';
+            } else {
+                alamatContainer.style.display = 'none';
+                deliveryContainer.style.display = 'none';
+            }
+        });
+    });
+
+    // Ketika kurir JNE dipilih, tampilkan opsi jenis layanan dan biaya
+    jneServiceSelect.addEventListener('change', function() {
+        if (this.value) {
+            jneCostContainer.style.display = 'block';
+            // Panggil API untuk mendapatkan ongkos kirim
+            fetch('/cekongkir', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    origin: document.getElementById('origin').value,
+                    destination: destinationSelect.value,
+                    weight: document.getElementById('weight').value,
+                    courier: 'jne'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cost = data.rajaongkir.results[0].costs.find(c => c.service === this.value);
+                jneFeeSpan.textContent = `Rp ${cost.cost[0].value.toLocaleString()}`;
+                jneEstimationSpan.textContent = cost.cost[0].etd || '-';
+            });
         }
     });
+
+    // Tampilkan pilihan layanan pengiriman saat JNE dipilih
+    document.getElementById('jne').addEventListener('change', function() {
+        jneOptions.style.display = this.checked ? 'block' : 'none';
+    });
+});
 </script>
 @endpush
+

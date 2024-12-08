@@ -59,7 +59,8 @@
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control @error('alamat') is-invalid @enderror" type="text" name="alamat" value="{{ old('alamat', Auth()->user()->alamat) }}" placeholder="ex: Jl. Contoh No. XX, Kota X, Provinsi X"/>
+                                    <input class="form-control @error('alamat') is-invalid @enderror" type="text" name="alamat" value="{{ old('alamat', Auth()->user()->alamat) }}" placeholder="Masukan alamat anda"/>
+                                    {{-- <input class="form-control @error('alamat') is-invalid @enderror" type="text" name="alamat" value="{{ old('alamat', Auth()->user()->alamat) }}" placeholder="ex: Jl. Contoh No. XX, Kota X, Provinsi X"/> --}}
                                     @error('alamat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

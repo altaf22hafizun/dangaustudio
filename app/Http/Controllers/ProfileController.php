@@ -27,7 +27,7 @@ class ProfileController extends Controller
         $validatedData = $request->validate([
             'name' => 'sometimes|min:4',
             'telp' => 'sometimes|min:11',
-            'alamat' => 'sometimes|string|min:8|',
+            'alamat' => 'nullable|string|min:8|',
             'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'email' => 'sometimes|email|unique:users,email,' . Auth::user()->id,
         ], [
