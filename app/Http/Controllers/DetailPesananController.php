@@ -34,12 +34,7 @@ class DetailPesananController extends Controller
             return redirect()->route('cart.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
-        // Ambil daftar kota dari RajaOngkir
-        $response = Http::withHeaders([
-            'key' => env('RAJAONGKIR_API_KEY') // Ganti dengan API Key Anda
-        ])->get('https://api.rajaongkir.com/starter/city');
-
-        $cities = $response['rajaongkir']['results'];
+        $cities = $this->rajaOngkir();
 
         // Filter untuk kota Padang (ID: 318)
         $cityPadang = collect($cities)->firstWhere('city_id', 318);
@@ -47,7 +42,7 @@ class DetailPesananController extends Controller
         return view('landing.pesanan.index', [
             'pesanans' => $pesanans,
             'cities' => $cities,
-            'cityPadang' => $cityPadang,  // Kirim cityPadang ke view
+            'cityPadang' => $cityPadang, 
         ]);
     }
 
@@ -84,12 +79,23 @@ class DetailPesananController extends Controller
             return view('landing.pesanan.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
+        $cities = $this->rajaOngkir();
+
         // Ambil data alamat dan pengiriman
         $address = $request->input('alamat');
         $destination = $request->input('destination');
         $province = $request->input('province');
 
-        $alamat = $address . ',' . $destination . ',' . $province;
+        // Jika destination (ID kota) dipilih, cari nama kota dari daftar kota
+        if ($destination && $province) {
+            $city = collect($cities)->firstWhere('city_id', $destination);
+            $cityName = $city ? $city['city_name'] : '';
+        }
+
+        //Gabungkan alamat kota provinsi
+        if ($cityName && $province) {
+            $alamat = $address . ',' . $cityName . ',' . $province;
+        }
 
         return view('landing.pesanan.berhasil', [
             'pesanans' => $pesanans,
@@ -128,5 +134,19 @@ class DetailPesananController extends Controller
         } else {
             return response()->json(['error' => 'Gagal mendapatkan layanan pengiriman'], 500);
         }
+    }
+
+    public function rajaOngkir()
+    {
+        // Ambil daftar kota dari RajaOngkir
+        $response = Http::withHeaders([
+            'key' => env('RAJAONGKIR_API_KEY')
+        ])->get('https://api.rajaongkir.com/starter/city');
+
+        if ($response->successful()) {
+            return $response['rajaongkir']['results'];
+        }
+
+        return [];
     }
 }
