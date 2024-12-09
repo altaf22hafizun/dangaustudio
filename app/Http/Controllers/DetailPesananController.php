@@ -51,6 +51,53 @@ class DetailPesananController extends Controller
         ]);
     }
 
+    public function checkout(Request $request)
+    {
+        $validateData = $request->validate([
+            'pesanan_id' => 'required|array|min:1',
+            'metode_pengiriman' => 'required|in:Dijemput,Diantarkan',
+            'alamat' => 'required_if:metode_pengiriman,Diantarkan|string',
+            'destination' => 'required_if:metode_pengiriman,Diantarkan|integer',
+            'province' => 'required_if:metode_pengiriman,Diantarkan|string',
+        ], [
+            'pesanan_id.required' => 'Harap pilih setidaknya satu pesanan untuk melanjutkan checkout.',
+            'pesanan_id.min' => 'Harap pilih lebih dari satu pesanan untuk melanjutkan checkout.',
+
+            'metode_pengiriman.required' => 'Metode pengiriman harus dipilih.',
+            'metode_pengiriman.in' => 'Metode pengiriman tidak valid. Pilih antara Dijemput atau Diantarkan.',
+
+            'alamat.required_if' => 'Alamat pengiriman harus diisi jika metode pengiriman dipilih "Diantarkan".',
+            'alamat.string' => 'Alamat pengiriman harus berupa teks.',
+
+            'destination.required_if' => 'Kota tujuan harus dipilih jika pengiriman diantarkan.',
+            'province.required_if' => 'Provinsi harus diisi jika pengiriman diantarkan.',
+        ]);
+
+        //Dapatkan pesanan berdasarkan ID yang dipilih
+        $pesanans = Pesanan::where('id', $request->input('pesanan_id'))
+            ->where('user_id', Auth::id())
+            ->with('karya.seniman')
+            ->get();
+
+        //Jika pesanan tidak ditemukan
+        if ($pesanans->isEmpty()) {
+            return view('landing.pesanan.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
+        }
+
+        // Ambil data alamat dan pengiriman
+        $address = $request->input('alamat');
+        $destination = $request->input('destination');
+        $province = $request->input('province');
+
+        $alamat = $address . ',' . $destination . ',' . $province;
+
+        return view('landing.pesanan.berhasil', [
+            'pesanans' => $pesanans,
+            'metode_pengiriman' => $request->input('metode_pengiriman'),
+            'alamat' => $alamat,
+        ]);
+    }
+
     /**
      * Handle the checkout process.
      */

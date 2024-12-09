@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('pesanan_id')->constrained('pesanans')->cascadeOnDelete();
             $table->string('trx_id')->unique();
             $table->timestamp('tgl_transaksi')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('proof')->nullable();
+            $table->unsignedInteger('total_harga');
             $table->enum('status_pembayaran', ['Pending', 'Lunas', 'Dibatalkan'])->default('Pending');
             $table->enum('metode_pengiriman', ['Dijemput', 'Diantarkan'])->default('Dijemput');
             $table->string('alamat')->nullable();

@@ -14,7 +14,7 @@ class DetailPesanan extends Model
         'pesanan_id',
         'trx_id',
         'tgl_transaksi',
-        'proof',
+        'total_harga',
         'status_pembayaran',
         'metode_pengiriman',
         'alamat',

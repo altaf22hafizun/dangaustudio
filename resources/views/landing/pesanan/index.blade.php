@@ -5,12 +5,15 @@
 <section>
     <div class="container mt-5 px-4">
         <h2 class="mb-5 text-success">Detail Pesanan</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="/checkout" method="POST" enctype="multipart/form-data">
         @csrf
+
             <div class="row">
                 <div class="col-lg-8">
                     <div class="border p-3 shadow-sm">
                         @foreach ($pesanans as $pesanan)
+                        <!-- Kirimkan ID pesanan yang dipilih -->
+                        <input type="hidden" name="pesanan_id[]" value="{{ $pesanan->id }}" />
                         <div class="border p-3 mb-3 shadow-sm">
                             <div class="row align-items-center">
                                 <div class="col-2">
@@ -31,14 +34,17 @@
                         <h5 class="text-success">Metode Pengiriman</h5>
                         <div class="mt-3">
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" id="shipping_method_pickup" name="metode_pengiriman" value="Dijemput">
+                                <input type="radio" class="form-check-input" id="shipping_method_pickup" name="metode_pengiriman" value="Dijemput" {{ old('metode_pengiriman') == 'Dijemput' ? 'checked' : '' }}>
                                 <label for="shipping_method_pickup" class="form-check-label">Dijemput</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" id="shipping_method_delivery" name="metode_pengiriman" value="Diantarkan">
+                                <input type="radio" class="form-check-input" id="shipping_method_delivery" name="metode_pengiriman" value="Diantarkan" {{ old('metode_pengiriman') == 'Diantarkan' ? 'checked' : '' }}>
                                 <label for="shipping_method_delivery" class="form-check-label">Diantarkan</label>
                             </div>
                         </div>
+                        @error('metode_pengiriman')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Alamat Pengiriman -->
@@ -47,22 +53,31 @@
                             <i class="fas fa-map-marker-alt me-2"></i> Alamat Pengiriman
                         </h5>
                         <div class="mt-3">
-                            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Masukan Alamat Pengiriman">{{ Auth::user()->alamat ?? '' }}</textarea>
+                            <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3" placeholder="Masukan Alamat Pengiriman">{{ old('alamat', Auth::user()->alamat) }}</textarea>
+                            @error('alamat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mt-3">
                             <label for="destination" class="form-label">Kota</label>
-                            <select name="destination" id="destination" class="form-control">
+                            <select name="destination" id="destination" class="form-control @error('destination') is-invalid @enderror">
                                 <option value="">Pilih Tujuan Kota</option>
                                 @foreach ($cities as $city)
-                                    <option value="{{ $city['city_id'] }}" data-province-id="{{ $city['province_id'] }}" data-province="{{ $city['province'] }}">
+                                    <option value="{{ $city['city_id'] }}" data-province-id="{{ $city['province_id'] }}" data-province="{{ $city['province'] }}" {{ old('destination') == $city['city_id'] ? 'selected' : '' }}>
                                         {{ $city['city_name'] }}
                                     </option>
                                 @endforeach
                             </select>
+                            @error('destination')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mt-3">
                             <label for="province" class="form-label">Provinsi</label>
-                            <input type="text" name="province" id="province" class="form-control" readonly placeholder="Provinsi"/>
+                            <input type="text" name="province" id="province" class="form-control @error('province') is-invalid @enderror" value="{{ old('province') }}" readonly placeholder="Provinsi"/>
+                            @error('province')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <input type="hidden" id="origin" name="origin" class="form-control" value="{{ $cityPadang['city_id'] }}" disabled readonly/>
                         <input type="hidden" id="weight" name="weight" class="form-control" value="1000" disabled readonly/>
