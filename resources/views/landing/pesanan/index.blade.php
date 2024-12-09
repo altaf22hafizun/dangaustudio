@@ -75,8 +75,8 @@
                         </h5>
                         <div class="mt-3">
                             <div class="form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input courier-code" id="jne" name="courier" value="jne">
-                                <label for="courier" class="form-check-label">JNE</label>
+                                <input type="checkbox" class="form-check-input" id="jne" name="courier" value="jne">
+                                <label for="jne" class="form-check-label">JNE</label>
                             </div>
                         </div>
                         <div class="mt-3">
@@ -98,7 +98,7 @@
                             <span>SubTotal:</span>
                             <span id="total-price">Rp {{ number_format($pesanans->sum('price'), 0, ',', '.') }}</span>
                         </div>
-                        <div class="d-flex justify-content-between mt-2" id="shipping-container" style="display: none;">
+                        <div class="d-flex justify-content-between mt-2" id="shipping-container">
                             <span>Ongkos Kirim:</span>
                             <span id="shipping-fee">Rp 0</span>
                         </div>
@@ -132,16 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const shippingFeeContainer = document.getElementById('shipping-fee');
     const grandTotalContainer = document.getElementById('grand-total');
     const totalPriceElement = document.getElementById('total-price');
+    const addressInput = document.getElementById('address');  // Input alamat
     let shippingFee = 0;
-    let subTotal = parseInt(totalPriceElement.textContent.replace('Rp ', '').replace(',', ''));
 
-    // Pastikan elemen-elemen ini ada
-    if (!shippingFeeContainer || !grandTotalContainer || !totalPriceElement) {
-        console.error("Elemen untuk ongkos kirim atau total grand tidak ditemukan!");
-        return;
-    }
+    // Mengambil subtotal dari elemen text dan menghapus karakter yang tidak perlu
+    let subTotalText = totalPriceElement.textContent.replace('Rp ', '').replace(/\./g, ''); // Menghapus 'Rp' dan titik (.)
+    let subTotal = parseInt(subTotalText);  // Mengubah string menjadi angka
 
-    // Fungsi untuk memperbarui data pengiriman
+   // Fungsi untuk memperbarui data pengiriman
     function updateShippingServices(destinationId) {
         if (destinationId) {
             fetch("{{ route('getShippingServices') }}", {
@@ -169,29 +167,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Looping melalui setiap biaya pengiriman
                     service.costs.forEach((cost, index) => {
                         cost.cost.forEach((item, itemIndex) => {
-                            const serviceItem = document.createElement('div');
-                            serviceItem.classList.add('list-group-item');
+                            // Filter hanya layanan REG dan OKE
+                            if (cost.description.toUpperCase().includes('REG') || cost.description.toUpperCase().includes('OKE')) {
+                                const serviceItem = document.createElement('div');
+                                serviceItem.classList.add('list-group-item');
 
-                            const etd = item.etd || 'TBA'; // Jika tidak ada etd, tampilkan 'TBA'
-                            const value = item.value ? `Rp ${new Intl.NumberFormat().format(item.value)}` : 'Rp 0';
+                                const etd = item.etd || 'TBA'; // Jika tidak ada etd, tampilkan 'TBA'
+                                const value = item.value ? `Rp ${new Intl.NumberFormat().format(item.value)}` : 'Rp 0';
 
-                            serviceItem.innerHTML = `
-                                <input type="radio" id="service-${index}-${itemIndex}" name="shipping_service" value="${item.value}" class="form-check-input" onclick="updateShippingFee(${item.value})">
-                                <label for="service-${index}-${itemIndex}" class="form-check-label ms-3">
-                                    <strong>${cost.description} (${cost.service})</strong><br>
-                                    Estimated Delivery: ${etd} days<br>
-                                    Price: ${value}
-                                </label>
-                            `;
-                            availableServicesContainer.appendChild(serviceItem);
+                                serviceItem.innerHTML = `
+                                    <input type="radio" id="service-${index}-${itemIndex}" name="shipping_service" value="${item.value}" class="form-check-input" onclick="updateShippingFee(${item.value})">
+                                    <label for="service-${index}-${itemIndex}" class="form-check-label ms-3">
+                                        <strong>${cost.description} (${cost.service})</strong><br>
+                                        Estimated Delivery: ${etd} days<br>
+                                        Price: ${value}
+                                    </label>
+                                `;
+                                availableServicesContainer.appendChild(serviceItem);
+                            }
                         });
                     });
 
                     availableServicesContainer.style.display = 'block'; // Tampilkan layanan pengiriman
-                    shippingFeeContainer.style.display = 'block'; // Tampilkan ongkos kirim
                 } else {
                     availableServicesContainer.style.display = 'none';
-                    shippingFeeContainer.style.display = 'none';
                 }
             })
             .catch(err => {
@@ -203,8 +202,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fungsi untuk update ongkos kirim
     window.updateShippingFee = function(shippingFeeValue) {
-        shippingFee = shippingFeeValue;
+        shippingFee = shippingFeeValue || 0; // Jika tidak ada ongkos kirim, anggap 0
         shippingFeeContainer.textContent = `Rp ${new Intl.NumberFormat().format(shippingFee)}`;
+
+        // Menghitung Grand Total: SubTotal + Ongkos Kirim
         const grandTotal = subTotal + shippingFee;
         grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(grandTotal)}`;
     }
@@ -215,9 +216,33 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value === 'Diantarkan') {
                 alamatContainer.style.display = 'block';
                 deliveryContainer.style.display = 'block';
+                shippingFeeContainer.style.display = 'block'; // Reset ongkos kirim saat berpindah ke diantarkan
+                availableServicesContainer.style.display = 'none'; // Hide available services saat "Diantarkan" dipilih, menunggu kota tujuan
+
+                // Centang checkbox JNE secara otomatis
+                document.getElementById('jne').checked = true;
+
+                // Hapus data yang sudah ada pada available services jika ada
+                const radioButtons = availableServicesContainer.querySelectorAll('input[type="radio"]');
+                radioButtons.forEach(radio => radio.checked = false); // Reset pilihan radio
             } else {
                 alamatContainer.style.display = 'none';
                 deliveryContainer.style.display = 'none';
+                shippingFee = 0;
+                shippingFeeContainer.textContent = 'Rp 0'; // Ongkos kirim tetap 0
+                shippingFeeContainer.style.display = 'block'; // Tampilkan ongkos kirim 0
+                availableServicesContainer.style.display = 'none'; // Sembunyikan layanan pengiriman
+                grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(subTotal)}`; // Update Grand Total
+
+                // Reset checkbox JNE dan radio button
+                document.getElementById('jne').checked = false;
+                const radioButtons = availableServicesContainer.querySelectorAll('input[type="radio"]');
+                radioButtons.forEach(radio => radio.checked = false);
+
+                // Reset kota, provinsi, dan alamat
+                destinationSelect.selectedIndex = 0;  // Reset pilihan kota ke default
+                provinceInput.value = '';  // Kosongkan provinsi
+                addressInput.value = ''; // Kosongkan alamat
             }
         });
     });
@@ -227,8 +252,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedCity = this.selectedOptions[0];
         const provinceName = selectedCity.dataset.province;
         provinceInput.value = provinceName;
-        updateShippingServices(this.value);
+
+        // Tampilkan layanan pengiriman hanya setelah memilih kota tujuan
+        if (this.value) {
+            updateShippingServices(this.value);
+        }
+    });
+
+    // Event listener untuk checkbox JNE
+    document.getElementById('jne').addEventListener('change', function() {
+        if (this.checked) {
+            // Jika JNE dicentang, dan kota sudah dipilih, tampilkan available services
+            if (destinationSelect.value) {
+                availableServicesContainer.style.display = 'block';
+            }
+        } else {
+            availableServicesContainer.style.display = 'none';
+            shippingFee = 0;
+            shippingFeeContainer.textContent = 'Rp 0';
+            grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(subTotal)}`;
+
+            // Reset semua radio button ketika JNE di-uncheck
+            const radioButtons = availableServicesContainer.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => radio.checked = false);
+        }
     });
 });
+
 </script>
 @endpush
