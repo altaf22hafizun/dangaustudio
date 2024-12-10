@@ -59,9 +59,9 @@
                             @enderror
                         </div>
                         <div class="mt-3">
-                            <label for="destination" class="form-label">Kota</label>
+                            <label for="destination" class="form-label">Kota / Kabupaten</label>
                             <select name="destination" id="destination" class="form-control @error('destination') is-invalid @enderror">
-                                <option value="">Pilih Tujuan Kota</option>
+                                <option value="">Pilih Tujuan Kota / Kabupaten</option>
                                 @foreach ($cities as $city)
                                     <option value="{{ $city['city_id'] }}" data-province-id="{{ $city['province_id'] }}" data-province="{{ $city['province'] }}" {{ old('destination') == $city['city_id'] ? 'selected' : '' }}>
                                         {{ $city['city_name'] }}
@@ -116,6 +116,7 @@
                         <div class="d-flex justify-content-between mt-2" id="shipping-container">
                             <span>Ongkos Kirim:</span>
                             <span id="shipping-fee">Rp 0</span>
+                            <input type="hidden" name="shipping_fee" id="shipping-fee-input" value="0">
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <span><strong>Grand Total:</strong></span>
@@ -219,6 +220,8 @@ document.addEventListener('DOMContentLoaded', function() {
     window.updateShippingFee = function(shippingFeeValue) {
         shippingFee = shippingFeeValue || 0; // Jika tidak ada ongkos kirim, anggap 0
         shippingFeeContainer.textContent = `Rp ${new Intl.NumberFormat().format(shippingFee)}`;
+
+        document.getElementById('shipping-fee-input').value = shippingFee;
 
         // Menghitung Grand Total: SubTotal + Ongkos Kirim
         const grandTotal = subTotal + shippingFee;

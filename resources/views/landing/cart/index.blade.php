@@ -71,7 +71,7 @@
         checkboxes.forEach(checkbox => {
             checkbox.checked = this.checked; // Set semua checkbox sesuai dengan status "Pilih Semua"
         });
-        updateSummary(); // Update ringkasan saat semua terpilih
+        updateSummary();
     });
 
     // Update ringkasan ketika checkbox item diubah

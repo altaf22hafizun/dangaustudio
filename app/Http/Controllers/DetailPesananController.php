@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailPesanan;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,8 @@ class DetailPesananController extends Controller
             return redirect()->route('cart.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
+        // dd($pesanans);
+
         $cities = $this->rajaOngkir();
 
         // Filter untuk kota Padang (ID: 318)
@@ -42,18 +45,20 @@ class DetailPesananController extends Controller
         return view('landing.pesanan.index', [
             'pesanans' => $pesanans,
             'cities' => $cities,
-            'cityPadang' => $cityPadang, 
+            'cityPadang' => $cityPadang,
         ]);
     }
 
     public function checkout(Request $request)
     {
+
+        // dd($request->all());
         $validateData = $request->validate([
             'pesanan_id' => 'required|array|min:1',
             'metode_pengiriman' => 'required|in:Dijemput,Diantarkan',
-            'alamat' => 'required_if:metode_pengiriman,Diantarkan|string',
-            'destination' => 'required_if:metode_pengiriman,Diantarkan|integer',
-            'province' => 'required_if:metode_pengiriman,Diantarkan|string',
+            'alamat' => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
+            'destination' => 'nullable|required_if:metode_pengiriman,Diantarkan|integer',
+            'province' => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
         ], [
             'pesanan_id.required' => 'Harap pilih setidaknya satu pesanan untuk melanjutkan checkout.',
             'pesanan_id.min' => 'Harap pilih lebih dari satu pesanan untuk melanjutkan checkout.',
@@ -68,8 +73,8 @@ class DetailPesananController extends Controller
             'province.required_if' => 'Provinsi harus diisi jika pengiriman diantarkan.',
         ]);
 
-        //Dapatkan pesanan berdasarkan ID yang dipilih
-        $pesanans = Pesanan::where('id', $request->input('pesanan_id'))
+        // Dapatkan pesanan berdasarkan ID yang dipilih
+        $pesanans = Pesanan::whereIn('id', $request->input('pesanan_id'))
             ->where('user_id', Auth::id())
             ->with('karya.seniman')
             ->get();
@@ -79,29 +84,64 @@ class DetailPesananController extends Controller
             return view('landing.pesanan.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
-        $cities = $this->rajaOngkir();
+        // Tanggal transaksi otomatis menggunakan waktu sekarang
+        $tglTransaksi = now();
 
-        // Ambil data alamat dan pengiriman
-        $address = $request->input('alamat');
-        $destination = $request->input('destination');
-        $province = $request->input('province');
+        if ($request->input('metode_pengiriman') === 'Diantarkan') {
+            // Ambil data alamat dan pengiriman
 
-        // Jika destination (ID kota) dipilih, cari nama kota dari daftar kota
-        if ($destination && $province) {
+            $address = $request->input('alamat');
+            $destination = $request->input('destination');
+            $province = $request->input('province');
+
+
+            //Pastikan data tujuan valid
+            $cities = $this->rajaOngkir();
             $city = collect($cities)->firstWhere('city_id', $destination);
             $cityName = $city ? $city['city_name'] : '';
-        }
 
-        //Gabungkan alamat kota provinsi
-        if ($cityName && $province) {
             $alamat = $address . ',' . $cityName . ',' . $province;
         }
+
+        //Hitung GrandTotal
+        $subtotal = $pesanans->sum('price');
+        $shippingFee = $request->input('shipping_fee');
+        $total_harga = $subtotal + $shippingFee;
+
+        // Menyimpan detail pesanan ke database
+        foreach ($pesanans as $pesanan) {
+            // Simpan detail pesanan pada tabel detail_pesanan
+            DetailPesanan::create([
+                'pesanan_id' => $pesanan->id, // ID pesanan
+                'status' => 'Pembayaran Berhasil', // Status pembayaran
+                'tgl_transaksi' => $tglTransaksi, // Tanggal transaksi otomatis
+                'total_harga' => $total_harga, // Total harga
+                'metode_pengiriman' => $request->input('metode_pengiriman'),
+                'alamat' => $alamat ?? null, // Alamat jika pengiriman 'Diantarkan'
+                'shipping_fee' => $shippingFee, // Ongkir
+                'status_pembayaran' => 'Lunas'
+            ]);
+
+            $karya = $pesanan->karya;
+            if ($karya) {
+                $karya->update([
+                    'stock' => 'terjual',
+                ]);
+            }
+        }
+
+        // Ambil detail pesanan dari tabel DetailPesanan
+        $detailPesanan = DetailPesanan::whereIn('pesanan_id', $request->input('pesanan_id'))->get();
+
+        // dd($detailPesanan);
 
         return view('landing.pesanan.berhasil', [
             'pesanans' => $pesanans,
             'metode_pengiriman' => $request->input('metode_pengiriman'),
-            'alamat' => $alamat,
-        ]);
+            'alamat' => $alamat ?? null,
+            'total_harga' => $total_harga,
+            'detailPesanan' => $detailPesanan,
+        ])->with('success', 'Pembayaran Berhasil');
     }
 
     /**
