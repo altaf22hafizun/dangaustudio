@@ -52,13 +52,42 @@
                         Rp {{ number_format($total_harga, 0, ',', '.') }}
                     </p>
                 </div>
-
-                <div class="mt-4">
-                    <a href="{{ route('home') }}" class="btn btn-primary w-100">Kembali ke Halaman Utama</a>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-success w-100" id="pay-button">Checkout</button>
                 </div>
+                {{-- <div class="mt-4">
+                    <a href="{{ route('home') }}" class="btn btn-primary w-100">Kembali ke Halaman Utama</a>
+                </div> --}}
             </div>
         </div>
     </div>
 </section>
 
 @endsection
+@push('custom-script')
+<script type="text/javascript">
+    // For example trigger on button clicked, or any time you need
+    var payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', function () {
+      window.snap.pay('{{ $snapToken }}', {
+        onSuccess: function (result) {
+          /* You may add your own implementation here */
+          alert("payment success!"); console.log(result);
+        },
+        onPending: function (result) {
+          /* You may add your own implementation here */
+          alert("wating your payment!"); console.log(result);
+        },
+        onError: function (result) {
+          /* You may add your own implementation here */
+          alert("payment failed!"); console.log(result);
+        },
+        onClose: function () {
+          /* You may add your own implementation here */
+          alert('you closed the popup without finishing the payment');
+        }
+      });
+    });
+</script>
+
+@endpush

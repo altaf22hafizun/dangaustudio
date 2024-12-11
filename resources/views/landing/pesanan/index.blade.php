@@ -124,7 +124,7 @@
                         </div>
                         <!-- Submit -->
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-success w-100">Checkout</button>
+                            <button type="submit" class="btn btn-success w-100" id="pay-button">Checkout</button>
                         </div>
                     </div>
                 </div>
@@ -295,6 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             radioButtons.forEach(radio => radio.checked = false);
         }
     });
+
 });
 
 </script>

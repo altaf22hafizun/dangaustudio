@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailPesanan;
 use App\Models\Pesanan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -51,97 +52,124 @@ class DetailPesananController extends Controller
 
     public function checkout(Request $request)
     {
-
-        // dd($request->all());
-        $validateData = $request->validate([
-            'pesanan_id' => 'required|array|min:1',
+        // Validasi data dari request
+        $validatedData = $request->validate([
+            'pesanan_id'        => 'required|array|min:1',
             'metode_pengiriman' => 'required|in:Dijemput,Diantarkan',
-            'alamat' => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
-            'destination' => 'nullable|required_if:metode_pengiriman,Diantarkan|integer',
-            'province' => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
+            'alamat'            => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
+            'destination'       => 'nullable|required_if:metode_pengiriman,Diantarkan|integer',
+            'province'          => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
         ], [
-            'pesanan_id.required' => 'Harap pilih setidaknya satu pesanan untuk melanjutkan checkout.',
-            'pesanan_id.min' => 'Harap pilih lebih dari satu pesanan untuk melanjutkan checkout.',
-
+            'pesanan_id.required'        => 'Harap pilih setidaknya satu pesanan untuk melanjutkan checkout.',
+            'pesanan_id.min'             => 'Harap pilih lebih dari satu pesanan untuk melanjutkan checkout.',
             'metode_pengiriman.required' => 'Metode pengiriman harus dipilih.',
-            'metode_pengiriman.in' => 'Metode pengiriman tidak valid. Pilih antara Dijemput atau Diantarkan.',
-
-            'alamat.required_if' => 'Alamat pengiriman harus diisi jika metode pengiriman dipilih "Diantarkan".',
-            'alamat.string' => 'Alamat pengiriman harus berupa teks.',
-
-            'destination.required_if' => 'Kota tujuan harus dipilih jika pengiriman diantarkan.',
-            'province.required_if' => 'Provinsi harus diisi jika pengiriman diantarkan.',
+            'metode_pengiriman.in'       => 'Metode pengiriman tidak valid. Pilih antara Dijemput atau Diantarkan.',
+            'alamat.required_if'         => 'Alamat pengiriman harus diisi jika metode pengiriman dipilih "Diantarkan".',
+            'alamat.string'              => 'Alamat pengiriman harus berupa teks.',
+            'destination.required_if'    => 'Kota tujuan harus dipilih jika pengiriman diantarkan.',
+            'province.required_if'       => 'Provinsi harus diisi jika pengiriman diantarkan.',
         ]);
 
-        // Dapatkan pesanan berdasarkan ID yang dipilih
-        $pesanans = Pesanan::whereIn('id', $request->input('pesanan_id'))
+        // Ambil data pesanan berdasarkan ID yang divalidasi
+        $pesanans = Pesanan::whereIn('id', $validatedData['pesanan_id'])
             ->where('user_id', Auth::id())
             ->with('karya.seniman')
             ->get();
 
-        //Jika pesanan tidak ditemukan
+        // Jika pesanan tidak ditemukan
         if ($pesanans->isEmpty()) {
-            return view('landing.pesanan.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
+            return redirect()->route('landing.pesanan.index')
+                ->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
-        // Tanggal transaksi otomatis menggunakan waktu sekarang
+        // Inisialisasi variabel transaksi
         $tglTransaksi = now();
+        $alamat = null;
+        // Ongkir default 0
+        $shippingFee = $request->input('shipping_fee', 0);
 
-        if ($request->input('metode_pengiriman') === 'Diantarkan') {
-            // Ambil data alamat dan pengiriman
+        // Jika metode pengiriman adalah "Diantarkan", validasi dan ambil detail alamat
+        if ($validatedData['metode_pengiriman'] === 'Diantarkan') {
+            $cities = $this->rajaOngkir(); // Ambil daftar kota melalui RajaOngkir
+            $city = collect($cities)->firstWhere('city_id', $validatedData['destination']);
+            $cityName = $city ? $city['city_name'] : 'Unknown City';
 
-            $address = $request->input('alamat');
-            $destination = $request->input('destination');
-            $province = $request->input('province');
-
-
-            //Pastikan data tujuan valid
-            $cities = $this->rajaOngkir();
-            $city = collect($cities)->firstWhere('city_id', $destination);
-            $cityName = $city ? $city['city_name'] : '';
-
-            $alamat = $address . ',' . $cityName . ',' . $province;
+            // Format alamat lengkap
+            $alamat = $validatedData['alamat'] . ', ' . $cityName . ', ' . $validatedData['province'];
         }
 
-        //Hitung GrandTotal
+        // Hitung subtotal dan total harga
         $subtotal = $pesanans->sum('price');
-        $shippingFee = $request->input('shipping_fee');
         $total_harga = $subtotal + $shippingFee;
 
-        // Menyimpan detail pesanan ke database
+        // Generate trx_id
+        $trxId = DetailPesanan::generateUniqueTransaction();
+
+        // Simpan detail pesanan ke database
         foreach ($pesanans as $pesanan) {
-            // Simpan detail pesanan pada tabel detail_pesanan
             DetailPesanan::create([
-                'pesanan_id' => $pesanan->id, // ID pesanan
-                'status' => 'Pembayaran Berhasil', // Status pembayaran
-                'tgl_transaksi' => $tglTransaksi, // Tanggal transaksi otomatis
-                'total_harga' => $total_harga, // Total harga
-                'metode_pengiriman' => $request->input('metode_pengiriman'),
-                'alamat' => $alamat ?? null, // Alamat jika pengiriman 'Diantarkan'
-                'shipping_fee' => $shippingFee, // Ongkir
-                'status_pembayaran' => 'Lunas'
+                'trx_id'             => $trxId,
+                'pesanan_id'         => $pesanan->id,
+                'status'             => 'Pembayaran Berhasil',
+                'tgl_transaksi'      => $tglTransaksi,
+                'total_harga'        => $total_harga,
+                'metode_pengiriman'  => $validatedData['metode_pengiriman'],
+                'alamat'             => $alamat,
+                'shipping_fee'       => $shippingFee,
             ]);
 
+            // Update stok karya terkait
             $karya = $pesanan->karya;
             if ($karya) {
-                $karya->update([
-                    'stock' => 'terjual',
-                ]);
+                $karya->update(['stock' => 'terjual']);
             }
         }
 
+        // Konfigurasi Midtrans
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$isProduction = false; // Development mode
+        \Midtrans\Config::$isSanitized = true;   // Data sanitasi aktif
+        \Midtrans\Config::$is3ds = true;         // 3DS aktif untuk kartu kredit
+
+        $params = [
+            'transaction_details' => [
+                'order_id'     => $trxId,
+                'gross_amount' => $total_harga,
+            ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'last_name'  => '',
+                'email'      => Auth::user()->email,
+                'phone'      => Auth::user()->telp,
+            ],
+        ];
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
         // Ambil detail pesanan dari tabel DetailPesanan
-        $detailPesanan = DetailPesanan::whereIn('pesanan_id', $request->input('pesanan_id'))->get();
+        $detailPesanan = DetailPesanan::whereIn('pesanan_id', $validatedData['pesanan_id'])->get();
 
-        // dd($detailPesanan);
-
+        // Tampilkan halaman checkout sukses
         return view('landing.pesanan.berhasil', [
-            'pesanans' => $pesanans,
-            'metode_pengiriman' => $request->input('metode_pengiriman'),
-            'alamat' => $alamat ?? null,
-            'total_harga' => $total_harga,
-            'detailPesanan' => $detailPesanan,
+            'pesanans'          => $pesanans,
+            'metode_pengiriman' => $validatedData['metode_pengiriman'],
+            'alamat'            => $alamat,
+            'total_harga'       => $total_harga,
+            'detailPesanan'     => $detailPesanan,
+            'snapToken'          => $snapToken,
         ])->with('success', 'Pembayaran Berhasil');
+    }
+
+    public function callback(Request $request, $trxId)
+    {
+        $serverKey = config('midtrans.server_key');
+        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+        if ($hashed == $request->signature_key) {
+            if ($request->transaction_status == 'capture') {
+                $order = DetailPesanan::find($trxId);
+                $order->update(['status_pembayaran' => 'Lunas']);
+            }
+        }
     }
 
     /**

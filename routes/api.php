@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\KaryaController;
 use App\Http\Controllers\PameranController;
@@ -17,3 +18,5 @@ Route::apiResource('/seniman', SenimanController::class, array('as' => 'api'));
 Route::apiResource('/berita', BeritaController::class, array('as' => 'api'));
 Route::apiResource('/karya', KaryaController::class, array('as' => 'api'));
 Route::apiResource('/pameran', PameranController::class, array('as' => 'api'));
+
+Route::post('/midtrans-callback', [DetailController::class, 'callback']);
