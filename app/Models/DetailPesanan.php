@@ -10,15 +10,7 @@ class DetailPesanan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'pesanan_id',
-        'trx_id',
-        'tgl_transaksi',
-        'total_harga',
-        'status_pembayaran',
-        'metode_pengiriman',
-        'alamat',
-    ];
+    protected $guarded = [];
 
     public function pesanan()
     {
@@ -54,5 +46,10 @@ class DetailPesanan extends Model
         }
 
         return $randomString;
+    }
+
+    public function setAlamatAttribute($value)
+    {
+        $this->attributes['alamat'] = ucwords(strtolower($value));
     }
 }

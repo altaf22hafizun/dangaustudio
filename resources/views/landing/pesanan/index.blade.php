@@ -13,7 +13,8 @@
                     <div class="border p-3 shadow-sm">
                         @foreach ($pesanans as $pesanan)
                         <!-- Kirimkan ID pesanan yang dipilih -->
-                        <input type="hidden" name="pesanan_id[]" value="{{ $pesanan->id }}" />
+                        <input type="hidden" name="pesanan_id[{{ $pesanan->id }}]" value="{{ $pesanan->id }}" />
+                        <input type="hidden" id="shipping-service-input" name="jenis_pengiriman" value="">
                         <div class="border p-3 mb-3 shadow-sm">
                             <div class="row align-items-center">
                                 <div class="col-2">
@@ -34,11 +35,11 @@
                         <h5 class="text-success">Metode Pengiriman</h5>
                         <div class="mt-3">
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" id="shipping_method_pickup" name="metode_pengiriman" value="Dijemput" {{ old('metode_pengiriman') == 'Dijemput' ? 'checked' : '' }}>
+                                <input type="radio" class="form-check-input" id="shipping_method_pickup" name="metode_pengiriman" value="Dijemput" {{ old('metode_pengiriman') == 'Dijemput' ? 'checked' : '' }} required>
                                 <label for="shipping_method_pickup" class="form-check-label">Dijemput</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" id="shipping_method_delivery" name="metode_pengiriman" value="Diantarkan" {{ old('metode_pengiriman') == 'Diantarkan' ? 'checked' : '' }}>
+                                <input type="radio" class="form-check-input" id="shipping_method_delivery" name="metode_pengiriman" value="Diantarkan" {{ old('metode_pengiriman') == 'Diantarkan' ? 'checked' : '' }} required>
                                 <label for="shipping_method_delivery" class="form-check-label">Diantarkan</label>
                             </div>
                         </div>
@@ -53,7 +54,7 @@
                             <i class="fas fa-map-marker-alt me-2"></i> Alamat Pengiriman
                         </h5>
                         <div class="mt-3">
-                            <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3" placeholder="Masukan Alamat Pengiriman">{{ old('alamat', Auth::user()->alamat) }}</textarea>
+                            <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3" placeholder="Masukan Alamat Pengiriman" required>{{ old('alamat', Auth::user()->alamat) }}</textarea>
                             @error('alamat')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -182,27 +183,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Looping melalui setiap biaya pengiriman
                     service.costs.forEach((cost, index) => {
-                        cost.cost.forEach((item, itemIndex) => {
-                            // Filter hanya layanan REG dan OKE
-                            if (cost.description.toUpperCase().includes('REG') || cost.description.toUpperCase().includes('OKE')) {
-                                const serviceItem = document.createElement('div');
-                                serviceItem.classList.add('list-group-item');
+                    cost.cost.forEach((item, itemIndex) => {
+                        // Filter hanya layanan REG dan OKE
+                        if (cost.description.toUpperCase().includes('REG') || cost.description.toUpperCase().includes('OKE')) {
+                            const serviceItem = document.createElement('div');
+                            serviceItem.classList.add('list-group-item');
 
-                                const etd = item.etd || 'TBA'; // Jika tidak ada etd, tampilkan 'TBA'
-                                const value = item.value ? `Rp ${new Intl.NumberFormat().format(item.value)}` : 'Rp 0';
+                            const etd = item.etd || 'TBA'; // Jika tidak ada etd, tampilkan 'TBA'
+                            const value = item.value ? `Rp ${new Intl.NumberFormat().format(item.value)}` : 'Rp 0';
 
-                                serviceItem.innerHTML = `
-                                    <input type="radio" id="service-${index}-${itemIndex}" name="shipping_service" value="${item.value}" class="form-check-input" onclick="updateShippingFee(${item.value})">
-                                    <label for="service-${index}-${itemIndex}" class="form-check-label ms-3">
-                                        <strong>${cost.description} (${cost.service})</strong><br>
-                                        Estimated Delivery: ${etd} days<br>
-                                        Price: ${value}
-                                    </label>
-                                `;
-                                availableServicesContainer.appendChild(serviceItem);
-                            }
-                        });
+                            // Gabungkan description dan service menjadi satu string
+                            const shippingDescription = `${cost.description} (${cost.service})`;
+
+                            serviceItem.innerHTML = `
+                                <input type="radio" id="service-${index}-${itemIndex}" name="jenis_pengiriman" value="${shippingDescription}" class="form-check-input" onclick="updateShippingFee(${item.value}, '${shippingDescription}')">
+                                <label for="service-${index}-${itemIndex}" class="form-check-label ms-3">
+                                    <strong>${cost.description} (${cost.service})</strong><br>
+                                    Estimated Delivery: ${etd} days<br>
+                                    Price: ${value}
+                                </label>
+                            `;
+                            availableServicesContainer.appendChild(serviceItem);
+                        }
                     });
+                });
 
                     availableServicesContainer.style.display = 'block'; // Tampilkan layanan pengiriman
                 } else {
@@ -226,6 +230,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Menghitung Grand Total: SubTotal + Ongkos Kirim
         const grandTotal = subTotal + shippingFee;
         grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(grandTotal)}`;
+
+         // Menyimpan layanan pengiriman yang dipilih
+        document.getElementById('shipping-service-input').value = shippingService;
     }
 
     // Event listener untuk pilihan metode pengiriman
@@ -236,7 +243,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 deliveryContainer.style.display = 'block';
                 shippingFeeContainer.style.display = 'block'; // Reset ongkos kirim saat berpindah ke diantarkan
                 availableServicesContainer.style.display = 'none'; // Hide available services saat "Diantarkan" dipilih, menunggu kota tujuan
-
+                document.getElementById('alamat').setAttribute('required', 'required');
+                document.getElementById('destination').setAttribute('required', 'required');
+                document.getElementById('province').setAttribute('required', 'required');
                 // Centang checkbox JNE secara otomatis
                 document.getElementById('jne').checked = true;
 
@@ -251,7 +260,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 shippingFeeContainer.style.display = 'block'; // Tampilkan ongkos kirim 0
                 availableServicesContainer.style.display = 'none'; // Sembunyikan layanan pengiriman
                 grandTotalContainer.textContent = `Rp ${new Intl.NumberFormat().format(subTotal)}`; // Update Grand Total
-
+                document.getElementById('alamat').removeAttribute('required');
+                document.getElementById('destination').removeAttribute('required');
+                document.getElementById('province').removeAttribute('required');
+                document.getElementById('jne').removeAttribute('required');
                 // Reset checkbox JNE dan radio button
                 document.getElementById('jne').checked = false;
                 const radioButtons = availableServicesContainer.querySelectorAll('input[type="radio"]');

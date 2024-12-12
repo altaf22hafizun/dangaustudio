@@ -1,6 +1,6 @@
 @extends('landing.layouts.index')
 
-@section('title', 'Pesanan Berhasil | Dangau Studio')
+@section('title', 'Ringkasan Pesanan| Dangau Studio')
 @section('content')
 
 <section>

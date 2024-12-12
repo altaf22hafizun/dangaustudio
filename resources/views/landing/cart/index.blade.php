@@ -30,7 +30,7 @@
                                 @else
                                     <p class="text-danger fw-bold">Rp {{ number_format($pesanan->price, 0, ',', '.') }}</p>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input item-checkbox" name="selected_items[]" value="{{ $pesanan->price }}" id="item-{{ $pesanan->id }}">
+                                        <input type="checkbox" class="form-check-input item-checkbox" name="selected_items[{{ $pesanan->id }}]" value="{{ $pesanan->price }}" id="item-{{ $pesanan->id }}">
                                         <label class="form-check-label" for="item-{{ $pesanan->id }}">Pilih Item</label>
                                     </div>
                                 @endif

@@ -27,7 +27,8 @@ class DetailPesananController extends Controller
         session(['selected_items' => $selectedItems]);
 
         // Ambil pesanan berdasarkan item yang dipilih
-        $pesanans = Pesanan::whereIn('price', $selectedItems)
+        $ids = array_keys($selectedItems);
+        $pesanans = Pesanan::whereIn('id', $ids)
             ->where('user_id', Auth::id())
             ->with('karya.seniman')
             ->get();
@@ -35,8 +36,6 @@ class DetailPesananController extends Controller
         if ($pesanans->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
-
-        // dd($pesanans);
 
         $cities = $this->rajaOngkir();
 
@@ -59,6 +58,7 @@ class DetailPesananController extends Controller
             'alamat'            => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
             'destination'       => 'nullable|required_if:metode_pengiriman,Diantarkan|integer',
             'province'          => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
+            'jenis_pengiriman'  => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
         ], [
             'pesanan_id.required'        => 'Harap pilih setidaknya satu pesanan untuk melanjutkan checkout.',
             'pesanan_id.min'             => 'Harap pilih lebih dari satu pesanan untuk melanjutkan checkout.',
@@ -68,10 +68,11 @@ class DetailPesananController extends Controller
             'alamat.string'              => 'Alamat pengiriman harus berupa teks.',
             'destination.required_if'    => 'Kota tujuan harus dipilih jika pengiriman diantarkan.',
             'province.required_if'       => 'Provinsi harus diisi jika pengiriman diantarkan.',
+            'jenis_pengiriman.required_if'=> 'Jenis pengiriman harus diisi jika pengiriman diantarkan.',
         ]);
 
         // Ambil data pesanan berdasarkan ID yang divalidasi
-        $pesanans = Pesanan::whereIn('id', $validatedData['pesanan_id'])
+        $pesanans = Pesanan::where('id', $validatedData['pesanan_id'])
             ->where('user_id', Auth::id())
             ->with('karya.seniman')
             ->get();
@@ -87,6 +88,7 @@ class DetailPesananController extends Controller
         $alamat = null;
         // Ongkir default 0
         $shippingFee = $request->input('shipping_fee', 0);
+        $shippingService = $request->input('jenis_pengiriman');
 
         // Jika metode pengiriman adalah "Diantarkan", validasi dan ambil detail alamat
         if ($validatedData['metode_pengiriman'] === 'Diantarkan') {
@@ -110,16 +112,18 @@ class DetailPesananController extends Controller
             $detailPesanan = DetailPesanan::create([
                 'trx_id'             => $trxId,
                 'pesanan_id'         => $pesanan->id,
-                'status'             => 'Pembayaran Berhasil',
+                'status_pembayaran'  => 'Menunggu Pembayaran dan Pengiriman	',
                 'tgl_transaksi'      => $tglTransaksi,
                 'total_harga'        => $total_harga,
                 'metode_pengiriman'  => $validatedData['metode_pengiriman'],
                 'alamat'             => $alamat,
-                'shipping_fee'       => $shippingFee,
+                'jenis_pengiriman'   => $shippingService,
             ]);
 
+            $detailPesanan->setAlamatAttribute($alamat);
+
             // Update stok karya terkait
-            if ($detailPesanan->status_pembayaran === 'Lunas') {
+            if ($detailPesanan->status_pembayaran === 'Pengiriman Berhasil, Pembayaran Lunas') {
                 // Update stok karya terkait
                 $karya = $pesanan->karya;
                 if ($karya) {
