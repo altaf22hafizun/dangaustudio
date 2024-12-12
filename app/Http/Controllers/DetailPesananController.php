@@ -107,7 +107,7 @@ class DetailPesananController extends Controller
 
         // Simpan detail pesanan ke database
         foreach ($pesanans as $pesanan) {
-            DetailPesanan::create([
+            $detailPesanan = DetailPesanan::create([
                 'trx_id'             => $trxId,
                 'pesanan_id'         => $pesanan->id,
                 'status'             => 'Pembayaran Berhasil',
@@ -119,9 +119,12 @@ class DetailPesananController extends Controller
             ]);
 
             // Update stok karya terkait
-            $karya = $pesanan->karya;
-            if ($karya) {
-                $karya->update(['stock' => 'terjual']);
+            if ($detailPesanan->status_pembayaran === 'Lunas') {
+                // Update stok karya terkait
+                $karya = $pesanan->karya;
+                if ($karya) {
+                    $karya->update(['stock' => 'terjual']);
+                }
             }
         }
 

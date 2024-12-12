@@ -5,13 +5,7 @@
 
 <section>
     <div class="container mt-5 px-4">
-        <h2 class="mb-5 text-success">Pesanan Berhasil</h2>
-
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
+        <h2 class="mb-5 text-success">Ringkasan Pesanan</h2>
 
         <div class="card shadow-sm mb-5">
             <div class="card-header bg-success text-white">
