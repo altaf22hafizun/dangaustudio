@@ -15,14 +15,15 @@ return new class extends Migration
         Schema::create('detail_pesanans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pesanan_id')->constrained('pesanans')->cascadeOnDelete();
-            $table->string('trx_id')->unique();
-            $table->timestamp('tgl_transaksi')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->unsignedInteger('total_harga');
-            $table->enum('status_pembayaran', ['Menunggu Pembayaran dan Pengiriman', 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman', 'Pengiriman Berhasil, Pembayaran Lunas'])->default('Menunggu Pembayaran dan Pengiriman');
-            $table->enum('metode_pengiriman', ['Dijemput', 'Diantarkan'])->default('Dijemput');
-            $table->string('alamat')->nullable();
-            $table->string('resi_pengiriman')->nullable();
-            $table->string('jenis_pengiriman');
+            $table->foreignId('karya_id')->constrained('karyas')->cascadeOnDelete();
+            // $table->timestamp('tgl_transaksi')->default(DB::raw('CURRENT_TIMESTAMP'));
+            // $table->enum('status_pembayaran', ['Menunggu Pembayaran dan Pengiriman', 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman', 'Pengiriman Berhasil, Pembayaran Lunas'])->default('Menunggu Pembayaran dan Pengiriman');
+            // $table->string('status_pembayaran');
+            // $table->enum('metode_pengiriman', ['Dijemput', 'Diantarkan'])->default('Dijemput');
+            $table->unsignedInteger('price_karya');
+            // $table->string('alamat')->nullable();
+            // $table->string('resi_pengiriman')->nullable();
+            // $table->string('jenis_pengiriman');
             $table->timestamps();
         });
     }

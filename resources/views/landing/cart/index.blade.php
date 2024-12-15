@@ -16,7 +16,7 @@
                         <label class="form-check-label" for="select-all">Pilih Semua Item</label>
                     </div>
 
-                    @foreach ($pesanans as $pesanan)
+                    @foreach ($keranjangs as $pesanan)
                     <div class="cart-item border p-3 mb-3 shadow-sm">
                         <div class="row align-items-center">
                             <div class="col-2">
@@ -53,7 +53,7 @@
                             <span>Total:</span>
                             <span id="total-price">Rp 0</span>
                         </div>
-                        <button type="submit" class="btn btn-success w-100 mt-3">Lanjutkan ke Pembayaran</button>
+                        <button type="submit" class="btn btn-success w-100 mt-3">Lanjutkan ke Rincian Pesanan</button>
                     </div>
                 </div>
             </div>

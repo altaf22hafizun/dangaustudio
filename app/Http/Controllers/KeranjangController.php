@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Keranjang;
 use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +14,11 @@ class KeranjangController extends Controller
      */
     public function index()
     {
-        $pesanans = Pesanan::where('user_id', Auth::id())->with('karya')->get();
+        $keranjangs = Keranjang::where('user_id', Auth::id())->with('karya')->get();
         $title = 'Hapus Karya!';
         $text = "Apakah kamu ingin menghapus karya tersebut?";
         confirmDelete($title, $text);
-        return view('landing.cart.index', compact('pesanans'));
+        return view('landing.cart.index', compact('keranjangs'));
     }
 
     /**
@@ -55,7 +56,7 @@ class KeranjangController extends Controller
         // Ambil ID pengguna yang sedang login
         $userId = Auth::id();
 
-        $existingPesanan = Pesanan::where('user_id', $userId)
+        $existingPesanan = Keranjang::where('user_id', $userId)
             ->where('karya_id', $request->input('karya_id'))
             ->first();
 
@@ -63,7 +64,7 @@ class KeranjangController extends Controller
             return redirect()->route('cart.index')->with('info', 'Item sudah ada di keranjang!');
         }
 
-        Pesanan::create([
+        Keranjang::create([
             'user_id' => $userId,
             'karya_id' => $request->input('karya_id'),
             'price' => $request->input('price'),
@@ -77,8 +78,8 @@ class KeranjangController extends Controller
      */
     public function destroy($id)
     {
-        $pesanan = Pesanan::findOrFail($id);
-        $pesanan->delete();
+        $keranjangs = Keranjang::findOrFail($id);
+        $keranjangs->delete();
 
         return redirect()->route('cart.index')->with('success', 'Item berhasil dihapus dari keranjang.');
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('deskripsi');
             $table->unsignedInteger('price');
-            $table->string('category');
+            // $table->string('category');
             $table->string('medium');
             $table->string('size');
             $table->string('tahun');

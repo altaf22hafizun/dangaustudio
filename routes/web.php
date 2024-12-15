@@ -9,11 +9,13 @@ use App\Http\Controllers\KaryaController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PameranController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SenimanController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Models\DetailPesanan;
 use App\Models\Pameran;
+use App\Models\Pesanan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
@@ -75,19 +77,24 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Route::post('/pesanan-langsung', [KeranjangController::class, 'pesanan'])->name('pesanan.langsung');
 
         // Pesanan
-        Route::post('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
-        Route::get('/pesanan', [DetailPesananController::class, 'index'])->name('pesanan.index');
-        Route::post('/get-shipping-services', [DetailPesananController::class, 'getShippingServices'])->name('getShippingServices');
+        // Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
+        Route::post('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
+        Route::post('/get-shipping-services', [PesananController::class, 'getShippingServices'])->name('getShippingServices');
+        Route::post('/checkout', [PesananController::class, 'checkout'])->name('pesanan.checkout');
 
-        // Checkout
-        Route::post('/checkout', [DetailPesananController::class, 'checkout'])->name('pesanan.checkout');
+        //Detail Pesanan
 
-        //Cek ongkir
-        Route::get('/cekongkir', [DetailController::class, 'cekOngkir'])->name('pesanan.cekOngkir');
-        Route::post('/cekongkir', [DetailController::class, 'ongkirKiriman'])->name('pesanan.hitungOngkir');
+
+        // Pembayaran
+        Route::get('/pembayaran', [PesananController::class, 'pembayaran'])->name('pesanan.pembayaran');
+
+
+        // //Cek ongkir
+        // Route::get('/cekongkir', [DetailController::class, 'cekOngkir'])->name('pesanan.cekOngkir');
+        // Route::post('/cekongkir', [DetailController::class, 'ongkirKiriman'])->name('pesanan.hitungOngkir');
 
         //Riwayat Pesanan
-        ROute::get('/user/riwayat-pesanan', [DetailPesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
+        ROute::get('/user/riwayat-pesanan', [PesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
     });
 });
 

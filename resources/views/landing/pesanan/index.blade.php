@@ -4,7 +4,7 @@
 
 <section>
     <div class="container mt-5 px-4">
-        <h2 class="mb-5 text-success">Detail Pesanan</h2>
+        <h2 class="mb-5 text-success">Ringkasan Pesanan</h2>
         <form action="/checkout" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -125,7 +125,7 @@
                         </div>
                         <!-- Submit -->
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-success w-100" id="pay-button">Checkout</button>
+                            <button type="submit" class="btn btn-success w-100" id="pay-button">Lanjut ke Pembayaran</button>
                         </div>
                     </div>
                 </div>

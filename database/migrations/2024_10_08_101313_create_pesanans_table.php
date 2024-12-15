@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,8 +15,15 @@ return new class extends Migration
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('karya_id')->constrained('karyas')->cascadeOnDelete();
-            $table->unsignedInteger('price');
+            $table->string('trx_id')->unique();
+            $table->unsignedInteger('price_total');
+            $table->timestamp('tgl_transaksi')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('status_pembayaran');
+            $table->enum('metode_pengiriman', ['Dijemput', 'Diantarkan'])->default('Dijemput');
+            $table->string('alamat')->nullable();
+            $table->string('resi_pengiriman')->nullable();
+            $table->string('jenis_pengiriman')->nullable();
+            $table->unsignedInteger('ongkir')->nullable();
             $table->timestamps();
         });
     }

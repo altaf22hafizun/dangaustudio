@@ -36,56 +36,32 @@
         </div>
 
         {{-- Pesanan Item --}}
+        @foreach ($detailPesanan as $detail)
         <div class="card mb-4 shadow">
             <div class="card-body d-flex">
                 <img
-                    src="{{ asset('path/to/image.jpg') }}"
+                    src="{{ asset($detail->karya->image ? Storage::url($detail->karya->image) : 'path/to/default-image.jpg') }}"
                     alt="Product Image"
                     class="img-thumbnail me-3"
                     style="width: 100px; height: 100px; object-fit: cover;">
                 <div class="flex-grow-1">
-                    <h6 class="fw-bold">Bara</h6>
-                    <p class="text-muted mb-1">Seniman: Diah Putranti Rahmaning</p>
+                    <h6 class="fw-bold">{{ $detail->karya->name }}</h6>
+                    <p class="text-muted mb-1">Seniman: {{ $detail->karya->seniman->name }}</p>
                 </div>
                 <div class="text-end">
-                    {{-- <p class="text-muted text-decoration-line-through mb-0">Rp55.000</p> --}}
-                    <p class="text-danger fw-bold">Rp 5.000.000</p>
+                    <p class="text-danger fw-bold">Rp {{ number_format($detail->price_karya, 0, ',', '.') }}</p>
                 </div>
             </div>
             <div class="card-footer d-flex flex-column flex-md-row justify-content-between align-items-md-center border-top border-3">
                 <span class="fw-bold mb-3 mb-md-0">
-                    Total Pesanan: <span class="text-danger">Rp 5.000.000</span>
+                    Total Pesanan: <span class="text-danger">Rp {{ number_format($detail->price_karya, 0, ',', '.') }}</span>
                 </span>
                 <div class="d-flex">
                     <button class="btn btn-success me-2">Lihat Detail</button>
                 </div>
             </div>
         </div>
-        <div class="card mb-4 shadow">
-            <div class="card-body d-flex">
-                <img
-                    src="{{ asset('path/to/image.jpg') }}"
-                    alt="Product Image"
-                    class="img-thumbnail me-3"
-                    style="width: 100px; height: 100px; object-fit: cover;">
-                <div class="flex-grow-1">
-                    <h6 class="fw-bold">Bara</h6>
-                    <p class="text-muted mb-1">Seniman: Diah Putranti Rahmaning</p>
-                </div>
-                <div class="text-end">
-                    {{-- <p class="text-muted text-decoration-line-through mb-0">Rp55.000</p> --}}
-                    <p class="text-danger fw-bold">Rp 5.000.000</p>
-                </div>
-            </div>
-            <div class="card-footer d-flex flex-column flex-md-row justify-content-between align-items-md-center border-top border-3">
-                <span class="fw-bold mb-3 mb-md-0">
-                    Total Pesanan: <span class="text-danger">Rp 5.000.000</span>
-                </span>
-                <div class="d-flex">
-                    <button class="btn btn-success me-2">Lihat Detail</button>
-                </div>
-            </div>
-        </div>
+        @endforeach
 
     </div>
 </section>

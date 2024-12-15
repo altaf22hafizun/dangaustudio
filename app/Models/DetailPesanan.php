@@ -17,6 +17,11 @@ class DetailPesanan extends Model
         return $this->belongsTo(Pesanan::class);
     }
 
+    public function karya()
+    {
+        return $this->belongsTo(Karya::class);
+    }
+
     // public static function generateUniqueTransaction()
     // {
     //     $prefix = 'DNGSTD';
@@ -34,22 +39,19 @@ class DetailPesanan extends Model
 
     //     return $randomString;
     // }
-    public static function generateUniqueTransaction()
-    {
-        $prefix = 'DNGSTD';
-        $uuid = Str::uuid()->toString(); // Generate UUID
-        $randomString = $prefix . substr($uuid, 0, 12); // Gunakan 12 karakter pertama dari UUID
+    // public static function generateUniqueTransaction()
+    // {
+    //     $prefix = 'DNGSTD';
+    //     $uuid = Str::uuid()->toString(); // Generate UUID
+    //     $randomString = $prefix . substr($uuid, 0, 12); // Gunakan 12 karakter pertama dari UUID
 
-        // Cek apakah trx_id sudah ada
-        while (self::where('trx_id', $randomString)->exists()) {
-            $randomString = $prefix . substr(Str::uuid()->toString(), 0, 12); // Generate ulang jika sudah ada
-        }
+    //     // Cek apakah trx_id sudah ada
+    //     while (self::where('trx_id', $randomString)->exists()) {
+    //         $randomString = $prefix . substr(Str::uuid()->toString(), 0, 12); // Generate ulang jika sudah ada
+    //     }
 
-        return $randomString;
-    }
+    //     return $randomString;
+    // }
 
-    public function setAlamatAttribute($value)
-    {
-        $this->attributes['alamat'] = ucwords(strtolower($value));
-    }
+
 }

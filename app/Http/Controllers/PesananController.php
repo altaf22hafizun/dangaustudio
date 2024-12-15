@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailPesanan;
+use App\Models\Keranjang;
 use App\Models\Pesanan;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
-class DetailPesananController extends Controller
+class PesananController extends Controller
 {
-    /**
-     * Handle the post request and show selected items for payment.
-     */
     public function index(Request $request)
     {
         // Mengambil item yang dipilih dari form atau session
@@ -28,7 +25,7 @@ class DetailPesananController extends Controller
 
         // Ambil pesanan berdasarkan item yang dipilih
         $ids = array_keys($selectedItems);
-        $pesanans = Pesanan::whereIn('id', $ids)
+        $pesanans = Keranjang::whereIn('id', $ids)
             ->where('user_id', Auth::id())
             ->with('karya.seniman')
             ->get();
@@ -59,27 +56,28 @@ class DetailPesananController extends Controller
             'destination'       => 'nullable|required_if:metode_pengiriman,Diantarkan|integer',
             'province'          => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
             'jenis_pengiriman'  => 'nullable|required_if:metode_pengiriman,Diantarkan|string',
-        ], [
-            'pesanan_id.required'        => 'Harap pilih setidaknya satu pesanan untuk melanjutkan checkout.',
-            'pesanan_id.min'             => 'Harap pilih lebih dari satu pesanan untuk melanjutkan checkout.',
-            'metode_pengiriman.required' => 'Metode pengiriman harus dipilih.',
-            'metode_pengiriman.in'       => 'Metode pengiriman tidak valid. Pilih antara Dijemput atau Diantarkan.',
-            'alamat.required_if'         => 'Alamat pengiriman harus diisi jika metode pengiriman dipilih "Diantarkan".',
-            'alamat.string'              => 'Alamat pengiriman harus berupa teks.',
-            'destination.required_if'    => 'Kota tujuan harus dipilih jika pengiriman diantarkan.',
-            'province.required_if'       => 'Provinsi harus diisi jika pengiriman diantarkan.',
-            'jenis_pengiriman.required_if' => 'Jenis pengiriman harus diisi jika pengiriman diantarkan.',
         ]);
 
+        // Cek apakah ada pesanan yang sedang menunggu pembayaran
+        $pendingOrder = Pesanan::where('status_pembayaran', 'Menunggu Pembayaran dan Pengiriman')
+            ->where('user_id', Auth::id())
+            ->exists();
+
+        // Jika ada pesanan yang statusnya "Menunggu Pembayaran"
+        if ($pendingOrder) {
+            return redirect()->route('pesanan.pembayaran')
+                ->with('error', 'Anda memiliki pesanan yang masih menunggu pembayaran. Silakan selesaikan pembayaran terlebih dahulu.');
+        }
+
         // Ambil data pesanan berdasarkan ID yang divalidasi
-        $pesanans = Pesanan::where('id', $validatedData['pesanan_id'])
+        $pesanans = Keranjang::whereIn('id', $validatedData['pesanan_id'])
             ->where('user_id', Auth::id())
             ->with('karya.seniman')
             ->get();
 
         // Jika pesanan tidak ditemukan
         if ($pesanans->isEmpty()) {
-            return redirect()->route('landing.pesanan.index')
+            return redirect()->route('pesanan.index')
                 ->with('error', 'Pesanan yang Anda pilih tidak ditemukan.');
         }
 
@@ -92,7 +90,8 @@ class DetailPesananController extends Controller
 
         // Jika metode pengiriman adalah "Diantarkan", validasi dan ambil detail alamat
         if ($validatedData['metode_pengiriman'] === 'Diantarkan') {
-            $cities = $this->rajaOngkir(); // Ambil daftar kota melalui RajaOngkir
+            // Ambil daftar kota melalui RajaOngkir
+            $cities = $this->rajaOngkir();
             $city = collect($cities)->firstWhere('city_id', $validatedData['destination']);
             $cityName = $city ? $city['city_name'] : 'Unknown City';
 
@@ -105,33 +104,41 @@ class DetailPesananController extends Controller
         $total_harga = $subtotal + $shippingFee;
 
         // Generate trx_id
-        $trxId = DetailPesanan::generateUniqueTransaction();
+        $trxId = Pesanan::generateUniqueTransaction();
 
-        // Simpan detail pesanan ke database
-        foreach ($pesanans as $pesanan) {
-            $detailPesanan = DetailPesanan::create([
-                'trx_id'             => $trxId,
-                'pesanan_id'         => $pesanan->id,
-                'status_pembayaran'  => 'Menunggu Pembayaran dan Pengiriman	',
-                'tgl_transaksi'      => $tglTransaksi,
-                'total_harga'        => $total_harga,
-                'metode_pengiriman'  => $validatedData['metode_pengiriman'],
-                'alamat'             => $alamat,
-                'jenis_pengiriman'   => $shippingService,
-                'ongkir'             => $shippingFee
+        // Simpan pesanan utama
+        $pesanan = Pesanan::create([
+            'user_id'    => Auth::id(),
+            'trx_id'     => $trxId,
+            'price_total' => $total_harga,
+            'tgl_transaksi'     => $tglTransaksi,
+            'status_pembayaran' => 'Menunggu Pembayaran dan Pengiriman',
+            'metode_pengiriman' => $validatedData['metode_pengiriman'],
+            'alamat'            => $alamat,
+            'resi_pengiriman'   => null,
+            'jenis_pengiriman'  => $shippingService,
+            'ongkir'  => $shippingFee,
+        ]);
+
+        // Simpan detail pesanan untuk setiap karya
+        foreach ($pesanans as $pesananItem) {
+            DetailPesanan::create([
+                'pesanan_id'        => $pesanan->id,
+                'karya_id'          => $pesananItem->karya_id,
+                'price_karya'       => $pesananItem->price,
             ]);
-
-            $detailPesanan->setAlamatAttribute($alamat);
-
-            // Update stok karya terkait
-            if ($detailPesanan->status_pembayaran === 'Pengiriman Berhasil, Pembayaran Lunas') {
-                // Update stok karya terkait
-                $karya = $pesanan->karya;
-                if ($karya) {
-                    $karya->update(['stock' => 'terjual']);
-                }
-            }
         }
+        return redirect()->route('pesanan.pembayaran');
+    }
+
+    public function pembayaran()
+    {
+        $pesanan = Pesanan::where('user_id', Auth::id())
+            ->where('status_pembayaran', 'Menunggu Pembayaran dan Pengiriman')
+            ->first();
+
+        $detailPesanan = DetailPesanan::where('pesanan_id', $pesanan->id)
+            ->get();
 
         // Konfigurasi Midtrans
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
@@ -141,8 +148,8 @@ class DetailPesananController extends Controller
 
         $params = [
             'transaction_details' => [
-                'order_id'     => $trxId,
-                'gross_amount' => $total_harga,
+                'order_id'     => $pesanan->trx_id,
+                'gross_amount' => $pesanan->price_total,
             ],
             'customer_details' => [
                 'first_name' => Auth::user()->name,
@@ -154,18 +161,7 @@ class DetailPesananController extends Controller
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        // Ambil detail pesanan dari tabel DetailPesanan
-        $detailPesanan = DetailPesanan::whereIn('pesanan_id', $validatedData['pesanan_id'])->get();
-
-        // Tampilkan halaman checkout sukses
-        return view('landing.pesanan.berhasil', [
-            'pesanans'          => $pesanans,
-            'metode_pengiriman' => $validatedData['metode_pengiriman'],
-            'alamat'            => $alamat,
-            'total_harga'       => $total_harga,
-            'detailPesanan'     => $detailPesanan,
-            'snapToken'          => $snapToken,
-        ])->with('success', 'Pembayaran Berhasil');
+        return view('landing.pesanan.berhasil', compact('pesanan', 'detailPesanan', 'snapToken'));
     }
 
     public function callback(Request $request, $trxId)
@@ -180,9 +176,16 @@ class DetailPesananController extends Controller
         }
     }
 
-    /**
-     * Handle the checkout process.
-     */
+    public function riwayatPesanan()
+    {
+        $pesanan = Pesanan::where('user_id', Auth::id())->first();
+        $detailPesanan = DetailPesanan::where('pesanan_id', $pesanan->id)
+            ->get();
+
+        return view('landing.user.riwayat', compact('detailPesanan'));
+    }
+
+
     public function getShippingServices(Request $request)
     {
         // Ambil data dari request
