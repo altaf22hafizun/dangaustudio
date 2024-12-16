@@ -161,7 +161,7 @@ class PesananController extends Controller
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        return view('landing.pesanan.berhasil', compact('pesanan', 'detailPesanan', 'snapToken'));
+        return view('landing.pesanan.pembayaran', compact('pesanan', 'detailPesanan', 'snapToken'));
     }
 
     public function callback(Request $request, $trxId)
@@ -170,21 +170,44 @@ class PesananController extends Controller
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture') {
-                $order = DetailPesanan::find($trxId);
-                $order->update(['status_pembayaran' => 'Lunas']);
+                $order = Pesanan::find($trxId);
+                $order->update(['status_pembayaran' => 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman']);
             }
         }
     }
 
     public function riwayatPesanan()
     {
-        $pesanan = Pesanan::where('user_id', Auth::id())->first();
-        $detailPesanan = DetailPesanan::where('pesanan_id', $pesanan->id)
-            ->get();
+        // Ambil parameter 'type' dari URL, jika ada
+        $type = request('type');
 
-        return view('landing.user.riwayat', compact('detailPesanan'));
+        // Mulai query pesanan berdasarkan user yang login
+        $pesananQuery = Pesanan::where('user_id', Auth::id())
+            ->with('detailPesanans.karya') // Relasi dengan karya
+            ->pencarian(); // Pencarian berdasarkan query 'search'
+
+        // Jika ada filter 'type', gunakan scope untuk filter berdasarkan status pembayaran
+        if ($type) {
+            $pesananQuery->statusPembayaran($type); // Memanggil scope statusPembayaran
+        }
+
+        // Ambil pesanan yang sudah difilter
+        $pesanan = $pesananQuery->get();
+
+        // Kirim data pesanan dan parameter 'type' ke view
+        return view('landing.user.riwayat', compact('pesanan', 'type'));
     }
 
+    public function detailPembayaran($id)
+    {
+        $pesanan = Pesanan::where('user_id', Auth::id())
+            ->where('id', $id)
+            ->with('detailPesanans.karya')
+            ->first();
+
+            // dd($pesanan);
+        return view('landing.pesanan.detail', compact('pesanan'));
+    }
 
     public function getShippingServices(Request $request)
     {

@@ -61,10 +61,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // User Routes
     Route::group(['middleware' => ['RoleMiddleware:user']], function () {
-        // Route::get('/user', function () {
-        //     return view('user');
-        // })->name('user');
-        // Route::get('/events', [EventController::class, 'user'])->name('user.event');
 
         // Settings
         Route::get('/user/account', [ProfileController::class, 'index'])->name('profile.index');
@@ -83,7 +79,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('/checkout', [PesananController::class, 'checkout'])->name('pesanan.checkout');
 
         //Detail Pesanan
-
+        Route::get('pembayaran/pesanan/{id}', [PesananController::class, 'detailPembayaran'])->name('pesanan.detail');
 
         // Pembayaran
         Route::get('/pembayaran', [PesananController::class, 'pembayaran'])->name('pesanan.pembayaran');

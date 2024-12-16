@@ -44,9 +44,9 @@ class Karya extends Model
     }
 
     // Relasi: Karya memiliki banyak Transaksi
-    public function pesanan()
+    public function detailPesanans()
     {
-        return $this->hasMany(Pesanan::class);
+        return $this->hasMany(DetailPesanan::class);
     }
 
     // public function scopePencarian(Builder $query): void

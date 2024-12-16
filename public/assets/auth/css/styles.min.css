@@ -124,7 +124,7 @@
     ;
     --bs-link-color-rgb: 0, 133, 219;
     --bs-link-decoration: underline;
-    --bs-link-hover-color: #006aaf;
+    --bs-link-hover-color: #1a5319;
     --bs-link-hover-color-rgb: 0, 106, 175;
     --bs-code-color: #d63384;
     --bs-highlight-bg: #fef2e4;
@@ -373,7 +373,7 @@ a {
     text-decoration: underline;
 }
 a:hover {
-    --bs-link-color-rgb: var(--bs-link-hover-color-rgb);
+    --bs-link-color-rgb: var(--bs-link-hover-color);
 }
 a:not([href]):not([class]),
 a:not([href]):not([class]):hover {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class Pesanan extends Model
@@ -44,5 +45,51 @@ class Pesanan extends Model
     public function setAlamatAttribute($value)
     {
         $this->attributes['alamat'] = ucwords(strtolower($value));
+    }
+
+    public function scopePencarian(Builder $query): void
+    {
+        if ($search = request('search')) {
+            $query->where('trx_id', 'like', '%' . $search . '%')
+                // Pencarian berdasarkan nama karya melalui relasi
+                ->orWhereHas('detailPesanans.karya', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        }
+    }
+
+    // Scope untuk filter url status pembayaran
+    public function scopeStatusPembayaran(Builder $query, $type): void
+    {
+        switch ($type) {
+            case '6':
+                // Filter berdasarkan status pembayaran "Menunggu Pembayaran" dan "Pengiriman"
+                $query->whereIn('status_pembayaran', 'Menunggu Pembayaran dan Pengiriman');
+                break;
+
+            case '2':
+                // Filter berdasarkan status pembayaran "Diterima Pelanggan"
+                $query->where('status_pembayaran', 'Pengiriman Berhasil, Pembayaran Lunas');
+                break;
+
+            case '4':
+                // Filter berdasarkan status pembayaran "Pembayaran Diterima, Sedang Diproses untuk Pengiriman"
+                $query->where('status_pembayaran', 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman');
+                break;
+
+            case '9':
+                // Filter berdasarkan status pembayaran "Pengiriman Dan Pembayaran Dibatalkan"
+                $query->where('status_pembayaran', 'Pengiriman Dan Pembayaran Dibatalkan');
+                break;
+
+            case '7':
+                // Filter berdasarkan status pembayaran "Dikirim"
+                $query->where('status_pembayaran', 'Paket Dalam Perjalanan');
+                break;
+
+            default:
+                // Jika tipe tidak ditemukan, tidak melakukan filter tambahan
+                break;
+        }
     }
 }
