@@ -6,8 +6,10 @@ use App\Models\Berita;
 use App\Models\Event;
 use App\Models\Karya;
 use App\Models\Pameran;
+use App\Models\Pesanan;
 use App\Models\Seniman;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
@@ -19,6 +21,25 @@ class LandingController extends Controller
         $eventCount = Pameran::where('status_publikasi', 'Published')->count();
         $userCount = User::where('role', 'user')->count();
 
+        $bulan = 12;
+        $tahun = now()->year;
+
+        // Arrays untuk menyimpan data yang akan digunakan pada grafik
+        $dataBulan = [];
+        $dataTotalPenjualan = [];
+
+        // Looping untuk mengumpulkan data bulan, total donasi, dan total pengeluaran
+        for ($i = 1; $i <= $bulan; $i++) {
+            // Menghitung Total Donasi
+            $totalTerjual = Pesanan::whereYear('tgl_transaksi', $tahun)
+                ->whereIn('status_pembayaran', ['Pengiriman Berhasil, Pembayaran Lunas'])
+                ->whereMonth('tgl_transaksi', $i)
+                ->sum('price_total');
+
+            // Memasukkan hasil perhitungan ke dalam array
+            $dataBulan[] = Carbon::create()->month($i)->format('F');
+            $dataTotalPenjualan[] = $totalTerjual;
+        }
 
         $upcomingEvents = Event::where('start_date', '>=', now())
             ->where('status_publikasi', 'Published')
@@ -26,7 +47,7 @@ class LandingController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.index', compact('upcomingEvents', 'senimanCount', 'karyaSeniCount', 'userCount', 'eventCount'));
+        return view('admin.index', compact('upcomingEvents', 'senimanCount', 'karyaSeniCount', 'userCount', 'eventCount', 'tahun', 'dataTotalPenjualan', 'dataBulan'));
     }
 
     public function adminUser()

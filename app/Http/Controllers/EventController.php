@@ -57,7 +57,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'required|string',
             'category' => 'required|string',
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|after:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'status_publikasi' => 'required|string|in:Published,Hidden',
@@ -77,6 +77,7 @@ class EventController extends Controller
 
             'start_date.required' => 'Tanggal mulai event wajib diisi.',
             'start_date.date' => 'Tanggal mulai harus berupa tanggal yang valid.',
+            'start_date.after' => 'Tanggal mulai harus lebih dari tanggal hari ini.',
 
             'end_date.required' => 'Tanggal akhir event wajib diisi.',
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
@@ -146,7 +147,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'required|string',
             'category' => 'required|string',
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|after:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'status_publikasi' => 'required|string|in:Published,Hidden',
@@ -166,6 +167,7 @@ class EventController extends Controller
 
             'start_date.required' => 'Tanggal mulai event wajib diisi.',
             'start_date.date' => 'Tanggal mulai harus berupa tanggal yang valid.',
+            'start_date.after' => 'Tanggal mulai harus lebih dari tanggal hari ini.',
 
             'end_date.required' => 'Tanggal akhir event wajib diisi.',
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',

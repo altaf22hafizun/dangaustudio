@@ -73,7 +73,7 @@ class Pesanan extends Model
                 break;
 
             case '4':
-                // Filter berdasarkan status pembayaran "Pembayaran Diterima, Sedang Diproses untuk Pengiriman"
+                // Filter berdasarkan status pembayaran "Dikemas"
                 $query->where('status_pembayaran', 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman');
                 break;
 
