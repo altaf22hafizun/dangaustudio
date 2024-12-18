@@ -52,21 +52,21 @@
                         <div class="d-flex justify-content-between mb-2">
                             <p><strong>Status Pesanan:</strong></p>
                             <p class="fw-bold text-light btn btn-danger">
-                                @switch($pesanan->status_pembayaran)
-                                    @case('Pembayaran Diterima, Sedang Diproses untuk Pengiriman')
-                                        Dikemas
+                                @switch($pesanan->status)
+                                    @case('Dikemas')
+                                        Pembayaran Diterima, Sedang Diproses untuk Pengiriman
                                         @break
-                                    @case('Pengiriman Berhasil, Pembayaran Lunas')
-                                        Selesai
+                                    @case('Selesai')
+                                        Pengiriman Berhasil, Pembayaran Lunas
                                         @break
-                                    @case('Menunggu Pembayaran dan Pengiriman')
-                                        Belum Bayar
+                                    @case('Belum Bayar')
+                                        Menunggu Pembayaran dan Pengiriman
                                         @break
-                                    @case('Paket Dalam Perjalanan')
-                                        Dikirim
+                                    @case('Dikirim')
+                                        Paket Dalam Perjalanan
                                         @break
-                                    @case('Pengiriman Dan Pembayaran Dibatalkan')
-                                        Dibatalkan
+                                    @case('Dibatalkan')
+                                        Pengiriman Dan Pembayaran Dibatalkan
                                         @break
                                 @endswitch
                             </p>

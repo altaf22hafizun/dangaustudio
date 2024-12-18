@@ -145,8 +145,8 @@
                 <div class="card-item">
                     <div class="card">
                         <img class="card-img-top" src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" style="height: 300px; object-fit: contain;">
-                        <div class="card-body ">
-                            <h4 class="card-title">{{ $event->nama_event }}</h4>
+                        <div class="card-body">
+                            <h4 class="card-title">{{ Str::limit($event->nama_event, 30) }}</h4>
                             <p class="card-text fw-bold">Insert : {{ $event->category }}</p>
                             <p class="card-text">{{ Str::limit(strip_tags($event->description), 100) }}</p>
                             <a href="/event/{{ $event->slug }}" class="btn btn-success">
