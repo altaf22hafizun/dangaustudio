@@ -32,7 +32,7 @@ class LandingController extends Controller
         for ($i = 1; $i <= $bulan; $i++) {
             // Menghitung Total Donasi
             $totalTerjual = Pesanan::whereYear('tgl_transaksi', $tahun)
-                ->whereIn('status_pembayaran', ['Pengiriman Berhasil, Pembayaran Lunas'])
+                ->whereIn('status', ['Selesai'])
                 ->whereMonth('tgl_transaksi', $i)
                 ->sum('price_total');
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('trx_id')->unique();
             $table->unsignedInteger('price_total');
             $table->timestamp('tgl_transaksi')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('status_pembayaran');
+            $table->enum('status', ['Belum Bayar','Dikemas','Dikirim','Selesai', 'Dibatalkan']);
             $table->enum('metode_pengiriman', ['Dijemput', 'Diantarkan'])->default('Dijemput');
             $table->string('alamat')->nullable();
             $table->string('resi_pengiriman')->nullable();

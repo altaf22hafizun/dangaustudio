@@ -65,7 +65,7 @@
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <p><strong>Ongkos Pengiriman:</strong></p>
-                                <p>Rp -</p>
+                                <p>Rp {{ number_format($pesanan->ongkir, 0, ',', '.') }}</p>
                             </div>
                         @else
                             <div class="d-flex justify-content-between mb-2">
@@ -86,7 +86,7 @@
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <p><strong>Ongkos Pengiriman:</strong></p>
-                                <p>Rp {{ number_format($pesanan->ongkir, 0, ',', '.') }}</p>
+                                <p>Rp -</p>
                             </div>
                         @endif
                     </div>
@@ -117,7 +117,9 @@
     payButton.addEventListener('click', function () {
         window.snap.pay('{{ $snapToken }}', {
             onSuccess: function (result) {
-                alert("payment success!"); console.log(result);
+                window.location.href = '/user/riwayat-pesanan';
+                console.log(result);
+                // alert("payment success!"); console.log(result);
             },
             onPending: function (result) {
                 alert("waiting for your payment!"); console.log(result);

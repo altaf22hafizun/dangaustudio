@@ -59,7 +59,7 @@ class PesananController extends Controller
         ]);
 
         // Cek apakah ada pesanan yang sedang menunggu pembayaran
-        $pendingOrder = Pesanan::where('status_pembayaran', 'Menunggu Pembayaran dan Pengiriman')
+        $pendingOrder = Pesanan::where('status', 'Belum Dibayar')
             ->where('user_id', Auth::id())
             ->exists();
 
@@ -112,7 +112,7 @@ class PesananController extends Controller
             'trx_id'     => $trxId,
             'price_total' => $total_harga,
             'tgl_transaksi'     => $tglTransaksi,
-            'status_pembayaran' => 'Menunggu Pembayaran dan Pengiriman',
+            'status' => 'Belum Dibayar',
             'metode_pengiriman' => $validatedData['metode_pengiriman'],
             'alamat'            => $alamat,
             'resi_pengiriman'   => null,
@@ -134,7 +134,7 @@ class PesananController extends Controller
     public function pembayaran()
     {
         $pesanan = Pesanan::where('user_id', Auth::id())
-            ->where('status_pembayaran', 'Menunggu Pembayaran dan Pengiriman')
+            ->where('status', 'Belum Dibayar')
             ->first();
 
         $detailPesanan = DetailPesanan::where('pesanan_id', $pesanan->id)
@@ -171,9 +171,23 @@ class PesananController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture') {
                 $order = Pesanan::find($trxId);
-                $order->update(['status_pembayaran' => 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman']);
+                $order->update(['status' => 'Dikemas']);
+
+                foreach ($order->karya as $karya) {
+                    $karya->update([
+                        'status' => 'Terjual'
+                    ]);
+                }
+            } elseif (($request->transaction_status == 'cancel' && $request->payment_type == 'credit_card' && $request->fraud_status == 'deny')  || $request->transaction_status == 'deny'  || $request->transaction_status == 'pending'  || $request->transaction_status == 'expired') {
+                // Jika status transaksi cancel
+                $order = Pesanan::find('trx_id')->where('status', 'Belum Dibayar')->first();
+                if ($order) {
+                    $order->update(['status' => 'Dibatalkan']);
+                }
             }
         }
+
+        return redirect()->route('pesanan.riwayat');
     }
 
     public function riwayatPesanan()
@@ -205,7 +219,7 @@ class PesananController extends Controller
             ->with('detailPesanans.karya')
             ->first();
 
-            // dd($pesanan);
+        // dd($pesanan);
         return view('landing.pesanan.detail', compact('pesanan'));
     }
 

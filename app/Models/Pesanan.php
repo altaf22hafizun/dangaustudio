@@ -63,32 +63,28 @@ class Pesanan extends Model
     {
         switch ($type) {
             case '6':
-                // Filter berdasarkan status pembayaran "Menunggu Pembayaran" dan "Pengiriman"
-                $query->whereIn('status_pembayaran', 'Menunggu Pembayaran dan Pengiriman');
+                // Filter berdasarkan status pembayaran "Menunggu Pembayaran" dan "Pengiriman / Belum Dibayar"
+                $query->whereIn('status', 'Belum Dibayar');
                 break;
 
             case '2':
-                // Filter berdasarkan status pembayaran "Diterima Pelanggan"
-                $query->where('status_pembayaran', 'Pengiriman Berhasil, Pembayaran Lunas');
+                // Filter berdasarkan status pembayaran "Diterima Pelanggan / Selesai"
+                $query->where('status', 'Selesai');
                 break;
 
             case '4':
-                // Filter berdasarkan status pembayaran "Dikemas"
-                $query->where('status_pembayaran', 'Pembayaran Diterima, Sedang Diproses untuk Pengiriman');
+                // Filter berdasarkan status pembayaran "Pembayaran Diterima, Sedang Diproses untuk Pengiriman'/Dikemas"
+                $query->where('status', 'Dikemas');
                 break;
 
             case '9':
-                // Filter berdasarkan status pembayaran "Pengiriman Dan Pembayaran Dibatalkan"
-                $query->where('status_pembayaran', 'Pengiriman Dan Pembayaran Dibatalkan');
+                // Filter berdasarkan status pembayaran "Pengiriman Dan Pembayaran Dibatalkan / Dibatalkan"
+                $query->where('status', 'Dibatalkan');
                 break;
 
             case '7':
-                // Filter berdasarkan status pembayaran "Dikirim"
-                $query->where('status_pembayaran', 'Paket Dalam Perjalanan');
-                break;
-
-            default:
-                // Jika tipe tidak ditemukan, tidak melakukan filter tambahan
+                // Filter berdasarkan status pembayaran "Dikirim / Paket Dalam Perjalanan"
+                $query->where('status', 'Dikirim');
                 break;
         }
     }

@@ -57,21 +57,21 @@
                     <div class="d-flex justify-content-between flex-column flex-md-row align-items-md-center">
                         <h5 class="fw-bold text-success">Pesanan ID : {{ $p->trx_id }}</h5>
                         <p class="text-light btn btn-danger rounded-3 ms-2">
-                            @switch($p->status_pembayaran)
-                                @case('Menunggu Pembayaran dan Pengiriman')
-                                    Menunggu Pembayaran
+                            @switch($p->status)
+                                @case('Belum Dibayar')
+                                    Menunggu Pembayaran dan Pengiriman
                                     @break
-                                @case('Pengiriman Berhasil, Pembayaran Lunas')
-                                    Selesai
+                                @case('Selesai')
+                                    Pengiriman Berhasil, Pembayaran Lunas
                                     @break
-                                @case('Pembayaran Diterima, Sedang Diproses untuk Pengiriman')
-                                    Dikemas
+                                @case('Dikemas')
+                                    Pembayaran Diterima, Sedang Diproses untuk Pengiriman
                                     @break
-                                @case('Pengiriman Dan Pembayaran Dibatalkan')
-                                    Dibatalkan
+                                @case('Dibatalkan')
+                                    Pengiriman Dan Pembayaran Dibatalkan
                                     @break
-                                @case('Paket Dalam Perjalanan')
-                                    Dikirim
+                                @case('Dikirim')
+                                    Paket Dalam Perjalanan
                                     @break
                             @endswitch
                         </p>
@@ -100,7 +100,7 @@
                         Total Pesanan: <span class="text-danger">Rp {{ number_format($p->price_total, 0, ',', '.') }}</span>
                     </span>
                     <div class="d-flex">
-                        @if ($p->status_pembayaran == 'Menunggu Pembayaran dan Pengiriman')
+                        @if ($p->status == 'Belum Dibayar')
                         <a href="{{ route('pesanan.pembayaran') }}" class="btn btn-success me-2 rounded-pill">Lihat Detail</a>
                         @else
                         <a href="{{ route('pesanan.detail', ['id' => $p->id]) }}" class="btn btn-success me-2 rounded-pill">Lihat Detail</a>
