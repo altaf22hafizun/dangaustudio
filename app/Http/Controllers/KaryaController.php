@@ -26,13 +26,15 @@ class KaryaController extends Controller
         // Ambil daftar tahun yang unik dari kolom 'tahun'
         $years = Karya::select('tahun')->distinct()->orderByDesc('tahun')->pluck('tahun');
 
+        $stock = Karya::select('stock')->distinct()->get();
+
         // Ambil karya yang sesuai dengan filter
         $karyas = Karya::query()
             ->pencarian()
             ->paginate(12);
 
         // Mengirimkan data kategori medium, tahun dan karya ke view
-        return view('landing.galery.index', compact('categories', 'years', 'karyas'));
+        return view('landing.galery.index', compact('categories', 'years', 'karyas', 'stock'));
     }
 
     public function index()

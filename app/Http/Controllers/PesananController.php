@@ -5,12 +5,68 @@ namespace App\Http\Controllers;
 use App\Models\DetailPesanan;
 use App\Models\Keranjang;
 use App\Models\Pesanan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
 class PesananController extends Controller
 {
+
+    public function admin()
+    {
+
+        $pesanans = Pesanan::with('detailPesanans.karya')
+            ->paginate(12);
+
+        return view('admin.pesanan.index', compact('pesanans'));
+    }
+
+    public function edit($id)
+    {
+        $pesanans = Pesanan::with('detailPesanans.karya')
+            ->findOrFail($id);
+
+        // // Menyiapkan array untuk menyimpan nama karya
+        // $namaKarya = [];
+
+        // foreach ($pesanans->detailPesanans as $detailPesanan) {
+        //     // Ambil nama karya untuk setiap detailPesanan
+        //     $namaKarya[] = $detailPesanan->karya?->name ?? 'Nama Karya Tidak Ditemukan';
+        // }
+
+        // // Gabungkan nama-nama karya menjadi satu string, dipisahkan dengan koma
+        // $namaKaryaString = implode(', ', $namaKarya);
+
+        $formatTgl = Carbon::parse($pesanans->tgl_transaksi)->format('d-M-Y');
+
+        $status = [
+            'Dikemas' => 'Dikemas',
+            'Belum Dibayar' => 'Belum Dibayar',
+            'Selesai' => 'Selesai',
+            'Dibatalkan' => 'Dibatalkan',
+            'Dikirim' => 'Dikirim',
+        ];
+
+        // return view('admin.pesanan.edit', compact('pesanans', 'status', 'namaKaryaString'));
+        return view('admin.pesanan.edit', compact('pesanans', 'status', 'formatTgl'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $pesanans = Pesanan::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'status' => 'required|in:Belum Dibayar,Dikemas,Dikirim,Selesai,Dikabarkan',
+            'resi_pengiriman' => "nullable|string",
+        ]);
+
+        Pesanan::where('id', $id)->update($validatedData);
+
+        return redirect()->route('pesanan.admin')->with('success', 'Status pesanan berhasil diperbarui');
+    }
+
+    // User
     public function index(Request $request)
     {
         // Mengambil item yang dipilih dari form atau session
@@ -168,27 +224,50 @@ class PesananController extends Controller
     {
         $serverKey = config('midtrans.server_key');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture') {
+                // Temukan pesanan berdasarkan transaksi ID
                 $order = Pesanan::find($trxId);
+
+                // Ubah status pesanan menjadi 'Dikemas'
                 $order->update(['status' => 'Dikemas']);
 
+                // Hapus karya-karya yang terkait dengan pesanan dari keranjang pengguna
                 foreach ($order->karya as $karya) {
                     $karya->update([
                         'status' => 'Terjual'
                     ]);
+
+                    // Hapus karya terkait dari keranjang pengguna yang melakukan checkout
+                    $userId = $order->user_id;
+                    $userKeranjang = Keranjang::where('user_id', $userId)
+                        ->where('karya_id', $karya->id)
+                        ->first();
+
+                    // Hapus karya dari keranjang
+                    if ($userKeranjang) {
+                        $userKeranjang->delete();
+                    }
                 }
-            } elseif (($request->transaction_status == 'cancel' && $request->payment_type == 'credit_card' && $request->fraud_status == 'deny')  || $request->transaction_status == 'deny'  || $request->transaction_status == 'pending'  || $request->transaction_status == 'expired') {
-                // Jika status transaksi cancel
-                $order = Pesanan::find('trx_id')->where('status', 'Belum Dibayar')->first();
+            } elseif (($request->transaction_status == 'cancel' && $request->payment_type == 'credit_card' && $request->fraud_status == 'deny')  ||
+                $request->transaction_status == 'deny'  ||
+                $request->transaction_status == 'pending'  ||
+                $request->transaction_status == 'expired'
+            ) {
+
+                // Jika status transaksi cancel atau deny, ubah status pesanan menjadi 'Dibatalkan'
+                $order = Pesanan::find($trxId)->where('status', 'Belum Dibayar')->first();
                 if ($order) {
                     $order->update(['status' => 'Dibatalkan']);
                 }
             }
         }
 
+        // Redirect ke halaman riwayat pesanan
         return redirect()->route('pesanan.riwayat');
     }
+
 
     public function riwayatPesanan()
     {
@@ -222,6 +301,21 @@ class PesananController extends Controller
         // dd($pesanan);
         return view('landing.pesanan.detail', compact('pesanan'));
     }
+
+    public function konfirmasiSelesai($id)
+    {
+        // Cari pesanan berdasarkan ID
+        $pesanan = Pesanan::findOrFail($id);
+
+        // Pastikan hanya pesanan dengan status "Dikirim" yang bisa dikonfirmasi selesai
+        if ($pesanan->status == 'Dikirim') {
+            $pesanan->update(['status' => 'Selesai']);
+        }
+
+        // Redirect kembali ke halaman riwayat pesanan dengan pesan sukses
+        return redirect()->route('pesanan.riwayat')->with('success', 'Pesanan berhasil dikonfirmasi selesai');
+    }
+
 
     public function getShippingServices(Request $request)
     {

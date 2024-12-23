@@ -53,12 +53,6 @@
 {{-- SenimanDangau --}}
 <section>
     <div class="container mt-5 px-4">
-        {{-- <div class="row mb-5">
-            <div class="col-lg d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 text-success">Seniman Dangau Studio</h2>
-                {{-- <a class="btn btn-link fw-semibold text-decoration-none text-end" href="#">Lihat Semua</a>
-            </div>
-        </div> --}}
         <div class="nav d-flex flex-column flex-md-row mb-5 align-items-md-center">
             <h2 class="mb-3 me-md-auto text-success">Seniman Dangau Studio</h2>
             <form class="d-flex mb-3" role="search" method="GET" action="{{ route('seniman.landing') }}">

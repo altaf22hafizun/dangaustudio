@@ -17,7 +17,7 @@
             </li>
             <!-- Belum Bayar -->
             <li class="nav-item">
-                <a class="nav-link {{ request('type') === '6' ? 'active text-light bg-success border border-dark rounded-pill' : '' }}" href="{{ url('/user/riwayat-pesanan?type=6') }}">Belum Bayar</a>
+                <a class="nav-link {{ request('type') === '6' ? 'active text-light bg-success border border-dark rounded-pill' : '' }}" href="{{ url('/user/riwayat-pesanan?type=6') }}">Belum Dibayar</a>
             </li>
             <!-- Dikemas -->
             <li class="nav-item">
@@ -56,22 +56,28 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between flex-column flex-md-row align-items-md-center">
                         <h5 class="fw-bold text-success">Pesanan ID : {{ $p->trx_id }}</h5>
-                        <p class="text-light btn btn-danger rounded-3 ms-2">
+                        <p class="fw-bold text-light btn
+                            {{ $p->status == 'Dikemas' ? 'btn-warning' : '' }}
+                            {{ $p->status == 'Selesai' ? 'btn-success' : '' }}
+                            {{ $p->status == 'Belum Dibayar' ? 'btn-danger' : '' }}
+                            {{ $p->status == 'Dikirim' ? 'btn-info' : '' }}
+                            {{ $p->status == 'Dibatalkan' ? 'btn-secondary' : '' }}
+                        ">
                             @switch($p->status)
-                                @case('Belum Dibayar')
-                                    Menunggu Pembayaran dan Pengiriman
+                                @case('Dikemas')
+                                    Dikemas
                                     @break
                                 @case('Selesai')
-                                    Pengiriman Berhasil, Pembayaran Lunas
+                                    Selesai
                                     @break
-                                @case('Dikemas')
-                                    Pembayaran Diterima, Sedang Diproses untuk Pengiriman
-                                    @break
-                                @case('Dibatalkan')
-                                    Pengiriman Dan Pembayaran Dibatalkan
+                                @case('Belum Dibayar')
+                                    Belum Bayar
                                     @break
                                 @case('Dikirim')
-                                    Paket Dalam Perjalanan
+                                    Dikirim
+                                    @break
+                                @case('Dibatalkan')
+                                    Dibatalkan
                                     @break
                             @endswitch
                         </p>

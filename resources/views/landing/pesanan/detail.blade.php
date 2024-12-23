@@ -51,25 +51,31 @@
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <p><strong>Status Pesanan:</strong></p>
-                            <p class="fw-bold text-light btn btn-danger">
-                                @switch($pesanan->status)
-                                    @case('Dikemas')
-                                        Pembayaran Diterima, Sedang Diproses untuk Pengiriman
-                                        @break
-                                    @case('Selesai')
-                                        Pengiriman Berhasil, Pembayaran Lunas
-                                        @break
-                                    @case('Belum Bayar')
-                                        Menunggu Pembayaran dan Pengiriman
-                                        @break
-                                    @case('Dikirim')
-                                        Paket Dalam Perjalanan
-                                        @break
-                                    @case('Dibatalkan')
-                                        Pengiriman Dan Pembayaran Dibatalkan
-                                        @break
-                                @endswitch
-                            </p>
+                            <p class="fw-bold text-light btn
+                            {{ $pesanan->status == 'Dikemas' ? 'btn-warning' : '' }}
+                            {{ $pesanan->status == 'Selesai' ? 'btn-success' : '' }}
+                            {{ $pesanan->status == 'Belum Bayar' ? 'btn-danger' : '' }}
+                            {{ $pesanan->status == 'Dikirim' ? 'btn-primary' : '' }}
+                            {{ $pesanan->status == 'Dibatalkan' ? 'btn-secondary' : '' }}
+                        ">
+                            @switch($pesanan->status)
+                                @case('Dikemas')
+                                    Pembayaran Diterima, Sedang Diproses untuk Pengiriman
+                                    @break
+                                @case('Selesai')
+                                    Pengiriman Berhasil, Pembayaran Lunas
+                                    @break
+                                @case('Belum Bayar')
+                                    Menunggu Pembayaran dan Pengiriman
+                                    @break
+                                @case('Dikirim')
+                                    Paket Dalam Perjalanan
+                                    @break
+                                @case('Dibatalkan')
+                                    Pengiriman Dan Pembayaran Dibatalkan
+                                    @break
+                            @endswitch
+                        </p>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <p><strong>Resi Pengiriman:</strong></p>
@@ -130,9 +136,17 @@
                     </p>
                 </div>
 
-                <!-- Checkout Button -->
+                <!-- Button -->
                 <div class="mt-3">
-                    <a href="{{ route('pesanan.riwayat') }}" class="btn btn-success w-100">Kembali</a>
+                    <!-- Tombol Konfirmasi Selesai -->
+                    @if ($pesanan->status == 'Dikirim')
+                    <form action="{{ route('pesanan.konfirmasi', $pesanan->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-success w-100 mb-3">Konfirmasi Selesai</button>
+                    </form>
+                    @endif
+                    <!-- Tombol Kembali -->
+                    <a href="{{ route('pesanan.riwayat') }}" class="btn btn-success w-100 ">Kembali</a>
                 </div>
             </div>
         </div>

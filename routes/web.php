@@ -51,8 +51,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('/admin/pameran', PameranController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
         //Karya
         Route::resource('/admin/karya', KaryaController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
-        //Income
-        Route::resource('/admin/karya', KaryaController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+        //Pesanan
+        Route::get('/admin/pesanan', [PesananController::class, 'admin'])->name('pesanan.admin');
+        Route::get('/admin/pesanan/{id}/edit', [PesananController::class, 'edit'])->name('pesanan.admin.edit');
+        Route::put('/admin/pesanan/{id}', [PesananController::class, 'update'])->name('pesanan.admin.update');
         //User
         Route::get('/admin/user', [LandingController::class, 'adminUser']);
         //Income
@@ -80,6 +82,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         //Detail Pesanan
         Route::get('pembayaran/pesanan/{id}', [PesananController::class, 'detailPembayaran'])->name('pesanan.detail');
+        Route::post('/pesanan/{id}/konfirmasi-selesai', [PesananController::class, 'konfirmasiSelesai'])->name('pesanan.konfirmasi');
 
         // Pembayaran
         Route::get('/pembayaran', [PesananController::class, 'pembayaran'])->name('pesanan.pembayaran');

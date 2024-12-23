@@ -75,5 +75,9 @@ class Karya extends Model
         if ($tahun = request('tahun')) {
             $query->where('tahun', $tahun);
         }
+
+        if ($stock = request('stock')) {
+            $query->where('stock', $stock);
+        }
     }
 }

@@ -109,6 +109,16 @@
                 </a>
               </li>
 
+              <!-- Pesanan -->
+              <li class="sidebar-item mb-4">
+                <a class="sidebar-link @yield('menuPesanan')" href="/admin/pesanan" aria-expanded="false">
+                  <span class="aside-icon p-2 bg-success rounded-3">
+                    <i class="ti ti-receipt fs-5 text-light"></i>
+                  </span>
+                  <span class="hide-menu ms-2 ps-1">Pesanan</span>
+                </a>
+              </li>
+
               <!-- User -->
               <li class="sidebar-item mb-4">
                 <a class="sidebar-link @yield('menuUser')" href="/admin/user" aria-expanded="false">

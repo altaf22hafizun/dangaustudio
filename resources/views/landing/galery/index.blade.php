@@ -19,6 +19,16 @@
                     @endforeach
                 </select>
 
+                <!-- Filter berdasarkan Stock -->
+                <select class="form-control me-2 shadow-sm" name="stock" aria-label="Pilih Stock">
+                    <option value="">Pilih Stock</option>
+                    @foreach($stock as $stok)
+                        <option value="{{ $stok->stock }}" {{ request('stock') == $stok->stock ? 'selected' : '' }}>
+                            {{ $stok->stock }}
+                        </option>
+                    @endforeach
+                </select>
+
                 <!-- Filter berdasarkan Tahun -->
                 <select class="form-control me-2 shadow-sm" name="tahun" aria-label="Pilih Tahun">
                     <option value="">Pilih Tahun</option>
