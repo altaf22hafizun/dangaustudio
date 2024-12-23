@@ -27,17 +27,6 @@ class PesananController extends Controller
         $pesanans = Pesanan::with('detailPesanans.karya')
             ->findOrFail($id);
 
-        // // Menyiapkan array untuk menyimpan nama karya
-        // $namaKarya = [];
-
-        // foreach ($pesanans->detailPesanans as $detailPesanan) {
-        //     // Ambil nama karya untuk setiap detailPesanan
-        //     $namaKarya[] = $detailPesanan->karya?->name ?? 'Nama Karya Tidak Ditemukan';
-        // }
-
-        // // Gabungkan nama-nama karya menjadi satu string, dipisahkan dengan koma
-        // $namaKaryaString = implode(', ', $namaKarya);
-
         $formatTgl = Carbon::parse($pesanans->tgl_transaksi)->format('d-M-Y');
 
         $status = [
@@ -48,7 +37,6 @@ class PesananController extends Controller
             'Dikirim' => 'Dikirim',
         ];
 
-        // return view('admin.pesanan.edit', compact('pesanans', 'status', 'namaKaryaString'));
         return view('admin.pesanan.edit', compact('pesanans', 'status', 'formatTgl'));
     }
 

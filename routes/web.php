@@ -71,11 +71,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         //Keranjang
         Route::resource('/cart', KeranjangController::class)->only('index', 'store', 'destroy');
-        // Route untuk langsung melakukan pembelian dan melihat detail pesanan
-        // Route::post('/pesanan-langsung', [KeranjangController::class, 'pesanan'])->name('pesanan.langsung');
 
         // Pesanan
-        // Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
         Route::post('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
         Route::post('/get-shipping-services', [PesananController::class, 'getShippingServices'])->name('getShippingServices');
         Route::post('/checkout', [PesananController::class, 'checkout'])->name('pesanan.checkout');
