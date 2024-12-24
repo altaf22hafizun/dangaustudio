@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'dangaustudio@gmail.com',
             'email_verified_at' => Carbon::now(),
-            'password' => bcrypt('12341234'),
+            'password' => bcrypt('admindangaustudio'),
             'role' => 'admin',
             'telp' => '0812-3456-7890',
         ]);

@@ -31,13 +31,8 @@ class Pesanan extends Model
     public static function generateUniqueTransaction()
     {
         $prefix = 'DNGSTD';
-        $uuid = Str::uuid()->toString(); // Generate UUID
-        $randomString = $prefix . substr($uuid, 0, 12); // Gunakan 12 karakter pertama dari UUID
-
-        // Cek apakah trx_id sudah ada
-        // while (self::where('trx_id', $randomString)->exists()) {
-        //     $randomString = $prefix . substr(Str::uuid()->toString(), 0, 12); // Generate ulang jika sudah ada
-        // }
+        $uuid = Str::uuid()->toString();
+        $randomString = $prefix . substr($uuid, 0, 12);
 
         return $randomString;
     }

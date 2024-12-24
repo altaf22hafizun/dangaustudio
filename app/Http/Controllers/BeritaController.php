@@ -92,11 +92,6 @@ class BeritaController extends Controller
         $beritas->setNameBeritaAttribute($validateData['name']);
         $beritas->save();
 
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Data berita berhasil ditambahkan',
-        //     'data' => $beritas,
-        // ]);
         return redirect()->route('berita.index')->with('success', 'Data berita berhasil ditambahkan');
     }
 
@@ -138,7 +133,6 @@ class BeritaController extends Controller
                 'name' => 'required|string|max:255',
                 'description' => 'required|string',
                 'tgl' => 'required|date',
-                // 'penulis' => 'required|string|max:255',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
                 'sumber_berita' => 'nullable|string',
                 'label_berita' => 'nullable|string',
@@ -156,7 +150,6 @@ class BeritaController extends Controller
                 'tgl.required' => 'Tanggal publikasi berita harus diisi',
                 'tgl.date' => 'Tanggal publikasi berita harus berupa tanggal yang valid.',
 
-                // 'image.required' => 'Gambar berita wajib diunggah.',
                 'image.image' => 'File harus berupa gambar.',
                 'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
                 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
@@ -187,7 +180,6 @@ class BeritaController extends Controller
 
         Berita::where('id', $id)->update($validateData);
         return redirect()->route('berita.index')->with('success', 'Data berita berhasil diperbarui');
-        // return response()->json(['status' => 'success', 'message' => 'Data berita berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -204,6 +196,5 @@ class BeritaController extends Controller
         $beritas->delete();
 
         return redirect()->route('berita.index')->with('success', 'Data berita berhasil dihapus');
-        // return response()->json(['status' => 'success', 'message' => 'Data berita berhasil dihapus']);
     }
 }

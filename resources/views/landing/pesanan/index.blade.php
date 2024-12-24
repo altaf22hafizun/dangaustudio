@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     service.costs.forEach((cost, index) => {
                     cost.cost.forEach((item, itemIndex) => {
                         // Filter hanya layanan REG dan OKE
-                        if (cost.description.toUpperCase().includes('REG') || cost.description.toUpperCase().includes('OKE')) {
+                        if (cost.description.toUpperCase().includes('REG') || cost.description.toUpperCase().includes('ONG') || cost.description.toUpperCase().includes('JNE')) {
                             const serviceItem = document.createElement('div');
                             serviceItem.classList.add('list-group-item');
 

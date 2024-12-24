@@ -53,7 +53,6 @@
                             @endswitch
                         </span></td>
                         <td>
-                            <a href="" class="btn btn-danger"><i class="ti ti-eye"></i></a>
                             <a href="{{ route('pesanan.admin.edit', $pesanan->id, ) }}" class="btn btn-warning"><i class="ti ti-edit"></i></a>
                         </td>
                     </tr>

@@ -94,11 +94,6 @@ class SenimanController extends Controller
         // Menyimpan data seniman ke database
         $seniman->save();
 
-        // return response()->json([
-        //     'message' => 'Data seniman berhasil disimpan.',
-        //     'data' => $seniman,
-        // ]);
-
         return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil disimpan');
     }
 
@@ -178,7 +173,6 @@ class SenimanController extends Controller
 
         Seniman::where('id', $id)->update($validatedData);
         return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil diperbarui');
-        // return response()->json(['status' => 'success', 'message' => 'Data seniman berhasil diperbarui', 'data' => $validatedData]);
     }
 
     /**
@@ -190,6 +184,5 @@ class SenimanController extends Controller
         $senimans->delete();
 
         return redirect()->route('seniman.index')->with('success', 'Data seniman berhasil dihapus');
-        // return response()->json(['status' => 'success', 'message' => 'Data seniman berhasil dihapus']);
     }
 }

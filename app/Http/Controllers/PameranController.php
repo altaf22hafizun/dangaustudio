@@ -87,12 +87,6 @@ class PameranController extends Controller
         $pamerans->setNameAttribute($validateData['name_pameran']);
         $pamerans->save();
 
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Data pameran berhasil ditambahkan',
-        //     'data' => $pamerans,
-        // ]);
-
         return redirect()->route('pameran.index')->with('success', 'Data pameran berhasil ditambahkan');
     }
 
@@ -175,7 +169,6 @@ class PameranController extends Controller
 
         Pameran::where('id', $id)->update($validateData);
         return redirect()->route('pameran.index')->with('success', 'Data pameran berhasil diperbarui');
-        // return response()->json(['status' => 'success', 'message' => 'Data pameran berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -191,6 +184,5 @@ class PameranController extends Controller
 
 
         return redirect()->route('pameran.index')->with('success', 'Data pameran berhasil dihapus');
-        // return response()->json(['status' => 'success', 'message' => 'Data pameran berhasil dihapus']);
     }
 }

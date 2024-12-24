@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('/cart', KeranjangController::class)->only('index', 'store', 'destroy');
 
         // Pesanan
+        Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
         Route::post('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
         Route::post('/get-shipping-services', [PesananController::class, 'getShippingServices'])->name('getShippingServices');
         Route::post('/checkout', [PesananController::class, 'checkout'])->name('pesanan.checkout');
@@ -84,13 +85,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Pembayaran
         Route::get('/pembayaran', [PesananController::class, 'pembayaran'])->name('pesanan.pembayaran');
 
-
-        // //Cek ongkir
-        // Route::get('/cekongkir', [DetailController::class, 'cekOngkir'])->name('pesanan.cekOngkir');
-        // Route::post('/cekongkir', [DetailController::class, 'ongkirKiriman'])->name('pesanan.hitungOngkir');
-
         //Riwayat Pesanan
-        ROute::get('/user/riwayat-pesanan', [PesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
+        Route::get('/user/riwayat-pesanan', [PesananController::class, 'riwayatPesanan'])->name('pesanan.riwayat');
     });
 });
 

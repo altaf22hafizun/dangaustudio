@@ -17,9 +17,6 @@ class KaryaController extends Controller
 
     public function landing()
     {
-        // $karyas = Karya::orderBy('name', 'ASC')->pencarian()->paginate(12);
-        // return view('landing.galery.index', compact('karyas'));
-
         // Ambil kategori medium yang unik dari tabel karya
         $categories = Karya::select('medium')->distinct()->get();
 
@@ -74,12 +71,10 @@ class KaryaController extends Controller
             'name' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',
-            // 'category' => 'required|string|max:255',
             'medium' => 'required|string',
             'size' => 'required|string',
             'tahun' => 'required|integer|digits:4',
             'image' => 'required|image|mimes:jpg,jpeg,png',
-            // 'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'stock' => 'required|string|in:Terjual,Tersedia',
         ], [
             'seniman_id.required' => 'Seniman wajib diisi.',
@@ -93,12 +88,9 @@ class KaryaController extends Controller
             'tahun.required' => 'Tahun karya wajib diisi.',
             'price.required' => 'Harga karya wajib diisi.',
             'price.numeric' => 'Harga harus berupa angka.',
-            // 'category.required' => 'Kategori karya wajib diisi.',
-            // 'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
             'image.required' => 'Gambar karya wajib diunggah.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format jpg, jpeg, atau png.',
-            // 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
             'stock.required' => 'Stock karya wajib diisi.',
             'stock.string' => 'Stock karya harus berupa teks.',
             'stock.in' => 'Stock karya harus salah satu dari: Tersedia atau Terjual.',
@@ -118,12 +110,6 @@ class KaryaController extends Controller
         $karyas = Karya::create($validateData);
         $karyas->setNameAttribute($validateData['name']);
         $karyas->save();
-
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => 'Karya berhasil ditambahkan',
-        //     'data' => $karyas,
-        // ]);
 
         return redirect()->route('karya.index')->with('success', 'Data karya berhasil ditambahkan');
     }
@@ -166,12 +152,10 @@ class KaryaController extends Controller
             'name' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'price' => 'required|numeric|min:0',
-            // 'category' => 'required|string|max:255',
             'medium' => 'required|string',
             'size' => 'required|string',
             'tahun' => 'required|integer|digits:4',
             'image' => 'nullable|image|mimes:jpg,jpeg,png',
-            // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'stock' => 'required|string|in:Terjual,Tersedia',
 
         ], [
@@ -186,11 +170,8 @@ class KaryaController extends Controller
             'tahun.required' => 'Tahun karya wajib diisi.',
             'price.required' => 'Harga karya wajib diisi.',
             'price.numeric' => 'Harga harus berupa angka.',
-            // 'category.required' => 'Kategori karya wajib diisi.',
-            // 'category.max' => 'Kategori tidak boleh lebih dari 255 karakter.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format jpg, jpeg, atau png.',
-            // 'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
             'stock.required' => 'Stock karya wajib diisi.',
             'stock.string' => 'Stock karya harus berupa teks.',
             'stock.in' => 'Stock karya harus salah satu dari: Tersedia atau Terjual.',
@@ -204,7 +185,7 @@ class KaryaController extends Controller
             $validateData['image'] = $imagePath;
         } else {
             // Jika tidak ada gambar baru, jangan hapus gambar lama
-            unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
+            unset($validateData['image']);
         }
 
         $slug = Str::slug($request->name);
@@ -212,7 +193,6 @@ class KaryaController extends Controller
 
         Karya::where('id', $id)->update($validateData);
         return redirect()->route('karya.index')->with('Data karya berhasil diperbarui');
-        // return response()->json(['status' => 'success', 'message' => 'Data karya berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -227,6 +207,5 @@ class KaryaController extends Controller
         $karyas->delete();
 
         return redirect()->route('karya.index')->with('success', 'Data karya berhasil dihapus');
-        // return response()->json(['status' => 'success', 'message' => 'Data karya berhasil dihapus']);
     }
 }

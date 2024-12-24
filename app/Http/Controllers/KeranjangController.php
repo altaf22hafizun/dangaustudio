@@ -25,27 +25,6 @@ class KeranjangController extends Controller
      * Store a newly created resource in storage.
      */
 
-    // public function pesanan(Request $request)
-    // {
-    //     $request->validate([
-    //         'karya_id' => 'required|exists:karyas,id',
-    //         'price' => 'required|numeric',
-    //     ]);
-
-    //     // Ambil ID pengguna yang sedang login
-    //     $userId = Auth::id();
-
-    //     // Simpan pesanan baru ke database
-    //     $pesanan = Pesanan::create([
-    //         'user_id' => $userId,
-    //         'karya_id' => $request->input('karya_id'),
-    //         'price' => $request->input('price'),
-    //     ]);
-
-    //     // Redirect langsung ke halaman detail pesanan setelah berhasil membuat pesanan
-    //     return redirect()->route('pesanan.index', ['id' => $pesanan->id]);
-    // }
-
     public function store(Request $request)
     {
         $request->validate([

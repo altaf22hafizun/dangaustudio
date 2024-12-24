@@ -16,10 +16,6 @@ class EventController extends Controller
 
     public function landing(Event $event)
     {
-        // $events = Event::orderBy('start_date', 'ASC')->latest()->pencarian()->paginate(12);
-
-        // return view('landing.event.index', compact('events'));
-
         $categories = Event::select('category')->distinct()->get();
 
         // Ambil acara yang sesuai dengan pencarian dan kategori
@@ -104,7 +100,6 @@ class EventController extends Controller
 
         $event = new Event($validateData);
         $event->setNameEventAttribute($validateData['nama_event']);
-        // $event->setLocationEventAttribute($validateData['location']);
         $event->setCategoryEventAttribute($validateData['category']);
         $event->save();
 
@@ -173,7 +168,6 @@ class EventController extends Controller
             'end_date.date' => 'Tanggal akhir harus berupa tanggal yang valid.',
             'end_date.after_or_equal' => 'Tanggal akhir harus setelah atau sama dengan tanggal mulai.',
 
-            // 'image.required' => 'Gambar event wajib diunggah.',
             'image.image' => 'File harus berupa gambar.',
             'image.mimes' => 'Gambar harus dalam format: jpg, jpeg, atau png.',
             'image.max' => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
@@ -192,7 +186,7 @@ class EventController extends Controller
             $validateData['image'] = $imagePath;
         } else {
             // Jika tidak ada gambar baru, jangan hapus gambar lama
-            unset($validateData['image']); // Menjaga nilai gambar lama tetap di database
+            unset($validateData['image']);
         }
 
         // Membuat slug dari judul event
@@ -201,7 +195,6 @@ class EventController extends Controller
 
         Event::where('id', $id)->update($validateData);
         return redirect()->route('events.index')->with('success', 'Data event berhasil diperbarui');
-        // return response()->json(['status' => 'success', 'message' => 'Data event berhasil diperbarui', 'data' => $validateData]);
     }
 
     /**
@@ -213,6 +206,5 @@ class EventController extends Controller
         $events->delete();
 
         return redirect()->route('events.index')->with('success', 'Data event berhasil dihapus');
-        // return response()->json(['status' => 'success', 'message' => 'Data event berhasil dihapus']);
     }
 }

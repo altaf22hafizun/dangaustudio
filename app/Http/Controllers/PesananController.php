@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 
 class PesananController extends Controller
 {
-
     public function admin()
     {
 
@@ -24,8 +23,10 @@ class PesananController extends Controller
 
     public function edit($id)
     {
-        $pesanans = Pesanan::with('detailPesanans.karya')
+        $pesanans = Pesanan::where('id', $id)
+            ->with('detailPesanans.karya')
             ->findOrFail($id);
+
 
         $formatTgl = Carbon::parse($pesanans->tgl_transaksi)->format('d-M-Y');
 
@@ -45,7 +46,7 @@ class PesananController extends Controller
         $pesanans = Pesanan::findOrFail($id);
 
         $validatedData = $request->validate([
-            'status' => 'required|in:Belum Dibayar,Dikemas,Dikirim,Selesai,Dikabarkan',
+            'status' => 'required|in:Belum Dibayar,Dikemas,Dikirim,Selesai,Dibatalkan',
             'resi_pengiriman' => "nullable|string",
         ]);
 
@@ -132,15 +133,21 @@ class PesananController extends Controller
         $shippingFee = $request->input('shipping_fee', 0);
         $shippingService = $request->input('jenis_pengiriman');
 
-        // Jika metode pengiriman adalah "Diantarkan", validasi dan ambil detail alamat
-        if ($validatedData['metode_pengiriman'] === 'Diantarkan') {
-            // Ambil daftar kota melalui RajaOngkir
-            $cities = $this->rajaOngkir();
-            $city = collect($cities)->firstWhere('city_id', $validatedData['destination']);
-            $cityName = $city ? $city['city_name'] : 'Unknown City';
+        $userAddress = Auth::user()->alamat;
 
-            // Format alamat lengkap
-            $alamat = $validatedData['alamat'] . ', ' . $cityName . ', ' . $validatedData['province'];
+        if ($userAddress) {
+            $alamat = $userAddress;
+        } else {
+            // Jika metode pengiriman adalah "Diantarkan", validasi dan ambil detail alamat
+            if ($validatedData['metode_pengiriman'] === 'Diantarkan') {
+                // Ambil daftar kota melalui RajaOngkir
+                $cities = $this->rajaOngkir();
+                $city = collect($cities)->firstWhere('city_id', $validatedData['destination']);
+                $cityName = $city ? $city['city_name'] : 'Unknown City';
+
+                // Format alamat lengkap
+                $alamat = $validatedData['alamat'] . ', ' . $cityName . ', ' . $validatedData['province'];
+            }
         }
 
         // Hitung subtotal dan total harga
@@ -179,10 +186,8 @@ class PesananController extends Controller
     {
         $pesanan = Pesanan::where('user_id', Auth::id())
             ->where('status', 'Belum Dibayar')
+            ->with('detailPesanans')
             ->first();
-
-        $detailPesanan = DetailPesanan::where('pesanan_id', $pesanan->id)
-            ->get();
 
         // Konfigurasi Midtrans
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
@@ -205,7 +210,7 @@ class PesananController extends Controller
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        return view('landing.pesanan.pembayaran', compact('pesanan', 'detailPesanan', 'snapToken'));
+        return view('landing.pesanan.pembayaran', compact('pesanan', 'snapToken'));
     }
 
     public function callback(Request $request, $trxId)
@@ -216,7 +221,7 @@ class PesananController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture') {
                 // Temukan pesanan berdasarkan transaksi ID
-                $order = Pesanan::find($trxId);
+                $order = Pesanan::where($trxId)->first();
 
                 // Ubah status pesanan menjadi 'Dikemas'
                 $order->update(['status' => 'Dikemas']);
@@ -256,7 +261,6 @@ class PesananController extends Controller
         return redirect()->route('pesanan.riwayat');
     }
 
-
     public function riwayatPesanan()
     {
         // Ambil parameter 'type' dari URL, jika ada
@@ -264,12 +268,13 @@ class PesananController extends Controller
 
         // Mulai query pesanan berdasarkan user yang login
         $pesananQuery = Pesanan::where('user_id', Auth::id())
-            ->with('detailPesanans.karya') // Relasi dengan karya
-            ->pencarian(); // Pencarian berdasarkan query 'search'
+            ->with('detailPesanans.karya')
+            ->pencarian();
 
         // Jika ada filter 'type', gunakan scope untuk filter berdasarkan status pembayaran
         if ($type) {
-            $pesananQuery->statusPembayaran($type); // Memanggil scope statusPembayaran
+            // Memanggil scope statusPembayaran
+            $pesananQuery->statusPembayaran($type);
         }
 
         // Ambil pesanan yang sudah difilter
@@ -302,6 +307,41 @@ class PesananController extends Controller
 
         // Redirect kembali ke halaman riwayat pesanan dengan pesan sukses
         return redirect()->route('pesanan.riwayat')->with('success', 'Pesanan berhasil dikonfirmasi selesai');
+    }
+
+    public function cekOngkir()
+    {
+        $response = Http::withHeaders([
+            'key' => 'ee887248ab9a52cdb808a833290bf396'
+        ])->get('https://api.rajaongkir.com/starter/city');
+
+        $cities = $response['rajaongkir']['results'];
+        $ongkir = $response['rajaongkir']['results'];
+
+        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => '']);
+    }
+
+    public function ongkirKiriman(Request $request)
+    {
+        $response = Http::withHeaders([
+            'key' => 'ee887248ab9a52cdb808a833290bf396'
+        ])->get('https://api.rajaongkir.com/starter/city');
+
+        $responseCost = Http::withHeaders([
+            'key' => 'ee887248ab9a52cdb808a833290bf396'
+        ])->post('https://api.rajaongkir.com/starter/cost', [
+            'origin' => $request->origin,
+            'destination' => $request->destination,
+            'weight' => $request->weight,
+            'courier' => $request->courier,
+        ]);
+
+        $cities = $response['rajaongkir']['results'];
+        $ongkir = $responseCost['rajaongkir'];
+
+        dd($ongkir);
+
+        return view('landing.pesanan.cekongkir', ['cities' => $cities, 'ongkir' => $ongkir]);
     }
 
 

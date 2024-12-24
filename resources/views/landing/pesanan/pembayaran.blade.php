@@ -121,15 +121,28 @@
                 console.log(result);
                 // alert("payment success!"); console.log(result);
             },
-            onPending: function (result) {
-                alert("waiting for your payment!"); console.log(result);
+             onPending: function(result) {
+                window.location.href = '/user/riwayat-pesanan';
+                console.log(result);
             },
-            onError: function (result) {
-                alert("payment failed!"); console.log(result);
+            onError: function(result) {
+                // window.location.reload();
+                // console.log(result);
+                window.location.href = '/user/riwayat-pesanan';
+                console.log(result);
             },
-            onClose: function () {
-                alert('you closed the popup without finishing the payment');
+            onClose: function() {
+                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
             }
+            // onPending: function (result) {
+            //     alert("waiting for your payment!"); console.log(result);
+            // },
+            // onError: function (result) {
+            //     alert("payment failed!"); console.log(result);
+            // },
+            // onClose: function () {
+            //     alert('you closed the popup without finishing the payment');
+            // }
         });
     });
 </script>
