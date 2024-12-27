@@ -12,6 +12,66 @@ use Illuminate\Http\Request;
 
 class PesananController extends Controller
 {
+
+    public function test(Request $request)
+    {
+        // Ambil pesanan berdasarkan trx_id dan eager load relasi 'detailPesanans' dan 'karya'
+        $order = Pesanan::where('trx_id', 'DNGSTDa02b5c79-621')
+            ->with('detailPesanans.karya')  // Memastikan detailPesanan dan karya dimuat
+            ->get();
+
+        foreach ($order as $pesanan) {
+            // Perbarui status pesanan menjadi 'Dikemas'
+            $pesanan->update(['status' => 'Dikemas']);
+
+            // Pastikan ada detailPesanans yang terhubung
+            if ($pesanan->detailPesanans->isNotEmpty()) {
+                // Debug: Dump seluruh detailPesanan tanpa menghentikan eksekusi
+                // dump($pesanan->detailPesanans);  // Melihat semua data detailPesanans
+
+                foreach ($pesanan->detailPesanans as $detailPesanan) {
+                    // Debug: Dump setiap detailPesanan
+                    // dump($detailPesanan);  // Melihat setiap detailPesanan tanpa menghentikan eksekusi
+
+                    // Ambil karya terkait
+                    $karya = $detailPesanan->karya;
+
+                    // Debug: Dump karya yang terkait
+                    // dump($karya);  // Melihat karya yang terkait dengan detailPesanan ini
+
+                    // Tindakan lainnya: Menghapus karya terkait dari keranjang pengguna
+                    if ($karya) {
+                        // Update stok karya menjadi 'Terjual'
+                        $karya->update(['stock' => 'Terjual']);
+                        // dump('Stok karya telah diupdate menjadi Terjual: ' . $karya->name);
+
+                        // // Dapatkan user_id dari pesanan
+                        $userId = $pesanan->user_id;
+
+                        // Temukan semua item keranjang yang berisi karya ini untuk pengguna yang bersangkutan
+                        $userKeranjang = Keranjang::where('user_id', $userId)
+                            ->where('karya_id', $karya->id) // Pastikan 'karya_id' sesuai dengan ID karya yang terkait
+                            ->pluck('id'); // Ambil ID item keranjang yang sesuai
+
+                        // Hapus karya dari keranjang
+                        if ($userKeranjang->isNotEmpty()) {
+                            Keranjang::destroy($userKeranjang); // Hapus item keranjang berdasarkan ID
+                            // dump('Karya telah dihapus dari keranjang: ' . $karya->name);
+                        } else {
+                            // dump('Tidak ada karya yang ditemukan di keranjang untuk pengguna ini: ' . $karya->name);
+                        }
+                    }
+
+                    dump('karya berhasil diperbarui dan dihapus dari keranjang' . $karya->name);
+                }
+            } else {
+                dd('Tidak ada detailPesanan untuk pesanan ini.');
+            }
+        }
+
+        return view('landing.pesanan.test');
+    }
+
     public function admin()
     {
 

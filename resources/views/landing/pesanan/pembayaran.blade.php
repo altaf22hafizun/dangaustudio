@@ -15,7 +15,7 @@
                 <h5 class="mb-4">Detail Pesanan Anda</h5>
 
                 <div class="list-group">
-                    @foreach($detailPesanan as $detail)
+                    @foreach($pesanan->detailPesanans as $detail)
                     <div class="list-group-item d-flex align-items-center py-3">
                         <div class="row w-100">
                             <!-- Image column -->

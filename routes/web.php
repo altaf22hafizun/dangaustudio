@@ -36,6 +36,8 @@ Route::get('/galery/{slug}', [KaryaController::class, 'show'])->name('galery.sho
 Route::get('/pameran', [PameranController::class, 'landing'])->name('pameran.landing');
 Route::get('/pameran/{slug}', [PameranController::class, 'show'])->name('pemeran.show');
 
+Route::get('/test', [PesananController::class, 'test']);
+
 // Middleware
 Route::group(['middleware' => ['auth', 'verified']], function () {
     // Admin Routes
