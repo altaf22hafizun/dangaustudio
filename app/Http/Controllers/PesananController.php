@@ -246,7 +246,7 @@ class PesananController extends Controller
     {
         $pesanan = Pesanan::where('user_id', Auth::id())
             ->where('status', 'Belum Dibayar')
-            ->with('detailPesanans')
+            ->with('detailPesanans.karya')
             ->first();
 
         // Konfigurasi Midtrans
@@ -255,6 +255,18 @@ class PesananController extends Controller
         \Midtrans\Config::$isSanitized = true;   // Data sanitasi aktif
         \Midtrans\Config::$is3ds = true;         // 3DS aktif untuk kartu kredit
 
+        // Daftar item yang akan dibeli
+        $itemDetails = [];
+        foreach ($pesanan->detailPesanans as $detail) {
+            $itemDetails[] = [
+                'id' => '', // Anda bisa menambahkan ID jika diperlukan
+                'price' => $detail->price_karya,
+                'quantity' => 1,
+                'name' => $detail->karya->name,
+            ];
+        }
+
+        // dd($pesanan->detailPesanans->first()->karya->name);
         $params = [
             'transaction_details' => [
                 'order_id'     => $pesanan->trx_id,
@@ -266,7 +278,10 @@ class PesananController extends Controller
                 'email'      => Auth::user()->email,
                 'phone'      => Auth::user()->telp,
             ],
+            'item_details' => $itemDetails,
         ];
+
+        // dd($params);
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
