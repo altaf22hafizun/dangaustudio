@@ -4,7 +4,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\DetailPesananController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\KaryaController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\LandingController;
@@ -59,8 +59,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::put('/admin/pesanan/{id}', [PesananController::class, 'update'])->name('pesanan.admin.update');
         //User
         Route::get('/admin/user', [LandingController::class, 'adminUser']);
-        //Income
-        Route::get('/admin/income', [IncomeController::class, 'index']);
+        //Laporan
+        Route::get('/admin/laporan/penghasilan', [LaporanController::class, 'penghasilan'])->name('laporan.penghasilan');
+        Route::get('/admin/laporan/transaksi', [LaporanController::class, 'transaksi'])->name('laporan.transaksi');
     });
 
     // User Routes

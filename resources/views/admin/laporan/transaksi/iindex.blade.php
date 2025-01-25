@@ -1,12 +1,23 @@
 @extends('admin.layouts.index')
-@section('title', 'Income | Admin Dangau Studio')
-@section('menuIncome','active')
+@section('title', 'Laporan | Admin Dangau Studio')
+@section('menuLaporan','active')
 @section('content')
 
 <div class="card w-100">
     <div class="card-body p-4">
         <div class="d-flex mb-4 justify-content-between align-items-center">
-            <h5 class="mb-0 fw-bold">Income</h5>
+            <h5 class="mb-0 fw-bold">Laporan</h5>
+        </div>
+        <div class="col-12">
+            <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                <li class="nav-item">
+                    <a class="nav-link p-3" href="/admin/laporan/penghasilan"><i class="bi bi-person me-1"></i> Penghasilan</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-3 active" href="/admin/laporan/transaksi"><i class="bi bi-signpost-split"></i>
+                        Transaksi</a>
+                </li>
+            </ul>
         </div>
         <div class="card">
             <div class="card-body">

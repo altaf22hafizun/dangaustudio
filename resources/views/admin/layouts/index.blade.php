@@ -79,13 +79,13 @@
                 </a>
               </li>
 
-              <!-- Income -->
+              <!-- Laporan -->
               <li class="sidebar-item mb-4">
-                <a class="sidebar-link @yield('menuIncome')" href="/admin/income" aria-expanded="false">
+                <a class="sidebar-link @yield('menuLaporan')" href="/admin/laporan/penghasilan" aria-expanded="false">
                   <span class="aside-icon p-2 bg-success rounded-3">
                     <i class="fas fa-chart-line fs-5 text-light"></i>
                   </span>
-                  <span class="hide-menu ms-2 ps-1">Income</span>
+                  <span class="hide-menu ms-2 ps-1">Laporan</span>
                 </a>
               </li>
 
